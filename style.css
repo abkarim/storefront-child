@@ -66,3 +66,10 @@ ul.wc-block-grid__products li.wc-block-grid__product .add_to_cart_button,
 ul.products li.product .add_to_cart_button {
     width: 100% !important;
 }
+
+body.woocommerce-shop .custom-title-banner {
+    display: none !important;
+}
+body.woocommerce-shop .woocommerce-products-header__title {
+    display: none !important;
+}
