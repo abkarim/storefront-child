@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Your Name
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.0.0
+Version: 1.0.1
 Text Domain: storefront-child
 */
 
@@ -13,14 +13,21 @@ Text Domain: storefront-child
    Disable Link Focus Outline / Borders On Mouse Click
    ========================================================================== */
 /* Target normal mouse click engagement while preserving keyboard focus states */
-a:focus,
-button:focus,
-.button:focus,
-input[type="button"]:focus,
-input[type="submit"]:focus {
-    outline: none !important;
-    box-shadow: none !important;
-    border-color: transparent; /* If the theme maps custom border changes to focus hooks */
+a:focus-visible,
+button:focus-visible,
+.button:focus-visible,
+input[type="button"]:focus-visible,
+input[type="submit"]:focus-visible {
+    outline: 2px solid #0073aa;
+    outline-offset: 2px;
+}
+a:focus:not(:focus-visible),
+button:focus:not(:focus-visible),
+.button:focus:not(:focus-visible),
+input[type="button"]:focus:not(:focus-visible),
+input[type="submit"]:focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none;
 }
 
 /* 
