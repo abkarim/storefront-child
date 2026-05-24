@@ -6,48 +6,57 @@ class Layout
 {
     public function __construct()
     {
-        add_action('init', [$this, "reposition_storefront_page_title"]);
+        add_action('wp', [$this, "reposition_storefront_page_title"]);
 
         add_action("wp_head", [$this, "product_archive_dynamic_card_styling"]);
     }
 
     public function reposition_storefront_page_title()
     {
-        // Remove the title header from its default narrow position
+        // Stop static pages from rendering their standard title blocks
         remove_action('storefront_page', 'storefront_page_header', 10);
 
-        // Open Storefront's native structural layout wrapper BEFORE the title renders
-        add_action('storefront_before_content', [$this, 'custom_open_title_wrapper'], 4);
+        // Stop homepage template modules from spitting out separate headers
+        remove_action('storefront_homepage', 'storefront_homepage_header', 10);
 
-        // Render the standard title at priority 5 (before breadcrumbs at 10)
-        add_action('storefront_before_content', 'storefront_page_header', 5);
+        // Prevent WooCommerce archive grids from injecting their loop header streams
+        add_filter('woocommerce_show_page_title', '__return_false', 99);
 
-        // Close the layout wrapper immediately after the title renders
-        add_action('storefront_before_content', [$this, 'custom_close_title_wrapper'], 6);
+        add_action('storefront_before_content', [$this, 'render_minimal_page_title'], 5);
     }
 
     /**
-     * Opens the custom title wrapper
-     * it helps to maintain the same layout as the rest of the page, while allowing the title to be styled differently.
-     * 
-     * @since 1.0.0
+     * Dynamically determines the current page context and renders ONLY the raw text title
      */
-    public function custom_open_title_wrapper()
+    public function render_minimal_page_title()
     {
-        echo '<div class="custom-title-banner"><div class="col-full">';
-    }
+        // If we are looking at a single product page loop, bail out immediately and render nothing
+        if (function_exists('is_product') && is_product()) {
+            return;
+        }
 
-    /**
-     * Closes the custom title wrapper
-     * it helps to maintain the same layout as the rest of the page, while allowing the title to be styled differently.
-     * 
-     * @since 1.0.0
-     */
-    public function custom_close_title_wrapper()
-    {
-        echo '</div></div>';
-    }
+        $title = '';
 
+        // Determine the correct string based on where the user is browsing
+        if (function_exists('is_woocommerce') && is_woocommerce()) {
+            $title = woocommerce_page_title(false);
+        } elseif (is_page() || is_single()) {
+            $title = get_the_title();
+        } elseif (is_archive()) {
+            $title = get_the_archive_title();
+        } elseif (is_search()) {
+            $title = sprintf(__('Search Results for: %s', 'storefront-child'), get_search_query());
+        }
+
+        // If a title string exists, output it cleanly wrapped inside an isolated container box
+        if (! empty($title)) {
+            echo '<div class="entry-header">';
+            echo '    <div class="col-full">';
+            echo '        <h1 class="entry-title">' . esc_html($title) . '</h1>';
+            echo '    </div>';
+            echo '</div>';
+        }
+    }
 
     /**
      * Adds dynamic inline styles for product archive cards based on Customizer settings.

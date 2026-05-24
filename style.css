@@ -39,8 +39,9 @@ input[type="submit"]:focus:not(:focus-visible) {
 }
 /* Removes extra space */
 .storefront-breadcrumb {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 1em !important;
 }
 /* Breadcrumbs links */
 .woocommerce-breadcrumb {
@@ -57,12 +58,16 @@ input[type="submit"]:focus:not(:focus-visible) {
 /* 
 *Page Title styles 
 */
-header.entry-header {
+.entry-header {
     padding: 0 !important;
 }
-header.entry-header .entry-title {
+.entry-header .entry-title {
     text-align: left !important;
     margin: 0 !important;
+}
+
+.woocommerce-products-header {
+    display: none !important;
 }
 
 /* Product */
