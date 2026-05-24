@@ -21,5 +21,6 @@ Next steps:
 ## Features 
 ### Product archive layout styles 
 accessible from theme customize 
-<img width="1349" height="634" alt="image" src="https://github.com/user-attachments/assets/d4ff4588-da30-4849-99c2-63d09aeccb66" />
+<img width="1358" height="631" alt="image" src="https://github.com/user-attachments/assets/9a09717f-c5d1-438f-b7e8-4cfb290af0a9" />
+
 
