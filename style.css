@@ -1,0 +1,61 @@
+/*
+Theme Name: Storefront Child
+Theme URI: https://github.com/abkarim/storefront-child
+Description: Child theme for Storefront — add custom styles and features here.
+Author: Your Name
+Author URI: https://github.com/abkarim
+Template: storefront
+Version: 1.0.0
+Text Domain: storefront-child
+*/
+
+/* 
+* Breadcrumbs styles
+*/
+/* Remove the home SVG icon from Storefront breadcrumbs */
+.woocommerce-breadcrumb a::before {
+    content: "" !important;
+}
+/* Removes extra space */
+.storefront-breadcrumb {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+/* Breadcrumbs links */
+.woocommerce-breadcrumb {
+    font-weight: bold !important;
+}
+.woocommerce-breadcrumb a {
+    text-decoration: none !important;
+    font-weight: normal !important;
+}
+.woocommerce-breadcrumb a:hover {
+    font-weight: 600 !important;
+}
+
+/* 
+*Page Title styles 
+*/
+header.entry-header {
+    padding: 0 !important;
+}
+header.entry-header .entry-title {
+    text-align: left;
+    margin: 0 !important;
+}
+
+/* Product */
+.wc-block-grid__products {
+    gap: 1em !important;
+}
+.wc-block-grid__product {
+    text-align: left !important;
+    background-color: red;
+    padding: 1em 0.1em 1.2px;
+    border-radius: 1em;
+    max-width: calc(25% - 1em) !important;
+}
+.wc-block-grid__product .add_to_cart_button {
+    width: 100% !important;
+    margin-bottom: 0 !important;
+}
