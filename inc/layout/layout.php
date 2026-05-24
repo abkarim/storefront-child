@@ -58,42 +58,42 @@ class Layout
      */
     public function product_archive_dynamic_card_styling()
     {
-        // Only output this code block if we are actually viewing a product listing layout page
-        if (is_woocommerce() && ! is_product()) {
-
-            // Grab values from database, falling back to defaults if they haven't been adjusted yet
-            $bg_color   = get_theme_mod('sf_child_card_bg_color', '#ffffff');
-            $text_color = get_theme_mod('sf_child_card_text_color', '#2d2d2d');
-            $button_bg_color = get_theme_mod('sf_child_card_button_bg_color', '#0073aa');
-            $button_text_color = get_theme_mod('sf_child_card_button_text_color', '#ffffff');
-            $border_radius = get_theme_mod('sf_child_card_border_radius', '0.5em');
+        // Grab values from database, falling back to defaults if they haven't been adjusted yet
+        $bg_color   = get_theme_mod('sf_child_card_bg_color', '#ffffff');
+        $text_color = get_theme_mod('sf_child_card_text_color', '#2d2d2d');
+        $button_bg_color = get_theme_mod('sf_child_card_button_bg_color', '#0073aa');
+        $button_text_color = get_theme_mod('sf_child_card_button_text_color', '#ffffff');
+        $border_radius = get_theme_mod('sf_child_card_border_radius', '0.5em');
 
 ?>
-            <style type="text/css" id="sf-child-dynamic-archive-cards">
-                /* Apply custom background and layout padding fixes to archive listing cards */
-                ul.products li.product,
-                ul.wc-block-grid__products li.wc-block-grid__product {
-                    background-color: <?php echo esc_attr($bg_color); ?> !important;
-                    border-radius: <?php echo esc_attr($border_radius); ?> !important;
-                }
+        <style type="text/css" id="sf-child-dynamic-archive-cards">
+            /* Apply custom background and layout padding fixes to archive listing cards */
+            ul.products li:not(.product-category).product,
+            ul.wc-block-grid__products li.wc-block-grid__product,
+            ul.products li:not(.product-category).product .onsale {
+                background-color: <?php echo esc_attr($bg_color); ?> !important;
+                border-radius: <?php echo esc_attr($border_radius); ?> !important;
+            }
 
-                /* Apply custom text color parameters across core text element layers */
-                ul.products li.product .woocommerce-loop-product__title,
-                ul.products li.product .price,
-                ul.products li.product .onsale,
-                ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-title,
-                ul.wc-block-grid__products li.wc-block-grid__product .price {
-                    color: <?php echo esc_attr($text_color); ?> !important;
-                }
+            /* Apply custom text color parameters across core text element layers */
+            .wc-block-grid__products .wc-block-grid__product .add_to_cart_button,
+            ul.products li:not(.product-category).product .woocommerce-loop-product__title,
+            ul.products li:not(.product-category).product .price,
+            ul.products li:not(.product-category).product .onsale,
+            ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-title,
+            ul.wc-block-grid__products li.wc-block-grid__product .price {
+                color: <?php echo esc_attr($text_color); ?> !important;
+            }
 
-                ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-add-to-cart,
-                ul.products li.product .add_to_cart_button {
-                    color: <?php echo esc_attr($button_text_color); ?> !important;
-                    background-color: <?php echo esc_attr($button_bg_color); ?> !important;
-                    border-radius: <?php echo esc_attr($border_radius); ?> !important;
-                }
-            </style>
+            .wc-block-grid__products .wc-block-grid__product .add_to_cart_button,
+            ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-add-to-cart,
+            ul.products li:not(.product-category).product .add_to_cart_button {
+                color: <?php echo esc_attr($button_text_color); ?> !important;
+                background-color: <?php echo esc_attr($button_bg_color); ?> !important;
+                border-radius: <?php echo esc_attr($border_radius); ?> !important;
+            }
+        </style>
 <?php
-        }
+
     }
 }

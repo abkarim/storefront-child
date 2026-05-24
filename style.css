@@ -9,6 +9,20 @@ Version: 1.0.0
 Text Domain: storefront-child
 */
 
+/* ==========================================================================
+   Disable Link Focus Outline / Borders On Mouse Click
+   ========================================================================== */
+/* Target normal mouse click engagement while preserving keyboard focus states */
+a:focus,
+button:focus,
+.button:focus,
+input[type="button"]:focus,
+input[type="submit"]:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: transparent; /* If the theme maps custom border changes to focus hooks */
+}
+
 /* 
 * Breadcrumbs styles
 */
@@ -45,31 +59,34 @@ header.entry-header .entry-title {
 }
 
 /* Product */
-
 ul.wc-block-grid__products,
 ul.products {
     gap: 0.5em !important;
 }
-ul.products li.product,
+ul.products li:not(.product-category).product,
 ul.wc-block-grid__products li.wc-block-grid__product {
     text-align: left !important;
     padding: 0.5em !important;
     max-width: calc(25% - 0.5em) !important;
+    border: none !important;
 }
 ul.wc-block-grid__products
     li.wc-block-grid__product
     .wc-block-grid__product-add-to-cart,
-ul.products li.product .add_to_cart_button {
+ul.products li:not(.product-category).product .add_to_cart_button {
     margin-bottom: 0 !important;
 }
 ul.wc-block-grid__products li.wc-block-grid__product .add_to_cart_button,
-ul.products li.product .add_to_cart_button {
+ul.products li:not(.product-category).product .add_to_cart_button {
     width: 100% !important;
 }
 
-body.woocommerce-shop .custom-title-banner {
-    display: none !important;
-}
-body.woocommerce-shop .woocommerce-products-header__title {
-    display: none !important;
+ul.products li:not(.product-category).product .onsale,
+ul.wc-block-grid__products
+    li.wc-block-grid__product
+    .wc-block-grid__product-onsale {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border: none !important;
 }
