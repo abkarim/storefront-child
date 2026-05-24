@@ -52,6 +52,9 @@ class Theme
 
         require_once trailingslashit(__DIR__) . 'layout/layout.php';
         new Layout();
+
+        require_once trailingslashit(__DIR__) . 'customization.php';
+        new Customization();
     }
 
     /**
