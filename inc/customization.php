@@ -7,6 +7,7 @@ class Customization
     public function __construct()
     {
         add_action('customize_register', [$this, 'customize_archive_products']);
+        add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
     }
 
     /**
@@ -77,5 +78,52 @@ class Customization
             'settings' => 'sf_child_card_border_radius',
             'type'     => 'text',
         ]);
+    }
+
+    /**
+     * Injects a footer script to auto-redirect the live preview window to the shop page 
+     * when the 'Product Archive Cards' section expands.
+     */
+    public function enqueue_customizer_section_redirect_script()
+    {
+        // Fetch the standard WooCommerce shop page URL dynamically
+        $shop_url = function_exists('wc_get_page_permalink') ? wc_get_page_permalink('shop') : home_url('/shop/');
+
+        if (! $shop_url) {
+            return;
+        }
+?>
+        <script type="text/javascript">
+            (function($) {
+                $(document).ready(function() {
+                    // Ensure the customizer API is fully ready and loaded
+                    if (typeof wp !== 'undefined' && typeof wp.customize !== 'undefined') {
+
+                        // Listen to state changes on our custom card section
+                        wp.customize.section('sf_child_archive_card_section', function(section) {
+                            section.expanded.bind(function(isExpanded) {
+
+                                // If the user clicks and expands our card styling section
+                                if (isExpanded) {
+                                    var currentPreviewUrl = wp.customize.previewer.previewUrl();
+                                    var targetShopUrl = <?php echo wp_json_encode(esc_url_raw($shop_url)); ?>;
+
+                                    // Strip trailing slashes or URL parameters for clean matching validation
+                                    var cleanCurrent = currentPreviewUrl.replace(/\/$/, "");
+                                    var cleanTarget = targetShopUrl.replace(/\/$/, "");
+
+                                    // If the frame isn't already focused on the shop or archive loop, force load it!
+                                    if (cleanCurrent !== cleanTarget && !currentPreviewUrl.includes('post_type=product')) {
+                                        wp.customize.previewer.previewUrl(targetShopUrl);
+                                    }
+                                }
+                            });
+                        });
+
+                    }
+                });
+            })(jQuery);
+        </script>
+<?php
     }
 }
