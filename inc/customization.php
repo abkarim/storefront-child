@@ -14,7 +14,7 @@ class Customization
      * 
      * @since 1.0.0
      */
-    public function customize_archive_products($wp_customize)
+    public function customize_archive_products(\WP_Customize_Manager $wp_customize)
     {
         $wp_customize->add_section('sf_child_archive_card_section', [
             'title'      => __('Product Archive Cards', 'storefront-child'),
