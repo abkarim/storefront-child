@@ -46,7 +46,7 @@ input[type="submit"]:focus:not(:focus-visible) {
 .storefront-breadcrumb {
     margin: 0 !important;
     padding: 0 !important;
-    margin-bottom: 1em !important;
+    margin-block: 1em !important;
 }
 /* Breadcrumbs links */
 .woocommerce-breadcrumb {
@@ -65,6 +65,7 @@ input[type="submit"]:focus:not(:focus-visible) {
 */
 .entry-header {
     padding: 0 !important;
+    margin-bottom: -1em;
 }
 .entry-header .entry-title {
     text-align: left !important;
@@ -169,6 +170,7 @@ header.site-header .store-front-child-header-wrapper .search-submit-btn {
     border: var(--border-size) solid !important;
     border-radius: var(--border-radius);
     padding: 0.2em;
+    padding-inline: 0.5em;
     border-left: none !important;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
