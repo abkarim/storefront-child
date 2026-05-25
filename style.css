@@ -134,6 +134,9 @@ header.site-header .store-front-child-header-wrapper {
     align-items: center;
     gap: 1em;
 }
+header.site-header .store-front-child-header-wrapper > div {
+    width: 100%;
+}
 header.site-header .store-front-child-header-wrapper .header-col-search form {
     margin: 0 !important;
     display: flex;
@@ -152,6 +155,7 @@ header.site-header
     padding-inline: 0.5em;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    width: 100%;
 }
 header.site-header
     .store-front-child-header-wrapper
@@ -175,6 +179,7 @@ header.site-header .store-front-child-header-wrapper .search-submit-btn svg {
 header.site-header .store-front-child-header-wrapper .header-col-utilities {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 1em;
 }
 header.site-header

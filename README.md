@@ -23,6 +23,12 @@ Next steps:
 accessible from theme customize 
 <img width="1358" height="631" alt="image" src="https://github.com/user-attachments/assets/9a09717f-c5d1-438f-b7e8-4cfb290af0a9" />
 
+### File type 
+- added svg upload
+
+### Header 
+- Custom header 
+- Styling options added
 
 ### Footer 
 - removed the default storefront link with credits
