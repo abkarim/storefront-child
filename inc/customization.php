@@ -96,9 +96,52 @@ class Customization
     }
 
     /**
+     * Add customization controls in parent themes
      * 
+     * @since 1.0.2
      */
-    public function customize_store_front_section(\WP_Customize_Manager $wp_customize) {}
+    public function customize_store_front_section(\WP_Customize_Manager $wp_customize)
+    {
+        /**
+         * Header 
+         */
+        // Border color control for header bottom border
+        $wp_customize->add_setting('sf_child_header_border_color', [
+            'default'           => '#e5e5e5',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_border_color_control', [
+            'label'    => __('Border Color', 'storefront-child'),
+            'section'  => 'header_image', // <-- Targets Storefront's native Header section
+            'settings' => 'sf_child_header_border_color',
+            'priority' => 35,             // Places it cleanly right below the background color control
+        ]));
+
+        // Badge bg and text color controls for the header utility icons
+        $wp_customize->add_setting('sf_child_header_utility_badge_bg_color', [
+            'default'           => '#7eb934',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_utility_badge_bg_color_control', [
+            'label'    => __('Header Utility Badge Background', 'storefront-child'),
+            'section'  => 'header_image',
+            'settings' => 'sf_child_header_utility_badge_bg_color',
+            'priority' => 36,
+        ]));
+        $wp_customize->add_setting('sf_child_header_utility_badge_text_color', [
+            'default'           => '#ffffff',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_utility_badge_text_color_control', [
+            'label'    => __('Header Utility Badge Text Color', 'storefront-child'),
+            'section'  => 'header_image',
+            'settings' => 'sf_child_header_utility_badge_text_color',
+            'priority' => 37,
+        ]));
+    }
 
     /**
      * Injects a footer script to auto-redirect the live preview window to the shop page 

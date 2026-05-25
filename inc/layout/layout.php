@@ -8,7 +8,12 @@ class Layout
     {
         add_action('wp', [$this, "reposition_storefront_page_title"]);
 
-        add_action("wp_head", [$this, "product_archive_dynamic_card_styling"]);
+        add_action("wp_head", [$this, "apply_styles"]);
+
+
+        // disable storefront's default header elements since we're replacing them with a custom template part
+        remove_action('storefront_header', 'storefront_site_branding', 20);
+        remove_action('storefront_header', 'storefront_product_search', 40);
     }
 
     public function reposition_storefront_page_title()
@@ -59,6 +64,17 @@ class Layout
     }
 
     /**
+     * Apply styles
+     * 
+     * @since 1.0.2
+     */
+    public function apply_styles()
+    {
+        $this->product_archive_dynamic_card_styling();
+        $this->header_layout_styling();
+    }
+
+    /**
      * Adds dynamic inline styles for product archive cards based on Customizer settings.
      * This function outputs a style block with CSS that applies the user-selected background and text
      * 
@@ -102,7 +118,54 @@ class Layout
                 border-radius: <?php echo esc_attr($border_radius); ?> !important;
             }
         </style>
-<?php
+    <?php
 
+    }
+
+    /**
+     * Header layout styling
+     * 
+     * @since 1.0.2
+     */
+    public function header_layout_styling()
+    {
+        $header_bg    = get_theme_mod('storefront_header_background_color', '#ffffff');
+        $text_color = get_theme_mod('storefront_header_text_color', '#7eb934');
+        $link_color = get_theme_mod('storefront_header_link_color', '#7eb934');
+        $border_bottom_color = get_theme_mod('sf_child_header_border_color', '#7eb934');
+        $badge_bg_color = get_theme_mod('sf_child_header_utility_badge_bg_color', '#7eb934');
+        $badge_text_color = get_theme_mod('sf_child_header_utility_badge_text_color', '#ffffff');
+    ?>
+        <style type="text/css" id="sf-child-header-dynamic-css">
+            header.site-header {
+                color: <?php echo esc_attr($text_color); ?> !important;
+                border-bottom-color: <?php echo esc_attr($border_bottom_color); ?> !important;
+            }
+
+            header.site-header .search-field-input {
+                color: <?php echo esc_attr($text_color); ?> !important;
+                border-color: <?php echo esc_attr($text_color); ?> !important;
+            }
+
+            header.site-header .search-field-input::placeholder {
+                color: <?php echo esc_attr($text_color); ?> !important;
+                opacity: 1;
+            }
+
+            header.site-header .search-submit-btn {
+                color: <?php echo esc_attr($text_color); ?> !important;
+                border-color: <?php echo esc_attr($text_color); ?> !important;
+            }
+
+            header.site-header a {
+                color: <?php echo esc_attr($link_color); ?> !important;
+            }
+
+            header.site-header .store-front-child-header-wrapper .header-col-utilities>div>a .utility-counter-badge {
+                background-color: <?php echo esc_attr($badge_bg_color); ?> !important;
+                color: <?php echo esc_attr($badge_text_color); ?> !important;
+            }
+        </style>
+<?php
     }
 }

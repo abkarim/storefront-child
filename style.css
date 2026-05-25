@@ -30,6 +30,11 @@ input[type="submit"]:focus:not(:focus-visible) {
     box-shadow: none;
 }
 
+:root {
+    --border-radius: 0.3em;
+    --border-size: 0.15em;
+}
+
 /* 
 * Breadcrumbs styles
 */
@@ -115,4 +120,90 @@ footer.site-footer .site-info {
 footer.site-footer .site-info a {
     /* remove storefront default credit text */
     display: none !important;
+}
+
+/*
+* Header styles
+*/
+header.site-header {
+    padding-block: 0.5em;
+}
+header.site-header .store-front-child-header-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1em;
+}
+header.site-header .store-front-child-header-wrapper .header-col-search form {
+    margin: 0 !important;
+    display: flex;
+    align-items: stretch;
+}
+header.site-header
+    .store-front-child-header-wrapper
+    .header-col-search
+    form
+    input {
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: var(--border-size) solid !important;
+    border-radius: var(--border-radius);
+    padding: 0.2em;
+    padding-inline: 0.5em;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+header.site-header
+    .store-front-child-header-wrapper
+    .header-col-search
+    form
+    input:focus-visible {
+    outline: none !important;
+}
+header.site-header .store-front-child-header-wrapper .search-submit-btn {
+    background-color: transparent !important;
+    border: var(--border-size) solid !important;
+    border-radius: var(--border-radius);
+    padding: 0.2em;
+    border-left: none !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+header.site-header .store-front-child-header-wrapper .search-submit-btn svg {
+    margin-bottom: -5px;
+}
+header.site-header .store-front-child-header-wrapper .header-col-utilities {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+header.site-header
+    .store-front-child-header-wrapper
+    .header-col-utilities
+    > div
+    > a {
+    position: relative;
+    display: inline-block;
+}
+header.site-header
+    .store-front-child-header-wrapper
+    .header-col-utilities
+    > div
+    > a:hover {
+    opacity: 0.7;
+}
+header.site-header
+    .store-front-child-header-wrapper
+    .header-col-utilities
+    > div
+    > a
+    .utility-counter-badge {
+    position: absolute;
+    top: -30%;
+    right: -50%;
+    border-radius: 100%;
+    width: 1.3em;
+    height: 1.3em;
+    padding-bottom: 1.5em;
+    text-align: center;
 }
