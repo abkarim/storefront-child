@@ -7,6 +7,8 @@ class Customization
     public function __construct()
     {
         add_action('customize_register', [$this, 'customize_archive_products']);
+        add_action("customize_register", [$this, "customize_store_front_section"]);
+
         add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
         add_filter('woocommerce_sale_flash', [$this, 'sf_child_replace_sale_with_percentage'], 10, 3);
     }
@@ -91,6 +93,54 @@ class Customization
             'settings' => 'sf_child_card_border_radius',
             'type'     => 'text',
         ]);
+    }
+
+    /**
+     * Add customization controls in parent themes
+     * 
+     * @since 1.0.2
+     */
+    public function customize_store_front_section(\WP_Customize_Manager $wp_customize)
+    {
+        /**
+         * Header 
+         */
+        // Border color control for header bottom border
+        $wp_customize->add_setting('sf_child_header_border_color', [
+            'default'           => '#e5e5e5',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_border_color_control', [
+            'label'    => __('Border Color', 'storefront-child'),
+            'section'  => 'header_image', // <-- Targets Storefront's native Header section
+            'settings' => 'sf_child_header_border_color',
+            'priority' => 35,             // Places it cleanly right below the background color control
+        ]));
+
+        // Badge bg and text color controls for the header utility icons
+        $wp_customize->add_setting('sf_child_header_utility_badge_bg_color', [
+            'default'           => '#7eb934',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_utility_badge_bg_color_control', [
+            'label'    => __('Header Utility Badge Background', 'storefront-child'),
+            'section'  => 'header_image',
+            'settings' => 'sf_child_header_utility_badge_bg_color',
+            'priority' => 36,
+        ]));
+        $wp_customize->add_setting('sf_child_header_utility_badge_text_color', [
+            'default'           => '#ffffff',
+            'sanitize_callback' => 'sanitize_hex_color',
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control(new \WP_Customize_Color_Control($wp_customize, 'sf_child_header_utility_badge_text_color_control', [
+            'label'    => __('Header Utility Badge Text Color', 'storefront-child'),
+            'section'  => 'header_image',
+            'settings' => 'sf_child_header_utility_badge_text_color',
+            'priority' => 37,
+        ]));
     }
 
     /**

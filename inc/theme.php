@@ -49,6 +49,8 @@ class Theme
     public function init()
     {
         add_action('wp_enqueue_scripts', [$this, 'load_scripts']);
+        add_action('upload_mimes', [$this, 'add_file_types_to_uploads']);
+
 
         require_once trailingslashit(__DIR__) . 'layout/layout.php';
         new Layout();
@@ -72,5 +74,21 @@ class Theme
             // If we are on local development, generate a new version string every second
             (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version')
         );
+    }
+
+    /**
+     * add SVG to allowed file uploads
+     * 
+     * @since 1.0.2
+     * @access public
+     * @return array
+     */
+    public function add_file_types_to_uploads(array $mimes): array
+    {
+        // New allowed mime types.
+        $mimes['svg']  = 'image/svg+xml';
+        $mimes['svgz'] = 'image/svg+xml';
+
+        return $mimes;
     }
 }
