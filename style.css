@@ -206,11 +206,11 @@ header.site-header
     > a
     .utility-counter-badge {
     position: absolute;
-    top: -30%;
-    right: -50%;
-    border-radius: 100%;
-    width: 1.3em;
-    height: 1.3em;
-    padding-bottom: 1.5em;
+    top: -15%;
+    right: -45%;
+    border-radius: 0.5em;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 0.6rem;
     text-align: center;
 }
