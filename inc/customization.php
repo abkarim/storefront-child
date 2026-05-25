@@ -7,6 +7,8 @@ class Customization
     public function __construct()
     {
         add_action('customize_register', [$this, 'customize_archive_products']);
+        add_action("customize_register", [$this, "customize_store_front_section"]);
+
         add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
         add_filter('woocommerce_sale_flash', [$this, 'sf_child_replace_sale_with_percentage'], 10, 3);
     }
@@ -92,6 +94,11 @@ class Customization
             'type'     => 'text',
         ]);
     }
+
+    /**
+     * 
+     */
+    public function customize_store_front_section(\WP_Customize_Manager $wp_customize) {}
 
     /**
      * Injects a footer script to auto-redirect the live preview window to the shop page 

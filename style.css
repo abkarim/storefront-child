@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Your Name
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.0.1
+Version: 1.0.2
 Text Domain: storefront-child
 */
 
@@ -101,4 +101,18 @@ ul.wc-block-grid__products
     top: 10px;
     right: 10px;
     border: none !important;
+}
+
+/*
+* Site footer styles
+*/
+footer.site-footer {
+    padding: 0 !important;
+}
+footer.site-footer .site-info {
+    padding-bottom: 0 !important;
+}
+footer.site-footer .site-info a {
+    /* remove storefront default credit text */
+    display: none !important;
 }
