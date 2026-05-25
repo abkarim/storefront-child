@@ -157,20 +157,13 @@ class Customization
         // 1. Handle Variable Products
         if ($product->is_type('variable')) {
             $percentages = [];
-            $variations  = $product->get_available_variations();
+            $prices = $product->get_variation_prices();
 
-            foreach ($variations as $variation) {
-                // Instantiate the specific variation sub-product object
-                $variation_obj = wc_get_product($variation['variation_id']);
+            foreach ($prices['regular_price'] as $id => $regular_price) {
+                $sale_price = $prices['sale_price'][$id];
 
-                if ($variation_obj && $variation_obj->is_on_sale()) {
-                    // Fetch customer-facing prices with correct tax rules applied
-                    $regular_price = (float) wc_get_price_to_display($variation_obj, ['price' => $variation_obj->get_regular_price()]);
-                    $sale_price    = (float) wc_get_price_to_display($variation_obj, ['price' => $variation_obj->get_sale_price()]);
-
-                    if ($regular_price > 0 && $sale_price < $regular_price) {
-                        $percentages[] = round((($regular_price - $sale_price) / $regular_price) * 100);
-                    }
+                if ($regular_price > 0 && $sale_price < $regular_price) {
+                    $percentages[] = round((($regular_price - $sale_price) / $regular_price) * 100);
                 }
             }
 
@@ -181,9 +174,8 @@ class Customization
         }
         // 2. Handle Simple, External, and Bookable Products
         else {
-            // Fetch matching customer-facing layout prices with tax calculation metrics
-            $regular_price = (float) wc_get_price_to_display($product, ['price' => $product->get_regular_price()]);
-            $sale_price    = (float) wc_get_price_to_display($product, ['price' => $product->get_sale_price()]);
+            $regular_price = (float) $product->get_regular_price();
+            $sale_price    = (float) $product->get_sale_price();
 
             if ($regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price) {
                 $percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
