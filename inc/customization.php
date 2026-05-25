@@ -8,6 +8,7 @@ class Customization
     {
         add_action('customize_register', [$this, 'customize_archive_products']);
         add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
+        add_filter('woocommerce_sale_flash', [$this, 'sf_child_replace_sale_with_percentage'], 10, 3);
     }
 
     /**
@@ -20,6 +21,18 @@ class Customization
         $wp_customize->add_section('sf_child_archive_card_section', [
             'title'      => __('Product Archive Cards', 'storefront-child'),
             'priority'   => 80, // Places it cleanly near Storefront's native styling controls
+        ]);
+
+        $wp_customize->add_setting('sf_child_enable_discount_percentage', [
+            'default'           => true, // Enabled by default
+            'sanitize_callback' => 'wp_validate_boolean', // Safe core boolean sanitization
+            'transport'         => 'refresh',
+        ]);
+        $wp_customize->add_control('sf_child_enable_discount_percentage_control', [
+            'label'    => __('Display Discount Percentage instead of "Sale!"', 'storefront-child'),
+            'section'  => 'sf_child_archive_card_section',
+            'settings' => 'sf_child_enable_discount_percentage',
+            'type'     => 'checkbox',
         ]);
 
         $wp_customize->add_setting('sf_child_card_bg_color', [
@@ -125,5 +138,51 @@ class Customization
             })(jQuery);
         </script>
 <?php
+    }
+
+    /**
+     * Calculate and display the exact discount percentage badge for sale items (Tax-Aware)
+     */
+    public function sf_child_replace_sale_with_percentage($html, $post, $product)
+    {
+
+        // Check if the user turned ON the discount percentage toggle layout option
+        $show_percentage = get_theme_mod('sf_child_enable_discount_percentage', true);
+
+        // If the checkbox is unchecked in the customizer, bail early and return standard text
+        if (! $show_percentage) {
+            return $html;
+        }
+
+        // 1. Handle Variable Products
+        if ($product->is_type('variable')) {
+            $percentages = [];
+            $prices = $product->get_variation_prices();
+
+            foreach ($prices['regular_price'] as $id => $regular_price) {
+                $sale_price = $prices['sale_price'][$id];
+
+                if ($regular_price > 0 && $sale_price < $regular_price) {
+                    $percentages[] = round((($regular_price - $sale_price) / $regular_price) * 100);
+                }
+            }
+
+            if (! empty($percentages)) {
+                $percentage = max($percentages);
+                return '<span class="onsale">-' . $percentage . '%</span>';
+            }
+        }
+        // 2. Handle Simple, External, and Bookable Products
+        else {
+            $regular_price = (float) $product->get_regular_price();
+            $sale_price    = (float) $product->get_sale_price();
+
+            if ($regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price) {
+                $percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
+                return '<span class="onsale">-' . $percentage . '%</span>';
+            }
+        }
+
+        return $html; // Fallback container return
     }
 }
