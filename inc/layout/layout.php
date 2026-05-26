@@ -95,7 +95,10 @@ class Layout
             /* Apply custom background and layout padding fixes to archive listing cards */
             ul.products li:not(.product-category).product,
             ul.wc-block-grid__products li.wc-block-grid__product,
-            ul.products li:not(.product-category).product .onsale {
+            .wc-block-product.product,
+            ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-onsale,
+            ul.products li:not(.product-category).product .onsale,
+            .wp-block-woocommerce-product-sale-badge .wc-block-components-product-sale-badge {
                 background-color: <?php echo esc_attr($bg_color); ?> !important;
                 border-radius: <?php echo esc_attr($border_radius); ?> !important;
             }
@@ -105,14 +108,19 @@ class Layout
             ul.products li:not(.product-category).product .woocommerce-loop-product__title,
             ul.products li:not(.product-category).product .price,
             ul.products li:not(.product-category).product .onsale,
+            ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-onsale,
+            .wp-block-woocommerce-product-sale-badge .wc-block-components-product-sale-badge,
             ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-title,
-            ul.wc-block-grid__products li.wc-block-grid__product .price {
+            .wc-block-product.product .wp-block-post-title a,
+            ul.wc-block-grid__products li.wc-block-grid__product .price,
+            .wc-block-product.product .wp-block-woocommerce-product-price {
                 color: <?php echo esc_attr($text_color); ?> !important;
             }
 
             .wc-block-grid__products .wc-block-grid__product .add_to_cart_button,
             ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-add-to-cart,
-            ul.products li:not(.product-category).product .add_to_cart_button {
+            ul.products li:not(.product-category).product .add_to_cart_button,
+            .product .add_to_cart_button {
                 color: <?php echo esc_attr($button_text_color); ?> !important;
                 background-color: <?php echo esc_attr($button_bg_color); ?> !important;
                 border-radius: <?php echo esc_attr($border_radius); ?> !important;
