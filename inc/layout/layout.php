@@ -70,8 +70,51 @@ class Layout
      */
     public function apply_styles()
     {
+        $this->site_identity_styling();
         $this->product_archive_dynamic_card_styling();
         $this->header_layout_styling();
+    }
+
+    /**
+     * Site identity styling
+     * 
+     * @since 1.0.4
+     */
+    public function site_identity_styling()
+    {
+        $text        = get_theme_mod('sf_child_logo_text_color', '#333333');
+        $text_accent = get_theme_mod('sf_child_logo_text_accent', '#7eb934');
+        $link        = get_theme_mod('sf_child_logo_link_color', '#0066cc');
+        $link_hover  = get_theme_mod('sf_child_logo_link_hover_color', '#ff5500');
+        $bg          = get_theme_mod('sf_child_logo_bg_color', '#ffffff');
+        $bg_accent   = get_theme_mod('sf_child_logo_bg_accent_color', '#f9f9f9');
+        $border      = get_theme_mod('sf_child_logo_border_color', '#e5e5e5');
+?>
+        <style type="text/css" id="sf-child-site-identity-expanded-css">
+            :root {
+                --theme-text: <?php echo esc_attr($text); ?>;
+                --theme-text-accent: <?php echo esc_attr($text_accent); ?>;
+                --theme-link: <?php echo esc_attr($link); ?>;
+                --theme-link-hover: <?php echo esc_attr($link_hover); ?>;
+                --theme-bg: <?php echo esc_attr($bg); ?>;
+                --theme-bg-accent: <?php echo esc_attr($bg_accent); ?>;
+                --theme-border: <?php echo esc_attr($border); ?>;
+            }
+
+            body {
+                color: var(--theme-text);
+            }
+
+            a {
+                color: var(--theme-link);
+            }
+
+            a:hover {
+                color: var(--theme-link-hover);
+            }
+        </style>
+    <?php
+
     }
 
     /**
@@ -90,7 +133,7 @@ class Layout
         $button_text_color = get_theme_mod('sf_child_card_button_text_color', '#ffffff');
         $border_radius = get_theme_mod('sf_child_card_border_radius', '0.5em');
 
-?>
+    ?>
         <style type="text/css" id="sf-child-dynamic-archive-cards">
             /* Apply custom background and layout padding fixes to archive listing cards */
             ul.products li:not(.product-category).product,

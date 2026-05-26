@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Your Name
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.0.3
+Version: 1.0.4
 Text Domain: storefront-child
 */
 
@@ -116,6 +116,11 @@ ul.wc-block-grid__products
     top: 10px;
     right: 10px;
     border: none !important;
+}
+
+/* Hide added to cart button */
+.added_to_cart.wc-forward {
+    display: none !important;
 }
 
 /* block specific */
@@ -236,4 +241,11 @@ header.site-header
     height: 1.5em;
     font-size: 0.6rem;
     text-align: center;
+}
+
+/*
+* Footer styles
+*/
+footer.site-footer {
+    background-color: var(--theme-bg);
 }
