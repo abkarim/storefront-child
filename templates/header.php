@@ -9,7 +9,7 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
 
     <div class="header-col-search">
         <form role="search" method="get" class="woocommerce-product-search-split" action="<?php echo esc_url(home_url('/')); ?>">
-            <input type="search" class="search-field-input" placeholder="<?php echo esc_attr($search_placeholder); ?>" value="<?php echo get_search_query(); ?>" name="s" />
+            <input type="search" class="search-field-input" placeholder="<?php echo esc_attr($search_placeholder); ?>" value="<?php echo esc_attr(get_search_query()); ?>" name="s" />
             <button type="submit" class="search-submit-btn">
                 <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
                     <circle cx="11" cy="11" r="8"></circle>
@@ -33,7 +33,8 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
         <div class="utility-icon-link items-track-order">
             <?php
             // Generates fallback to your account dashboard page if a custom track page isn't assigned yet
-            $track_order_url = class_exists('WooCommerce') ? get_permalink(get_option('woocommerce_myaccount_page_id')) . 'orders/' : '#';
+            $track_order_url = class_exists('WooCommerce') ? wc_get_endpoint_url('orders', '', get_permalink(get_option('woocommerce_myaccount_page_id'))) : '#';
+
             ?>
             <a href="<?php echo esc_url($track_order_url); ?>" title="<?php esc_attr_e('Track Your Order', 'storefront-child'); ?>">
                 <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">

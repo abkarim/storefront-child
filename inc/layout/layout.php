@@ -137,7 +137,6 @@ class Layout
      */
     public function header_layout_styling()
     {
-        $header_bg    = get_theme_mod('storefront_header_background_color', '#ffffff');
         $text_color = get_theme_mod('storefront_header_text_color', '#7eb934');
         $link_color = get_theme_mod('storefront_header_link_color', '#7eb934');
         $border_bottom_color = get_theme_mod('sf_child_header_border_color', '#7eb934');

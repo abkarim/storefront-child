@@ -37,10 +37,8 @@
 				 * Instead of running the generic Storefront hook, we load your premium 
 				 * multi-column template part here directly.
 				 */
-				$template_file = get_stylesheet_directory() . '/templates/header.php';
-
-				if (file_exists($template_file)) {
-					include $template_file;
+				if (locate_template('templates/header.php')) {
+					get_template_part('templates/header');
 				} else {
 					// Safe structural fallback in case the template file is ever misplaced
 					do_action('storefront_header');
