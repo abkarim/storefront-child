@@ -14,6 +14,7 @@ class Customization
 
         add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
         add_filter('woocommerce_sale_flash', [$this, 'sf_child_replace_sale_with_percentage'], 10, 3);
+        add_filter('woocommerce_sale_badge_text', [$this, 'custom_sale_badge_text'], 10, 2);
     }
 
     /**
@@ -341,10 +342,11 @@ class Customization
 
     /**
      * Calculate and display the exact discount percentage badge for sale items (Tax-Aware)
+     * 
+     * @since 1.0.0
      */
     public function sf_child_replace_sale_with_percentage($html, $post, $product)
     {
-
         // Check if the user turned ON the discount percentage toggle layout option
         $show_percentage = get_theme_mod('sf_child_enable_discount_percentage', true);
 
@@ -353,35 +355,76 @@ class Customization
             return $html;
         }
 
-        // 1. Handle Variable Products
+        // Run the string replacement through our master logic rule above
+        $new_text = $this->custom_sale_badge_text('', $product);
+
+        if (! empty($new_text)) {
+            // Keeps your exact markup styling wrapper but injects the percentage text
+            return '<span class="onsale">' . esc_html($new_text) . '</span>';
+        }
+
+        return $html;
+    }
+
+    /**
+     * Show custom sale badge text with calculated discount percentage for simple and variable products 
+     * 
+     * @since 1.0.4
+     */
+    function custom_sale_badge_text($sale_text, $product)
+    {
+
+        // Check if the user turned ON the discount percentage toggle layout option
+        $show_percentage = get_theme_mod('sf_child_enable_discount_percentage', true);
+
+        // If the checkbox is unchecked in the customizer, bail early and return standard text
+        if (! $show_percentage) {
+            return $sale_text;
+        }
+
+        // Safety check to ensure the product object exists
+        if (! $product) {
+            return $sale_text;
+        }
+
+        // 1. SIMPLE & EXTERNAL PRODUCTS
+        if ($product->is_type('simple') || $product->is_type('external')) {
+            $regular_price = (float) $product->get_regular_price();
+            $sale_price    = (float) $product->get_sale_price();
+
+            if ($regular_price > 0) {
+                $percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
+                return sprintf(__('-%s%%', 'storefront-child'), $percentage);
+            }
+        }
+
+        // 2. VARIABLE PRODUCTS
         if ($product->is_type('variable')) {
             $percentages = [];
             $prices = $product->get_variation_prices();
 
-            foreach ($prices['regular_price'] as $id => $regular_price) {
-                $sale_price = $prices['sale_price'][$id];
+            // Ensure regular prices array exists and isn't empty
+            if (! empty($prices['regular_price'])) {
+                foreach ($prices['regular_price'] as $id => $regular_price) {
+                    // Double check that this specific variation actually has a matching sale price set
+                    if (isset($prices['sale_price'][$id])) {
+                        $sale_price = $prices['sale_price'][$id];
+                        $regular_price = (float) $regular_price;
+                        $sale_price = (float) $sale_price;
 
-                if ($regular_price > 0 && $sale_price < $regular_price) {
-                    $percentages[] = round((($regular_price - $sale_price) / $regular_price) * 100);
+                        if ($regular_price > 0 && $sale_price < $regular_price) {
+                            $percentages[] = round((($regular_price - $sale_price) / $regular_price) * 100);
+                        }
+                    }
                 }
             }
 
             if (! empty($percentages)) {
-                $percentage = max($percentages);
-                return '<span class="onsale">-' . $percentage . '%</span>';
-            }
-        }
-        // 2. Handle Simple, External, and Bookable Products
-        else {
-            $regular_price = (float) $product->get_regular_price();
-            $sale_price    = (float) $product->get_sale_price();
-
-            if ($regular_price > 0 && $sale_price > 0 && $sale_price < $regular_price) {
-                $percentage = round((($regular_price - $sale_price) / $regular_price) * 100);
-                return '<span class="onsale">-' . $percentage . '%</span>';
+                $percentage = max($percentages); // Grab highest discount percentage variant
+                return sprintf(__('-%s%%', 'storefront-child'), $percentage);
             }
         }
 
-        return $html; // Fallback container return
+        return $sale_text;
     }
 }

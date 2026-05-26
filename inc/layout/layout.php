@@ -110,7 +110,7 @@ class Layout
             }
 
             a:hover {
-                color: var(--theme-link-hover);
+                color: var(--theme-link-hover) !important;
             }
         </style>
     <?php
