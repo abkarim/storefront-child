@@ -32,7 +32,17 @@ input[type="submit"]:focus:not(:focus-visible) {
 
 :root {
     --border-radius: 0.3em;
-    --border-size: 0.15em;
+    --border-size: 0.1em;
+}
+
+img {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .col-full {
+        max-width: 85em;
+    }
 }
 
 /* 
@@ -151,6 +161,19 @@ footer.site-footer .site-info a {
     display: none !important;
 }
 
+/**
+** Button
+*/
+button {
+    color: var(--theme-button-text);
+    background-color: var(--theme-button-bg);
+}
+
+button:hover {
+    color: var(--theme-button-hover-text);
+    background-color: var(--theme-button-hover-bg);
+}
+
 /*
 * Header styles
 */
@@ -225,7 +248,7 @@ header.site-header
     .header-col-utilities
     > div
     > a:hover {
-    opacity: 0.7;
+    color: var(--theme-link-hover) !important;
 }
 header.site-header
     .store-front-child-header-wrapper

@@ -31,6 +31,10 @@ class Customization
         $bg          = get_theme_mod('sf_child_logo_bg_color', '#ffffff');
         $bg_accent   = get_theme_mod('sf_child_logo_bg_accent_color', '#f9f9f9');
         $border      = get_theme_mod('sf_child_logo_border_color', '#e5e5e5');
+        $button_text = get_theme_mod('sf_child_logo_button_text_color', '#ffffff');
+        $button_bg   = get_theme_mod('sf_child_logo_button_bg_color', '#0073aa');
+        $button_hover_text = get_theme_mod('sf_child_logo_button_hover_text_color', '#e5e5e5');
+        $button_hover_bg = get_theme_mod('sf_child_logo_button_hover_bg_color', '#0f0f0f');
 
         add_theme_support('editor-color-palette', [
             [
@@ -68,6 +72,26 @@ class Customization
                 'slug'  => 'theme-border',
                 'color' => $border,
             ],
+            [
+                'name'  => __('Theme Button Text', 'storefront-child'),
+                'slug'  => 'theme-button-text',
+                'color' => $button_text,
+            ],
+            [
+                'name'  => __('Theme Button Background', 'storefront-child'),
+                'slug'  => 'theme-button-bg',
+                'color' => $button_bg,
+            ],
+            [
+                'name'  => __('Theme Button Hover Text', 'storefront-child'),
+                'slug'  => 'theme-button-hover-text',
+                'color' => $button_hover_text,
+            ],
+            [
+                'name'  => __('Theme Button Hover Background', 'storefront-child'),
+                'slug'  => 'theme-button-hover-bg',
+                'color' => $button_hover_bg,
+            ],
         ]);
     }
 
@@ -85,8 +109,12 @@ class Customization
         $bg          = get_theme_mod('sf_child_logo_bg_color', '#ffffff');
         $bg_accent   = get_theme_mod('sf_child_logo_bg_accent_color', '#f9f9f9');
         $border      = get_theme_mod('sf_child_logo_border_color', '#e5e5e5');
+        $button_text = get_theme_mod('sf_child_logo_button_text_color', '#ffffff');
+        $button_bg   = get_theme_mod('sf_child_logo_button_bg_color', '#0073aa');
+        $button_hover_text = get_theme_mod('sf_child_logo_button_hover_text_color', '#e5e5e5');
+        $button_hover_bg = get_theme_mod('sf_child_logo_button_hover_bg_color', '#0f0f0f');
 
-        $palette_json = [$text, $text_accent, $link, $link_hover, $bg, $bg_accent, $border];
+        $palette_json = [$text, $text_accent, $link, $link_hover, $bg, $bg_accent, $border, $button_text, $button_bg, $button_hover_text, $button_hover_bg];
 ?>
         <script type="text/javascript" id="sf-child-global-iris-override">
             jQuery(document).ready(function($) {
@@ -233,6 +261,27 @@ class Customization
                 'default' => '#e5e5e5',
                 'priority' => 26
             ],
+            'sf_child_logo_button_text_color'    => [
+                'label'   => __('Branding Button text Color', 'storefront-child'),
+                'default' => '#ffffff',
+                'priority' => 27
+            ],
+            'sf_child_logo_button_bg_color'    => [
+                'label'   => __('Branding Button Background Color', 'storefront-child'),
+                'default' => '#0f0f0f',
+                'priority' => 28
+            ],
+            'sf_child_logo_button_hover_text_color'    => [
+                'label'   => __('Branding Button hover text Color', 'storefront-child'),
+                'default' => '#e5e5e5',
+                'priority' => 27
+            ],
+            'sf_child_logo_button_hover_bg_color'    => [
+                'label'   => __('Branding Button hover Background Color', 'storefront-child'),
+                'default' => '#0f0f0f',
+                'priority' => 28
+            ],
+
         ];
 
         // Loop through our structural data matrix to instantiate customizer controls efficiently

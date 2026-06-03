@@ -89,6 +89,11 @@ class Layout
         $bg          = get_theme_mod('sf_child_logo_bg_color', '#ffffff');
         $bg_accent   = get_theme_mod('sf_child_logo_bg_accent_color', '#f9f9f9');
         $border      = get_theme_mod('sf_child_logo_border_color', '#e5e5e5');
+        $button_text = get_theme_mod('sf_child_logo_button_text_color', '#ffffff');
+        $button_bg   = get_theme_mod('sf_child_logo_button_bg_color', '#0073aa');
+        $button_hover_text = get_theme_mod('sf_child_logo_button_hover_text_color', '#e5e5e5');
+        $button_hover_bg = get_theme_mod('sf_child_logo_button_hover_bg_color', '#0f0f0f');
+
 ?>
         <style type="text/css" id="sf-child-site-identity-expanded-css">
             :root {
@@ -99,6 +104,10 @@ class Layout
                 --theme-bg: <?php echo esc_attr($bg); ?>;
                 --theme-bg-accent: <?php echo esc_attr($bg_accent); ?>;
                 --theme-border: <?php echo esc_attr($border); ?>;
+                --theme-button-text: <?php echo esc_attr($button_text); ?>;
+                --theme-button-bg: <?php echo esc_attr($button_bg); ?>;
+                --theme-button-hover-text: <?php echo esc_attr($button_hover_text); ?>;
+                --theme-button-hover-bg: <?php echo esc_attr($button_hover_bg); ?>;
             }
 
             body {
@@ -132,7 +141,6 @@ class Layout
         $button_bg_color = get_theme_mod('sf_child_card_button_bg_color', '#0073aa');
         $button_text_color = get_theme_mod('sf_child_card_button_text_color', '#ffffff');
         $border_radius = get_theme_mod('sf_child_card_border_radius', '0.5em');
-
     ?>
         <style type="text/css" id="sf-child-dynamic-archive-cards">
             /* Apply custom background and layout padding fixes to archive listing cards */
