@@ -257,27 +257,27 @@ class Customization
                 'priority' => 25
             ],
             'sf_child_logo_border_color'    => [
-                'label'   => __('Branding Border Color', 'storefront-child'),
+                'label'   => __('Border Color', 'storefront-child'),
                 'default' => '#e5e5e5',
                 'priority' => 26
             ],
             'sf_child_logo_button_text_color'    => [
-                'label'   => __('Branding Button text Color', 'storefront-child'),
+                'label'   => __('Button text Color', 'storefront-child'),
                 'default' => '#ffffff',
                 'priority' => 27
             ],
             'sf_child_logo_button_bg_color'    => [
-                'label'   => __('Branding Button Background Color', 'storefront-child'),
+                'label'   => __('Button Background Color', 'storefront-child'),
                 'default' => '#0f0f0f',
                 'priority' => 28
             ],
             'sf_child_logo_button_hover_text_color'    => [
-                'label'   => __('Branding Button hover text Color', 'storefront-child'),
+                'label'   => __('Button hover text Color', 'storefront-child'),
                 'default' => '#e5e5e5',
                 'priority' => 27
             ],
             'sf_child_logo_button_hover_bg_color'    => [
-                'label'   => __('Branding Button hover Background Color', 'storefront-child'),
+                'label'   => __('Button hover Background Color', 'storefront-child'),
                 'default' => '#0f0f0f',
                 'priority' => 28
             ],
