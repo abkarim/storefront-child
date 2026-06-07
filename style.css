@@ -128,6 +128,15 @@ ul.wc-block-grid__products
     border: none !important;
 }
 
+ul li.wc-block-product.product {
+    display: flex;
+    flex-direction: column;
+}
+
+ul li.wc-block-product.product .wp-block-woocommerce-product-price {
+    margin-top: auto !important;
+}
+
 /* Hide added to cart button */
 .added_to_cart.wc-forward {
     display: none !important;
