@@ -21,14 +21,7 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
     </div>
 
     <div class="header-col-utilities">
-        <div class="utility-user-account">
-            <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" title="<?php is_user_logged_in() ? esc_attr_e('My Account', 'storefront-child') : esc_attr_e('Login / Register', 'storefront-child'); ?>">
-                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-            </a>
-        </div>
+
 
         <div class="utility-icon-link items-track-order">
             <?php
@@ -80,5 +73,13 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
                 </a>
             </div>
         <?php endif; ?>
+        <div class="utility-user-account">
+            <a href="<?php echo esc_url(get_permalink(get_option('woocommerce_myaccount_page_id'))); ?>" title="<?php is_user_logged_in() ? esc_attr_e('My Account', 'storefront-child') : esc_attr_e('Login / Register', 'storefront-child'); ?>">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+            </a>
+        </div>
     </div>
 </div>
