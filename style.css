@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Your Name
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.0.4
+Version: 1.0.5
 Text Domain: storefront-child
 */
 
@@ -165,13 +165,13 @@ footer.site-footer .site-info a {
 ** Button
 */
 button {
-    color: var(--theme-button-text);
-    background-color: var(--theme-button-bg);
+    color: var(--theme-button-text) !important;
+    background-color: var(--theme-button-bg) !important;
 }
 
 button:hover {
-    color: var(--theme-button-hover-text);
-    background-color: var(--theme-button-hover-bg);
+    color: var(--theme-button-hover-text) !important;
+    background-color: var(--theme-button-hover-bg) !important;
 }
 
 /*
