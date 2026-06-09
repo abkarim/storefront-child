@@ -30,9 +30,9 @@ jobs:
               run: npm run build
 
             - name: Read package version
-                      id: version
-                      run: |
-                          echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+              id: version
+              run: |
+                  echo "version=$(jq -r .version package.json)" >> $GITHUB_OUTPUT
                           
             - name: Upload file
               uses: svenstaro/upload-release-action@v2
