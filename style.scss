@@ -5,39 +5,24 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.0.5
+Version: 1.1.0
 Text Domain: storefront-child
 */
 
-/* ==========================================================================
-   Disable Link Focus Outline / Borders On Mouse Click
-   ========================================================================== */
-/* Target normal mouse click engagement while preserving keyboard focus states */
-/* 
-* Breadcrumbs styles
-*/
-/* Remove the home SVG icon from Storefront breadcrumbs */
-/* Removes extra space */
-/* Breadcrumbs links */
-/* 
-*Page Title styles 
-*/
-/* Product */
-/* Hide added to cart button */
-/* block specific */
-/* Product page */
-/*
-* Site footer styles
-*/
-/**
-** Button
-*/
-/*
-* Header styles
-*/
-/*
-* Footer styles
-*/
+body {
+    background-color: var(--theme-bg) !important;
+    color: var(--theme-text) !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: normal;
+}
+
 a {
     &:focus-visible {
         outline: 2px solid #0073aa;
@@ -50,7 +35,8 @@ a {
         }
     }
 }
-button {
+button,
+.button {
     &:focus-visible {
         outline: 2px solid #0073aa;
         outline-offset: 2px;
@@ -68,42 +54,29 @@ button {
         background-color: var(--theme-button-hover-bg) !important;
     }
 }
-.button {
-    &:focus-visible {
-        outline: 2px solid #0073aa;
-        outline-offset: 2px;
-    }
-    &:focus {
-        &:not(:focus-visible) {
-            outline: none;
-            box-shadow: none;
+
+textarea,
+input[type="number"] {
+    background-color: var(--theme-bg-accent) !important;
+    border: var(--border-size) solid var(--theme-border) !important;
+}
+
+input {
+    &[type="button"],
+    &[type="submit"] {
+        &:focus-visible {
+            outline: 2px solid #0073aa;
+            outline-offset: 2px;
+        }
+        &:focus {
+            &:not(:focus-visible) {
+                outline: none;
+                box-shadow: none;
+            }
         }
     }
 }
-input[type="button"] {
-    &:focus-visible {
-        outline: 2px solid #0073aa;
-        outline-offset: 2px;
-    }
-    &:focus {
-        &:not(:focus-visible) {
-            outline: none;
-            box-shadow: none;
-        }
-    }
-}
-input[type="submit"] {
-    &:focus-visible {
-        outline: 2px solid #0073aa;
-        outline-offset: 2px;
-    }
-    &:focus {
-        &:not(:focus-visible) {
-            outline: none;
-            box-shadow: none;
-        }
-    }
-}
+
 &:root {
     --border-radius: 0.3em;
     --border-size: 0.1em;
@@ -118,12 +91,15 @@ img {
         }
         text-decoration: none !important;
         font-weight: normal !important;
-        &:hover {
-            font-weight: 600 !important;
-        }
     }
     font-weight: bold !important;
 }
+
+.storefront-sticky-add-to-cart {
+    background-color: var(--theme-bg-accent) !important;
+    color: var(--theme-text) !important;
+}
+
 .storefront-breadcrumb {
     margin: 0 !important;
     padding: 0 !important;
@@ -169,6 +145,18 @@ ul.products {
             text-align: left !important;
             padding: 0.5em !important;
             border: none !important;
+            overflow: hidden;
+
+            img {
+                transition: transform 1s ease;
+            }
+
+            &:hover {
+                img {
+                    transform: scale(1.1);
+                }
+            }
+
             .add_to_cart_button {
                 margin-bottom: 0 !important;
                 width: 100% !important;
@@ -186,6 +174,21 @@ ul.products {
     text-align: left !important;
     padding: 0.5em !important;
     border: none !important;
+
+    .wc-block-components-product-image {
+        overflow: hidden;
+    }
+
+    img {
+        transition: transform 0.5s ease;
+    }
+
+    &:hover {
+        img {
+            transform: scale(1.3);
+        }
+    }
+
     .wp-block-post-title {
         text-align: left !important;
         margin-block: 0.5em !important;
@@ -196,6 +199,11 @@ ul.products {
     .wp-block-woocommerce-product-price {
         text-align: left !important;
         margin-block: 0.5em !important;
+        font-size: 1.5rem !important;
+
+        del {
+            display: none;
+        }
     }
 }
 .product {
@@ -221,6 +229,15 @@ ul {
         .wp-block-woocommerce-product-price {
             margin-top: auto !important;
         }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: normal !important;
+        }
     }
 }
 .added_to_cart.wc-forward {
@@ -231,11 +248,35 @@ ul.wp-block-woocommerce-product-template {
 }
 .single {
     .product {
+        .summary {
+            .price {
+                display: flex;
+                flex-direction: column;
+
+                ins {
+                    font-size: 2rem;
+                }
+            }
+        }
+
+        span.onsale {
+            display: none;
+        }
+
         ol.flex-control-thumbs {
             display: flex;
             gap: 0.5em;
             > li {
                 margin: 0 !important;
+
+                img {
+                    opacity: 1 !important;
+
+                    &.flex-active {
+                        opacity: 0.9 !important;
+                        border: 2px solid var(--theme-border) !important;
+                    }
+                }
             }
         }
         .woocommerce-tabs.wc-tabs-wrapper {
@@ -244,26 +285,43 @@ ul.wp-block-woocommerce-product-template {
             padding-top: 0 !important;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
             margin-bottom: 1em;
+            border: 1px solid var(--theme-border) !important;
+            background-color: var(--theme-bg-accent);
+
             ul.tabs.wc-tabs {
+                border-bottom: 1px solid var(--theme-border) !important;
                 margin: 0 !important;
                 margin-bottom: 1em !important;
                 width: 100% !important;
                 display: flex;
-                gap: 0.5em;
-                border-block: 1px solid rgba(0, 0, 0, 0.05);
+                background-color: var(--theme-bg-accent) !important;
+
                 li {
                     border: none !important;
+                    border-right: 1px solid var(--theme-border) !important;
+                    padding-inline: 0.5em;
+                    margin: 0;
+
+                    &.active {
+                        font-weight: bold;
+                        background-color: var(--theme-bg);
+                    }
+
                     &::after {
                         display: none !important;
                     }
                 }
+            }
+
+            .woocommerce-Tabs-panel {
+                width: 100% !important;
+                padding-inline: 0.5em;
             }
         }
     }
 }
 footer.site-footer {
     padding: 0 !important;
-    background-color: var(--theme-bg);
     .site-info {
         padding-bottom: 0 !important;
         a {
@@ -342,6 +400,12 @@ header.site-header {
         }
     }
 }
+
+.wp-block-woocommerce-product-collection {
+    .wp-block-heading {
+    }
+}
+
 @media (min-width: 768px) {
     .col-full {
         max-width: 85em;
