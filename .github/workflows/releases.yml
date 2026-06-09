@@ -29,11 +29,17 @@ jobs:
             - name: Build
               run: npm run build
 
+            - name: Read package version
+              id: version
+              run: |
+                  echo "version=$(node -p \"require('./package.json').version\")" >> $GITHUB_OUTPUT
+
             - name: Upload file
               uses: svenstaro/upload-release-action@v2
               with:
                   repo_token: ${{ github.token }}
                   file: ./storefront-child.zip
-                  asset_name: storefront-child.zip
-                  tag: ${{ github.ref }}
+                  asset_name: storefront-child-${{ steps.version.outputs.version }}.zip
+                  tag: v${{ steps.version.outputs.version }}
+                  release_name: "storefront-child v${{ steps.version.outputs.version }}"
                   overwrite: true
