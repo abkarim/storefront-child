@@ -3,10 +3,12 @@
     "version": "1.0.0",
     "private": true,
     "devDependencies": {
+        "@types/node": "^25.9.2",
         "sass": "^1.80.0"
     },
     "scripts": {
         "build:css": "sass --style=compressed style.scss style.css",
-        "watch:css": "sass --watch style.scss:style.css"
+        "watch:css": "sass --watch style.scss:style.css",
+        "build": "npm run build:css && node extract.ts"
     }
 }

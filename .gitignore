@@ -6,3 +6,5 @@ package-lock.json
 .vscode/
 npm-debug.log*
 *.worktrees
+build
+*.zip
