@@ -29,10 +29,10 @@ jobs:
             - name: Build
               run: npm run build
 
-            - name: Upload xynity-blocks.zip to release
+            - name: Upload file
               uses: svenstaro/upload-release-action@v2
               with:
-                  repo_token: ${{ secrets.TOKEN }}
+                  repo_token: ${{ github.token }}
                   file: ./storefront-child.zip
                   asset_name: storefront-child.zip
                   tag: ${{ github.ref }}
