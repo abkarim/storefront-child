@@ -1,0 +1,12 @@
+{
+    "name": "storefront-child-theme",
+    "version": "1.0.0",
+    "private": true,
+    "devDependencies": {
+        "sass": "^1.80.0"
+    },
+    "scripts": {
+        "build:css": "sass style.scss style.css",
+        "watch:css": "sass --watch style.scss:style.css"
+    }
+}
