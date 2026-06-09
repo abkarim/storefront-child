@@ -1,0 +1,349 @@
+/*
+Theme Name: Storefront Child
+Theme URI: https://github.com/abkarim/storefront-child
+Description: Child theme for Storefront — add custom styles and features here.
+Author: Your Name
+Author URI: https://github.com/abkarim
+Template: storefront
+Version: 1.0.5
+Text Domain: storefront-child
+*/
+
+/* ==========================================================================
+   Disable Link Focus Outline / Borders On Mouse Click
+   ========================================================================== */
+/* Target normal mouse click engagement while preserving keyboard focus states */
+/* 
+* Breadcrumbs styles
+*/
+/* Remove the home SVG icon from Storefront breadcrumbs */
+/* Removes extra space */
+/* Breadcrumbs links */
+/* 
+*Page Title styles 
+*/
+/* Product */
+/* Hide added to cart button */
+/* block specific */
+/* Product page */
+/*
+* Site footer styles
+*/
+/**
+** Button
+*/
+/*
+* Header styles
+*/
+/*
+* Footer styles
+*/
+a {
+    &:focus-visible {
+        outline: 2px solid #0073aa;
+        outline-offset: 2px;
+    }
+    &:focus {
+        &:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+button {
+    &:focus-visible {
+        outline: 2px solid #0073aa;
+        outline-offset: 2px;
+    }
+    &:focus {
+        &:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+    color: var(--theme-button-text) !important;
+    background-color: var(--theme-button-bg) !important;
+    &:hover {
+        color: var(--theme-button-hover-text) !important;
+        background-color: var(--theme-button-hover-bg) !important;
+    }
+}
+.button {
+    &:focus-visible {
+        outline: 2px solid #0073aa;
+        outline-offset: 2px;
+    }
+    &:focus {
+        &:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+input[type="button"] {
+    &:focus-visible {
+        outline: 2px solid #0073aa;
+        outline-offset: 2px;
+    }
+    &:focus {
+        &:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+input[type="submit"] {
+    &:focus-visible {
+        outline: 2px solid #0073aa;
+        outline-offset: 2px;
+    }
+    &:focus {
+        &:not(:focus-visible) {
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+&:root {
+    --border-radius: 0.3em;
+    --border-size: 0.1em;
+}
+img {
+    width: 100%;
+}
+.woocommerce-breadcrumb {
+    a {
+        &::before {
+            content: "" !important;
+        }
+        text-decoration: none !important;
+        font-weight: normal !important;
+        &:hover {
+            font-weight: 600 !important;
+        }
+    }
+    font-weight: bold !important;
+}
+.storefront-breadcrumb {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-block: 1em !important;
+}
+.entry-header {
+    padding: 0 !important;
+    margin-bottom: -1em;
+    .entry-title {
+        text-align: left !important;
+        margin: 0 !important;
+    }
+}
+.woocommerce-products-header {
+    display: none !important;
+}
+ul.wc-block-grid__products {
+    gap: 0.5em !important;
+    li.wc-block-grid__product {
+        max-width: calc(25% - 0.5em) !important;
+        text-align: left !important;
+        padding: 0.5em !important;
+        border: none !important;
+        .wc-block-grid__product-add-to-cart {
+            margin-bottom: 0 !important;
+        }
+        .add_to_cart_button {
+            width: 100% !important;
+        }
+        .wc-block-grid__product-onsale {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            border: none !important;
+        }
+    }
+}
+ul.products {
+    gap: 0.5em !important;
+    li {
+        &:not(.product-category).product {
+            max-width: calc(25% - 0.5em) !important;
+            text-align: left !important;
+            padding: 0.5em !important;
+            border: none !important;
+            .add_to_cart_button {
+                margin-bottom: 0 !important;
+                width: 100% !important;
+            }
+            .onsale {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                border: none !important;
+            }
+        }
+    }
+}
+.wc-block-product.product {
+    text-align: left !important;
+    padding: 0.5em !important;
+    border: none !important;
+    .wp-block-post-title {
+        text-align: left !important;
+        margin-block: 0.5em !important;
+        a {
+            text-decoration: none !important;
+        }
+    }
+    .wp-block-woocommerce-product-price {
+        text-align: left !important;
+        margin-block: 0.5em !important;
+    }
+}
+.product {
+    .wp-block-woocommerce-product-button {
+        margin-bottom: 0 !important;
+    }
+    .add_to_cart_button {
+        width: 100% !important;
+    }
+}
+.wp-block-woocommerce-product-sale-badge {
+    .wc-block-components-product-sale-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        border: none !important;
+    }
+}
+ul {
+    li.wc-block-product.product {
+        display: flex;
+        flex-direction: column;
+        .wp-block-woocommerce-product-price {
+            margin-top: auto !important;
+        }
+    }
+}
+.added_to_cart.wc-forward {
+    display: none !important;
+}
+ul.wp-block-woocommerce-product-template {
+    margin: 0 !important;
+}
+.single {
+    .product {
+        ol.flex-control-thumbs {
+            display: flex;
+            gap: 0.5em;
+            > li {
+                margin: 0 !important;
+            }
+        }
+        .woocommerce-tabs.wc-tabs-wrapper {
+            display: flex;
+            flex-direction: column;
+            padding-top: 0 !important;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 1em;
+            ul.tabs.wc-tabs {
+                margin: 0 !important;
+                margin-bottom: 1em !important;
+                width: 100% !important;
+                display: flex;
+                gap: 0.5em;
+                border-block: 1px solid rgba(0, 0, 0, 0.05);
+                li {
+                    border: none !important;
+                    &::after {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+    }
+}
+footer.site-footer {
+    padding: 0 !important;
+    background-color: var(--theme-bg);
+    .site-info {
+        padding-bottom: 0 !important;
+        a {
+            display: none !important;
+        }
+    }
+}
+header.site-header {
+    padding-block: 0.5em;
+    .store-front-child-header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1em;
+        > div {
+            width: 100%;
+        }
+        .header-col-search {
+            form {
+                margin: 0 !important;
+                display: flex;
+                align-items: stretch;
+                input {
+                    background-color: var(--theme-header-input-bg) !important;
+                    box-shadow: none !important;
+                    border: var(--border-size) solid !important;
+                    border-radius: var(--border-radius);
+                    padding: 0.2em;
+                    padding-inline: 0.5em;
+                    border-top-right-radius: 0;
+                    border-bottom-right-radius: 0;
+                    width: 100%;
+                    &:focus-visible {
+                        outline: none !important;
+                    }
+                }
+            }
+        }
+        .search-submit-btn {
+            background-color: var(--theme-header-button-bg) !important;
+            border: var(--border-size) solid !important;
+            border-radius: var(--border-radius);
+            padding: 0.2em;
+            padding-inline: 0.5em;
+            border-left: none !important;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            svg {
+                margin-bottom: -5px;
+            }
+        }
+        .header-col-utilities {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 1em;
+            > div {
+                > a {
+                    position: relative;
+                    display: inline-block;
+                    &:hover {
+                        color: var(--theme-link-hover) !important;
+                    }
+                    .utility-counter-badge {
+                        position: absolute;
+                        top: -15%;
+                        right: -45%;
+                        border-radius: 0.5em;
+                        width: 1.5em;
+                        height: 1.5em;
+                        font-size: 0.6rem;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
+@media (min-width: 768px) {
+    .col-full {
+        max-width: 85em;
+    }
+}
