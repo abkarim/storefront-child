@@ -163,6 +163,20 @@ ul.products li:not(.product-category).product .onsale {
   right: 10px;
   border: none !important;
 }
+ul.products li:not(.product-category).product .price {
+  width: fit-content;
+  position: relative;
+  font-size: 1.2rem;
+}
+ul.products li:not(.product-category).product .price ins {
+  margin: 0;
+}
+ul.products li:not(.product-category).product .price del {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  font-size: 0.7rem;
+}
 
 .wc-block-product.product {
   text-align: left !important;
@@ -308,6 +322,9 @@ footer.site-footer .site-info a {
 
 .admin-bar header.site-header {
   top: var(--admin-bar-height, 0px) !important;
+}
+.admin-bar .storefront-sticky-add-to-cart--slideInDown {
+  top: calc(var(--admin-bar-height, 0px) + var(--theme-header-height, 0px));
 }
 
 .storefront-sticky-add-to-cart--slideInDown {

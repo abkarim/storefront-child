@@ -171,6 +171,23 @@ ul.products {
                 right: 10px;
                 border: none !important;
             }
+
+            .price {
+                width: fit-content;
+                position: relative;
+                font-size: 1.2rem;
+
+                ins {
+                    margin: 0;
+                }
+
+                del {
+                    position: absolute;
+                    left: 100%;
+                    top: 0;
+                    font-size: 0.7rem;
+                }
+            }
         }
     }
 }
@@ -342,6 +359,11 @@ footer.site-footer {
 .admin-bar {
     header.site-header {
         top: var(--admin-bar-height, 0px) !important;
+    }
+    .storefront-sticky-add-to-cart--slideInDown {
+        top: calc(
+            var(--admin-bar-height, 0px) + var(--theme-header-height, 0px)
+        );
     }
 }
 .storefront-sticky-add-to-cart--slideInDown {
