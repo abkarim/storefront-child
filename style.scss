@@ -204,9 +204,14 @@ ul.products {
         text-align: left !important;
         margin-block: 0.5em !important;
         font-size: 1.5rem !important;
+        position: relative;
+        width: fit-content;
 
         del {
-            display: none;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            font-size: 1rem;
         }
     }
 }

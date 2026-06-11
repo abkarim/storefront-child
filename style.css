@@ -189,9 +189,14 @@ ul.products li:not(.product-category).product .onsale {
   text-align: left !important;
   margin-block: 0.5em !important;
   font-size: 1.5rem !important;
+  position: relative;
+  width: fit-content;
 }
 .wc-block-product.product .wp-block-woocommerce-product-price del {
-  display: none;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  font-size: 1rem;
 }
 
 .product .wp-block-woocommerce-product-button {
