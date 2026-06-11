@@ -26,6 +26,12 @@ h6 {
   font-weight: normal;
 }
 
+a {
+  color: var(--theme-link);
+}
+a:hover {
+  color: var(--theme-link-hover) !important;
+}
 a:focus-visible {
   outline: 2px solid #0073aa;
   outline-offset: 2px;
@@ -251,27 +257,46 @@ ul.wp-block-woocommerce-product-template {
   margin: 0 !important;
 }
 
-.single .product .summary .price {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper {
+  margin-bottom: 2em;
+  display: flex;
+  gap: 1em;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper > div {
+  padding: 0.5em;
+  background-color: var(--theme-bg-accent) !important;
+  float: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary p.price {
+  display: none;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary div.price > div {
   display: flex;
   flex-direction: column;
 }
-.single .product .summary .price ins {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary div.price > div.special {
+  background-color: var(--theme-bg);
+  padding: 0.5em;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary div.price ins {
   font-size: 2rem;
 }
-.single .product span.onsale {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper span.onsale {
   display: none;
 }
-.single .product ol.flex-control-thumbs {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs {
   display: flex;
   gap: 0.5em;
 }
-.single .product ol.flex-control-thumbs > li {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li {
   margin: 0 !important;
 }
-.single .product ol.flex-control-thumbs > li img {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li img {
   opacity: 1 !important;
 }
-.single .product ol.flex-control-thumbs > li img.flex-active {
+.single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li img.flex-active {
   opacity: 0.9 !important;
   border: 2px solid var(--theme-border) !important;
 }

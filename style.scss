@@ -28,6 +28,12 @@ h6 {
 }
 
 a {
+    color: var(--theme-link);
+
+    &:hover {
+        color: var(--theme-link-hover) !important;
+    }
+
     &:focus-visible {
         outline: 2px solid #0073aa;
         outline-offset: 2px;
@@ -274,37 +280,63 @@ ul.wp-block-woocommerce-product-template {
 }
 .single {
     .product {
-        .summary {
-            .price {
-                display: flex;
-                flex-direction: column;
+        .sf-custom-product-gallery-summary-layout-wrapper {
+            margin-bottom: 2em;
+            display: flex;
+            gap: 1em;
 
-                ins {
-                    font-size: 2rem;
+            & > div {
+                padding: 0.5em;
+                background-color: var(--theme-bg-accent) !important;
+                float: none !important;
+                width: 100% !important;
+                margin: 0 !important;
+            }
+
+            .summary {
+                p.price {
+                    display: none;
+                }
+
+                div.price {
+                    & > div {
+                        display: flex;
+                        flex-direction: column;
+
+                        &.special {
+                            background-color: var(--theme-bg);
+                            padding: 0.5em;
+                        }
+                    }
+
+                    ins {
+                        font-size: 2rem;
+                    }
                 }
             }
-        }
 
-        span.onsale {
-            display: none;
-        }
+            span.onsale {
+                display: none;
+            }
 
-        ol.flex-control-thumbs {
-            display: flex;
-            gap: 0.5em;
-            > li {
-                margin: 0 !important;
+            ol.flex-control-thumbs {
+                display: flex;
+                gap: 0.5em;
+                > li {
+                    margin: 0 !important;
 
-                img {
-                    opacity: 1 !important;
+                    img {
+                        opacity: 1 !important;
 
-                    &.flex-active {
-                        opacity: 0.9 !important;
-                        border: 2px solid var(--theme-border) !important;
+                        &.flex-active {
+                            opacity: 0.9 !important;
+                            border: 2px solid var(--theme-border) !important;
+                        }
                     }
                 }
             }
         }
+
         .woocommerce-tabs.wc-tabs-wrapper {
             display: flex;
             flex-direction: column;

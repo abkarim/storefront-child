@@ -10,10 +10,94 @@ class Layout
 
         add_action("wp_head", [$this, "apply_styles"]);
 
+        add_filter('woocommerce_get_price_html', [$this, 'sf_child_add_explicit_price_labels'], 100, 2);
+
+        // merge gallery and product summary containers on single product pages to allow for a more flexible layout structure 
+        add_action('woocommerce_before_single_product_summary', [$this, 'sf_child_open_custom_product_wrapper'], 5);
+        add_action('woocommerce_after_single_product_summary', [$this, 'sf_child_close_custom_product_wrapper'], 5);
 
         // disable storefront's default header elements since we're replacing them with a custom template part
         remove_action('storefront_header', 'storefront_site_branding', 20);
         remove_action('storefront_header', 'storefront_product_search', 40);
+    }
+
+    function sf_child_open_custom_product_wrapper()
+    {
+        echo '<div class="sf-custom-product-gallery-summary-layout-wrapper">';
+    }
+
+    function sf_child_close_custom_product_wrapper()
+    {
+        echo '</div>';
+    }
+    function sf_child_add_explicit_price_labels($price_html, $product)
+    {
+        // Only apply this layout changes on the single product description container
+        if (! is_product() || ! is_single() || wc_get_loop_prop('name')) {
+            return $price_html;
+        }
+
+        // 1. SIMPLE & EXTERNAL PRODUCTS
+        if ($product->is_type('simple') || $product->is_type('external')) {
+            $regular_price = $product->get_regular_price();
+            $sale_price    = $product->get_sale_price();
+
+            // If the product is on sale, show both labeled blocks
+            if (! empty($sale_price) && $sale_price < $regular_price) {
+                return sprintf(
+                    '
+                    <div class="price">
+                        <div class="special">
+                            <span class="sf-price-label">%3$s</span>
+                            <span class="sf-price-value"><ins>%4$s</ins></span>
+                        </div>
+                        <div class="regular">
+                            <span class="sf-price-label">%1$s</span>
+                            <span class="sf-price-value"><del>%2$s</del></span>
+                        </div>
+                    </div>
+                    ',
+                    __('Regular Price', 'storefront-child'),
+                    wc_price($regular_price),
+                    __('Special Price', 'storefront-child'),
+                    wc_price($sale_price)
+                );
+            }
+        }
+
+        // 2. VARIABLE PRODUCTS
+        if ($product->is_type('variable')) {
+            $prices = $product->get_variation_prices();
+
+            if (! empty($prices['regular_price']) && ! empty($prices['sale_price'])) {
+                $min_reg_price  = current($prices['regular_price']);
+                $min_sale_price = current($prices['sale_price']);
+
+                if ($min_sale_price < $min_reg_price) {
+                    return sprintf(
+                        '
+                        <div class="price">
+                            <div class="special">
+                                <span class="sf-price-label">%3$s</span>
+                                <span class="sf-price-value"><ins>%4$s</ins></span>
+                            </div>
+                            <div class="regular">
+                                <span class="sf-price-label">%1$s</span>
+                                <span class="sf-price-value"><del>%2$s</del></span>
+                            </div>
+                        </div>
+                    ',
+                        __('Regular Price', 'storefront-child'),
+                        wc_price($min_reg_price),
+                        __('Special Price', 'storefront-child'),
+                        wc_price($min_sale_price)
+                    );
+                }
+            }
+        }
+
+        // Fallback default format wrapper if the product is not discounted
+        return '<div class="sf-price-row sf-regular-price-row"><span class="sf-price-label">' . __('Price', 'storefront-child') . '</span> <span class="sf-price-value">' . $price_html . '</span></div>';
     }
 
     public function reposition_storefront_page_title()
@@ -108,18 +192,6 @@ class Layout
                 --theme-button-bg: <?php echo esc_attr($button_bg); ?>;
                 --theme-button-hover-text: <?php echo esc_attr($button_hover_text); ?>;
                 --theme-button-hover-bg: <?php echo esc_attr($button_hover_bg); ?>;
-            }
-
-            body {
-                color: var(--theme-text);
-            }
-
-            a {
-                color: var(--theme-link);
-            }
-
-            a:hover {
-                color: var(--theme-link-hover) !important;
             }
         </style>
     <?php
