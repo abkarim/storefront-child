@@ -3,7 +3,12 @@ import fs from "node:fs/promises";
 import path from "node:path";
 
 const buildFolderName = "build";
+const currentDir = process.cwd();
+const buildDir = path.join(currentDir, buildFolderName);
+const zipName = `${path.basename(currentDir)}.zip`;
+
 const removeList = [
+    ".git",
     ".gitignore",
     ".github",
     "extract.ts",
@@ -12,13 +17,11 @@ const removeList = [
     "package-lock.json",
     "style.scss",
     "style.css.map",
+    zipName,
+    "assets/ts/",
 ];
 
 async function main() {
-    const currentDir = process.cwd();
-    const buildDir = path.join(currentDir, buildFolderName);
-    const zipName = `${path.basename(currentDir)}.zip`;
-
     console.log(`Preparing build directory: ${buildDir}`);
     await fs.rm(buildDir, { recursive: true, force: true });
     await fs.mkdir(buildDir, { recursive: true });
