@@ -74,6 +74,14 @@ class Theme
             // If we are on local development, generate a new version string every second
             (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version')
         );
+
+        wp_enqueue_script(
+            'theme-js',
+            get_stylesheet_directory_uri() . '/assets/js/app.js',
+            [],
+            (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version'),
+            true
+        );
     }
 
     /**

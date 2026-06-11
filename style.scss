@@ -5,13 +5,17 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.1.0
+Version: 1.1.2
 Text Domain: storefront-child
 */
 
 body {
     background-color: var(--theme-bg) !important;
     color: var(--theme-text) !important;
+
+    #page {
+        overflow: clip !important;
+    }
 }
 
 h1,
@@ -329,8 +333,22 @@ footer.site-footer {
         }
     }
 }
+
+.admin-bar {
+    header.site-header {
+        top: var(--admin-bar-height, 0px) !important;
+    }
+}
+.storefront-sticky-add-to-cart--slideInDown {
+    top: calc(var(--admin-bar-height, 0px) + var(--theme-header-height, 0px));
+}
+
 header.site-header {
     padding-block: 0.5em;
+    position: sticky;
+    z-index: 99998;
+    top: 0;
+
     .store-front-child-header-wrapper {
         display: flex;
         justify-content: space-between;
