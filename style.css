@@ -161,21 +161,39 @@ ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-ons
 }
 
 ul.products {
-  gap: 0.5em !important;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1em !important;
+}
+ul.products::before, ul.products::after {
+  display: none;
 }
 ul.products li:not(.product-category).product {
   max-width: calc(25% - 0.5em) !important;
   text-align: left !important;
+  margin: 0 !important;
   padding: 0.5em !important;
   border: none !important;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
-ul.products li:not(.product-category).product img {
+ul.products li:not(.product-category).product .custom-archive-image-wrap {
+  overflow: hidden;
+}
+ul.products li:not(.product-category).product .custom-archive-image-wrap img {
+  margin-bottom: 0;
   transition: transform 0.5s ease;
 }
+ul.products li:not(.product-category).product h2 {
+  margin-top: 0.5em;
+  font-size: 1.2rem;
+}
 ul.products li:not(.product-category).product:hover img {
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 ul.products li:not(.product-category).product:hover .sf-archive-action-buttons-group {
   right: 10px;
@@ -190,6 +208,7 @@ ul.products li:not(.product-category).product .sf-archive-action-buttons-group {
   gap: 0.5em;
 }
 ul.products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn {
+  text-decoration: none;
   background-color: var(--theme-bg-accent);
   border: var(--border-size) solid var(--theme-border);
   border-radius: var(--border-radius);
@@ -215,10 +234,12 @@ ul.products li:not(.product-category).product .sf-archive-action-buttons-group .
   color: var(--theme-link-hover) !important;
 }
 ul.products li:not(.product-category).product .add_to_cart_button {
+  margin-top: auto;
   margin-bottom: 0 !important;
   width: 100% !important;
 }
 ul.products li:not(.product-category).product .onsale {
+  font-size: 1rem;
   position: absolute;
   top: 10px;
   right: 10px;
@@ -227,7 +248,7 @@ ul.products li:not(.product-category).product .onsale {
 ul.products li:not(.product-category).product .price {
   width: fit-content;
   position: relative;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 ul.products li:not(.product-category).product .price ins {
   margin: 0;
@@ -236,7 +257,7 @@ ul.products li:not(.product-category).product .price del {
   position: absolute;
   left: 100%;
   top: 0;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 
 .wc-block-product.product {

@@ -14,6 +14,15 @@ class Layout
 
         add_action('woocommerce_after_shop_loop_item', [$this, 'add_archive_custom_buttons'], 15);
 
+        // 1. Remove the default thumbnail from the main archive loop
+        remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 10);
+
+        // 2. Explicitly remove it from shortcode loops to prevent the duplicate 2nd image
+        remove_action('woocommerce_before_shop_loop_item_title', 'woocommerce_template_loop_product_thumbnail', 11);
+
+        // 2. Add our custom function that includes the wrapper
+        add_action('woocommerce_before_shop_loop_item_title', [$this, 'custom_woocommerce_template_loop_product_thumbnail'], 10);
+
         // merge gallery and product summary containers on single product pages to allow for a more flexible layout structure 
         add_action('woocommerce_before_single_product_summary', [$this, 'sf_child_open_custom_product_wrapper'], 5);
         add_action('woocommerce_after_single_product_summary', [$this, 'sf_child_close_custom_product_wrapper'], 5);
@@ -26,6 +35,13 @@ class Layout
          * Register the [woocommerce_sf_child_compare_products] Shortcode
          */
         add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
+    }
+
+    function custom_woocommerce_template_loop_product_thumbnail()
+    {
+        echo '<div class="custom-archive-image-wrap">';
+        echo woocommerce_template_loop_product_thumbnail();
+        echo '</div>';
     }
 
     function sf_child_render_compare_page_content()
@@ -78,6 +94,8 @@ class Layout
     <?php
         return ob_get_clean();
     }
+
+
 
     function add_archive_custom_buttons()
     {
