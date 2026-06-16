@@ -40,7 +40,12 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
         </div>
 
         <div class="utility-icon-link items-compare-summary">
-            <a href="#" title="<?php esc_attr_e('Compare Products', 'storefront-child'); ?>">
+            <?php
+            // Dynamically retrieve the URL of the page with the slug 'compare'
+            $compare_page = get_page_by_path('compare');
+            $compare_url  = $compare_page ? get_permalink($compare_page->ID) : '#';
+            ?>
+            <a href="<?php echo esc_url($compare_url); ?>" title="<?php esc_attr_e('Compare Products', 'storefront-child'); ?>">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 17h16M16 13l4 4-4 4"></path>
                     <path d="M20 7H4M8 3L4 7l4 4"></path>

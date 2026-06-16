@@ -26,6 +26,11 @@ Next steps:
 
 - Hided view cart button after adding to cart in button
 
+### Compare page
+#### Create a page name Compare
+
+#### Add shortcode [woocommerce_sf_child_compare_products]
+
 ### File type 
 - added svg upload
 

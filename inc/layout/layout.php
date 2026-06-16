@@ -12,6 +12,8 @@ class Layout
 
         add_filter('woocommerce_get_price_html', [$this, 'sf_child_add_explicit_price_labels'], 100, 2);
 
+        add_action('woocommerce_after_shop_loop_item', [$this, 'add_archive_custom_buttons'], 15);
+
         // merge gallery and product summary containers on single product pages to allow for a more flexible layout structure 
         add_action('woocommerce_before_single_product_summary', [$this, 'sf_child_open_custom_product_wrapper'], 5);
         add_action('woocommerce_after_single_product_summary', [$this, 'sf_child_close_custom_product_wrapper'], 5);
@@ -19,6 +21,84 @@ class Layout
         // disable storefront's default header elements since we're replacing them with a custom template part
         remove_action('storefront_header', 'storefront_site_branding', 20);
         remove_action('storefront_header', 'storefront_product_search', 40);
+
+        /**
+         * Register the [woocommerce_sf_child_compare_products] Shortcode
+         */
+        add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
+    }
+
+    function sf_child_render_compare_page_content()
+    {
+        // Check if WooCommerce is active to prevent errors
+        if (! class_exists('WooCommerce')) {
+            return '<p>WooCommerce must be installed to compare products.</p>';
+        }
+
+        // Capture layout output safely
+        ob_start();
+?>
+        <div class="sf-compare-page-content">
+            <div id="sf-compare-empty" class="sf-compare-status-notice">
+                <p><?php esc_html_e('Your product comparison canvas is currently empty.', 'storefront-child'); ?></p>
+            </div>
+
+            <table id="sf-compare-table" class="sf-compare-matrix-table">
+                <thead>
+                    <tr id="row-product-triggers" class="sf-compare-row">
+                        <th class="sf-label-column"><?php esc_html_e('Action', 'storefront-child'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="row-product-images" class="sf-compare-row">
+                        <td class="sf-label-column"><strong><?php esc_html_e('Image', 'storefront-child'); ?></strong></td>
+                    </tr>
+                    <tr id="row-product-titles" class="sf-compare-row">
+                        <td class="sf-label-column"><strong><?php esc_html_e('Product Name', 'storefront-child'); ?></strong></td>
+                    </tr>
+                    <tr id="row-product-prices" class="sf-compare-row">
+                        <td class="sf-label-column"><strong><?php esc_html_e('Price', 'storefront-child'); ?></strong></td>
+                    </tr>
+                    <tr id="row-product-stock" class="sf-compare-row">
+                        <td class="sf-label-column"><strong><?php esc_html_e('Availability', 'storefront-child'); ?></strong></td>
+                    </tr>
+                    <tr id="row-product-buy" class="sf-compare-row">
+                        <td class="sf-label-column"><strong><?php esc_html_e('Purchase', 'storefront-child'); ?></strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <?php
+        return ob_get_clean();
+    }
+
+    function add_archive_custom_buttons()
+    {
+        global $product;
+
+        if (! $product) {
+            return;
+        }
+
+        $product_id = $product->get_id();
+
+        $buttonsHtml = "
+            <div class='sf-archive-action-buttons-group' data-product-id='{$product_id}'>
+                <a href='#' class='sf-archive-btn sf-compare-btn' title='Compare' > 
+                    <span class='sf-icon'>⇄</span>
+                </a>
+                <a href='#' class='sf-archive-btn sf-quickview-btn' title='Quick View'>
+                <span class='sf-icon'>
+                        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' style='display: inline-block; vertical-align: middle;'>
+                            <path d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'></path>
+                            <circle cx='12' cy='12' r='3'></circle>
+                        </svg>
+                    </span> 
+                </a>
+            </div>
+        ";
+
+        echo $buttonsHtml;
     }
 
     function sf_child_open_custom_product_wrapper()
@@ -178,7 +258,7 @@ class Layout
         $button_hover_text = get_theme_mod('sf_child_logo_button_hover_text_color', '#e5e5e5');
         $button_hover_bg = get_theme_mod('sf_child_logo_button_hover_bg_color', '#0f0f0f');
 
-?>
+    ?>
         <style type="text/css" id="sf-child-site-identity-expanded-css">
             :root {
                 --theme-text: <?php echo esc_attr($text); ?>;
