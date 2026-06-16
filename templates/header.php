@@ -41,17 +41,11 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
 
         <div class="utility-icon-link items-compare-summary">
             <a href="#" title="<?php esc_attr_e('Compare Products', 'storefront-child'); ?>">
-                <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">
-                    <line x1="18" y1="20" x2="18" y2="10"></line>
-                    <line x1="12" y1="20" x2="12" y2="4"></line>
-                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 17h16M16 13l4 4-4 4"></path>
+                    <path d="M20 7H4M8 3L4 7l4 4"></path>
                 </svg>
-                <?php
-                $compare_count = 0;
-                if ($compare_count > 0) :
-                ?>
-                    <span class="utility-counter-badge product-compare-count"><?php echo $compare_count; ?></span>
-                <?php endif; ?>
+                <span class="utility-counter-badge product-compare-count"></span>
             </a>
         </div>
 
