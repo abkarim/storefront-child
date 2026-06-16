@@ -11,7 +11,7 @@ const quickViewButtonSelector = ".sf-quickview-btn";
 /**
  * Render compare count badge on the compare button in the header
  */
-function renderCompareCount() {
+export function renderCompareCount() {
     const compareCountBadge = document.querySelector(
         "header .header-col-utilities .items-compare-summary .product-compare-count",
     );

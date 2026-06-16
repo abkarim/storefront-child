@@ -119,16 +119,22 @@
   document.addEventListener("DOMContentLoaded", () => {
     getProducts();
   });
-  async function getProducts() {
-    const products2 = getCompareProducts();
+  function handleContents(l) {
     const emptyNoticeElement = document.getElementById("sf-compare-empty");
-    if (emptyNoticeElement) {
-      if (products2.length !== 0) {
+    const contentsElement = document.getElementById("sf-compare-contents");
+    if (emptyNoticeElement && contentsElement) {
+      if (l !== 0) {
         emptyNoticeElement.style.display = "none";
+        contentsElement.style.display = "block";
       } else {
+        contentsElement.style.display = "none";
         emptyNoticeElement.style.display = "block";
       }
     }
+  }
+  async function getProducts() {
+    const products2 = getCompareProducts();
+    handleContents(products2.length);
     for (const id of products2) {
       try {
         const response = await fetch(
@@ -149,12 +155,38 @@
       }
     }
   }
+  var tableElements = document.getElementById("sf-compare-table");
   var imagesTableRow = document.getElementById("row-product-images");
   var nameTableRow = document.getElementById("row-product-titles");
   var priceTableRow = document.getElementById("row-product-prices");
   var availTableRow = document.getElementById("row-product-stock");
   var purchaseTableRow = document.getElementById("row-product-buy");
   var actionTableRow = document.getElementById("row-product-triggers");
+  var clearAllButton = document.querySelector("#sf-compare-clear-all button");
+  if (clearAllButton) {
+    clearAllButton.addEventListener("click", () => {
+      const products2 = getCompareProducts();
+      products2.forEach((id) => {
+        removeProductRowById(id);
+      });
+    });
+  }
+  function removeProductRow(event) {
+    const target = event.currentTarget;
+    if (!target) return;
+    const id = target.dataset.id;
+    if (!id) return;
+    removeProductRowById(id);
+  }
+  function removeProductRowById(id) {
+    const tableDataElements = [
+      ...tableElements.querySelectorAll(`[data-product-id="${id}"]`)
+    ];
+    tableDataElements.forEach((tde) => tde.remove());
+    removeCompareProduct(id);
+    renderCompareCount();
+    handleContents(getCompareProducts().length);
+  }
   function renderProductRow(product) {
     const tdAttr = {
       "data-product-id": product.id.toString()
@@ -193,11 +225,12 @@
     const removeBtnElement = createHTMLElement(
       "button",
       {
-        class: "sf-del-col",
+        class: "sf-del-col button danger",
         "data-id": product.id.toString()
       },
       "Remove"
     );
+    removeBtnElement.addEventListener("click", removeProductRow);
     const actionTD = createHTMLElement("td", tdAttr, removeBtnElement);
     actionTableRow?.appendChild(actionTD);
   }

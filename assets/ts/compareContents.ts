@@ -1,5 +1,6 @@
+import { renderCompareCount } from "./productQuickActions";
 import { createHTMLElement } from "./util/element";
-import { getCompareProducts } from "./util/storage";
+import { getCompareProducts, removeCompareProduct } from "./util/storage";
 
 interface ProductImage {
     id: number;
@@ -32,17 +33,24 @@ document.addEventListener("DOMContentLoaded", () => {
     getProducts();
 });
 
-async function getProducts() {
-    const products = getCompareProducts();
-
+function handleContents(l: number) {
     const emptyNoticeElement = document.getElementById("sf-compare-empty");
-    if (emptyNoticeElement) {
-        if (products.length !== 0) {
+    const contentsElement = document.getElementById("sf-compare-contents");
+    if (emptyNoticeElement && contentsElement) {
+        if (l !== 0) {
             emptyNoticeElement.style.display = "none";
+            contentsElement.style.display = "block";
         } else {
+            contentsElement.style.display = "none";
             emptyNoticeElement.style.display = "block";
         }
     }
+}
+
+async function getProducts() {
+    const products = getCompareProducts();
+
+    handleContents(products.length);
 
     for (const id of products) {
         try {
@@ -72,12 +80,46 @@ async function getProducts() {
     }
 }
 
+const tableElements = document.getElementById("sf-compare-table");
 const imagesTableRow = document.getElementById("row-product-images");
 const nameTableRow = document.getElementById("row-product-titles");
 const priceTableRow = document.getElementById("row-product-prices");
 const availTableRow = document.getElementById("row-product-stock");
 const purchaseTableRow = document.getElementById("row-product-buy");
 const actionTableRow = document.getElementById("row-product-triggers");
+const clearAllButton = document.querySelector("#sf-compare-clear-all button");
+
+if (clearAllButton) {
+    clearAllButton.addEventListener("click", () => {
+        const products = getCompareProducts();
+
+        products.forEach((id) => {
+            removeProductRowById(id);
+        });
+    });
+}
+
+function removeProductRow(event: PointerEvent): void {
+    const target = event.currentTarget as HTMLElement | null;
+    if (!target) return;
+
+    const id: string | undefined = target.dataset.id;
+    if (!id) return;
+
+    removeProductRowById(id);
+}
+
+function removeProductRowById(id: string) {
+    const tableDataElements = [
+        ...tableElements!.querySelectorAll(`[data-product-id="${id}"]`),
+    ];
+    tableDataElements.forEach((tde) => tde.remove());
+
+    removeCompareProduct(id);
+    renderCompareCount();
+
+    handleContents(getCompareProducts().length);
+}
 
 function renderProductRow(product: WooStoreProduct) {
     const tdAttr = {
@@ -123,11 +165,14 @@ function renderProductRow(product: WooStoreProduct) {
     const removeBtnElement = createHTMLElement(
         "button",
         {
-            class: "sf-del-col",
+            class: "sf-del-col button danger",
             "data-id": product.id.toString(),
         },
         "Remove",
     );
+
+    removeBtnElement.addEventListener("click", removeProductRow);
+
     const actionTD = createHTMLElement("td", tdAttr, removeBtnElement);
     actionTableRow?.appendChild(actionTD);
 }

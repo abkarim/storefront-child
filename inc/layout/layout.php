@@ -43,30 +43,37 @@ class Layout
                 <p><?php esc_html_e('Your product comparison canvas is currently empty.', 'storefront-child'); ?></p>
             </div>
 
-            <table id="sf-compare-table" class="sf-compare-matrix-table">
-                <thead>
-                    <tr id="row-product-triggers" class="sf-compare-row">
-                        <th class="sf-label-column"><?php esc_html_e('Action', 'storefront-child'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr id="row-product-images" class="sf-compare-row">
-                        <td class="sf-label-column"><strong><?php esc_html_e('Image', 'storefront-child'); ?></strong></td>
-                    </tr>
-                    <tr id="row-product-titles" class="sf-compare-row">
-                        <td class="sf-label-column"><strong><?php esc_html_e('Product Name', 'storefront-child'); ?></strong></td>
-                    </tr>
-                    <tr id="row-product-prices" class="sf-compare-row">
-                        <td class="sf-label-column"><strong><?php esc_html_e('Price', 'storefront-child'); ?></strong></td>
-                    </tr>
-                    <tr id="row-product-stock" class="sf-compare-row">
-                        <td class="sf-label-column"><strong><?php esc_html_e('Availability', 'storefront-child'); ?></strong></td>
-                    </tr>
-                    <tr id="row-product-buy" class="sf-compare-row">
-                        <td class="sf-label-column"><strong><?php esc_html_e('Purchase', 'storefront-child'); ?></strong></td>
-                    </tr>
-                </tbody>
-            </table>
+            <section id="sf-compare-contents">
+                <div id="sf-compare-clear-all">
+                    <button class="button danger">Clear All</button>
+                </div>
+                <div class="table-container">
+                    <table id="sf-compare-table" class="sf-compare-matrix-table">
+                        <thead>
+                            <tr id="row-product-triggers" class="sf-compare-row">
+                                <th class="sf-label-column"><?php esc_html_e('Action', 'storefront-child'); ?></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="row-product-images" class="sf-compare-row">
+                                <td class="sf-label-column"><strong><?php esc_html_e('Image', 'storefront-child'); ?></strong></td>
+                            </tr>
+                            <tr id="row-product-titles" class="sf-compare-row">
+                                <td class="sf-label-column"><strong><?php esc_html_e('Product Name', 'storefront-child'); ?></strong></td>
+                            </tr>
+                            <tr id="row-product-prices" class="sf-compare-row">
+                                <td class="sf-label-column"><strong><?php esc_html_e('Price', 'storefront-child'); ?></strong></td>
+                            </tr>
+                            <tr id="row-product-stock" class="sf-compare-row">
+                                <td class="sf-label-column"><strong><?php esc_html_e('Availability', 'storefront-child'); ?></strong></td>
+                            </tr>
+                            <tr id="row-product-buy" class="sf-compare-row">
+                                <td class="sf-label-column"><strong><?php esc_html_e('Purchase', 'storefront-child'); ?></strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
         </div>
     <?php
         return ob_get_clean();
