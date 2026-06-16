@@ -27,6 +27,8 @@ Next steps:
 - Hided view cart button after adding to cart in button
 
 ### Compare page
+<img width="1357" height="676" alt="image" src="https://github.com/user-attachments/assets/9d1fe7bc-24f0-4f92-8378-3da641ba04a6" />
+
 #### Create a page name Compare
 
 #### Add shortcode [woocommerce_sf_child_compare_products]
