@@ -1,8 +1,6 @@
 import { updateRootVariable } from "./util/styles";
 import "./productQuickActions";
 
-import "./compareContents"; // this should be loaded only in compare page
-
 const wpadminbar = document.getElementById("wpadminbar");
 
 if (wpadminbar) {

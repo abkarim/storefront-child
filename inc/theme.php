@@ -67,21 +67,32 @@ class Theme
      */
     public function load_scripts()
     {
+        $version = (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version');
+
         wp_enqueue_style(
             'theme-css',
             get_stylesheet_uri(),
             [],
-            // If we are on local development, generate a new version string every second
-            (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version')
+            $version
         );
 
         wp_enqueue_script(
             'theme-js',
             get_stylesheet_directory_uri() . '/assets/js/app.js',
             [],
-            (defined('WP_DEBUG') && \WP_DEBUG) ? time() : wp_get_theme()->get('Version'),
+            $version,
             true
         );
+
+        if (is_page('compare')) {
+            wp_enqueue_script(
+                'theme-compare-js',
+                get_stylesheet_directory_uri() . '/assets/js/compareContents.js',
+                [],
+                $version,
+                true
+            );
+        }
     }
 
     /**

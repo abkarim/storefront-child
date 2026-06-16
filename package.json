@@ -11,8 +11,8 @@
     "scripts": {
         "build:css": "sass --style=compressed style.scss style.css",
         "watch:css": "sass --watch style.scss:style.css",
-        "watch:ts": "npx esbuild assets/ts/app.ts --bundle --outfile=assets/js/app.js --watch",
-        "build:ts": "npx esbuild assets/ts/app.ts --bundle --outfile=assets/js/app.js --minify",
+        "watch:ts": "npx esbuild assets/ts/app.ts assets/ts/compareContents.ts --bundle --outdir=assets/js --watch",
+        "build:ts": "npx esbuild assets/ts/app.ts assets/ts/compareContents.ts --bundle --outdir=assets/js --minify",
         "dev": "npm run watch:css & npm run watch:ts",
         "build": "npm run build:css && npm run build:ts && node extract.ts"
     }
