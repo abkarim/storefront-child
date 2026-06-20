@@ -27,6 +27,9 @@ class Layout
         add_action('woocommerce_before_single_product_summary', [$this, 'sf_child_open_custom_product_wrapper'], 5);
         add_action('woocommerce_after_single_product_summary', [$this, 'sf_child_close_custom_product_wrapper'], 5);
 
+
+
+
         // disable storefront's default header elements since we're replacing them with a custom template part
         remove_action('storefront_header', 'storefront_site_branding', 20);
         remove_action('storefront_header', 'storefront_product_search', 40);
@@ -35,6 +38,13 @@ class Layout
          * Register the [woocommerce_sf_child_compare_products] Shortcode
          */
         add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
+
+        add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
+    }
+
+    public function sf_child_remove_handheld_footer_bar()
+    {
+        remove_action('storefront_footer', 'storefront_handheld_footer_bar', 999);
     }
 
     function custom_woocommerce_template_loop_product_thumbnail()
