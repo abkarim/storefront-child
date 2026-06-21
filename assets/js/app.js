@@ -105,11 +105,28 @@
       ".wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0"
     );
     if (!container) return;
+    let moving = false;
+    let startX = 0;
+    let startScrollLeft = 0;
     let scrollInterval = null;
     const scrollSpeed = 2;
-    const intervalTime = 30;
+    const intervalTime = 20;
+    const delayAfterActivityInMS = 1e3;
     const lastTarget = container.scrollWidth - container.clientWidth;
+    let currentX = 0;
+    let isTicking = false;
+    const DRAG_SPEED_MULTIPLIER = 2;
+    function updateScrollPosition() {
+      if (!container || !moving) {
+        isTicking = false;
+        return;
+      }
+      const walkX = (currentX - startX) * DRAG_SPEED_MULTIPLIER;
+      container.scrollLeft = startScrollLeft - walkX;
+      isTicking = false;
+    }
     function startAutoScroll() {
+      if (moving) return;
       container.scrollLeft += scrollSpeed;
       if (lastTarget !== container.scrollLeft) {
         scrollInterval = setTimeout(startAutoScroll, intervalTime);
@@ -124,8 +141,49 @@
         scrollInterval = null;
       }
     }
-    container.addEventListener("mouseenter", stopAutoScroll);
-    container.addEventListener("mouseleave", startAutoScroll);
+    function handlePointerMove(event) {
+      if (!moving || !container) return;
+      const currentX2 = event.clientX;
+      const walkX = currentX2 - startX;
+      container.scrollLeft = startScrollLeft - walkX;
+    }
+    container.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      stopAutoScroll();
+      if (scrollInterval) clearTimeout(scrollInterval);
+      moving = true;
+      startX = e.clientX;
+      currentX = e.clientX;
+      startScrollLeft = container.scrollLeft;
+      container.setPointerCapture(e.pointerId);
+    });
+    container.addEventListener("pointermove", (e) => {
+      stopAutoScroll();
+      currentX = e.clientX;
+      if (!isTicking) {
+        requestAnimationFrame(updateScrollPosition);
+        isTicking = true;
+      }
+      if (!moving) {
+        scrollInterval = setTimeout(
+          startAutoScroll,
+          delayAfterActivityInMS
+        );
+      }
+    });
+    const handlePointerRelease = (event) => {
+      if (!moving) return;
+      moving = false;
+      try {
+        container.releasePointerCapture(event.pointerId);
+      } catch (e) {
+      }
+      scrollInterval = setTimeout(() => {
+        startAutoScroll();
+      }, delayAfterActivityInMS);
+    };
+    container.addEventListener("pointerup", handlePointerRelease);
+    container.addEventListener("pointercancel", handlePointerRelease);
     const observerOptions = {
       root: null,
       threshold: 0.05
