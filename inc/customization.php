@@ -15,6 +15,21 @@ class Customization
         add_action('customize_controls_print_footer_scripts', [$this, 'enqueue_customizer_section_redirect_script']);
         add_filter('woocommerce_sale_flash', [$this, 'sf_child_replace_sale_with_percentage'], 10, 3);
         add_filter('woocommerce_sale_badge_text', [$this, 'custom_sale_badge_text'], 10, 2);
+
+        add_action('widgets_init', [$this, 'sf_register_product_delivery_widget_zone']);
+    }
+
+    public function sf_register_product_delivery_widget_zone()
+    {
+        register_sidebar(array(
+            'name'          => __('Product Delivery Details Widget', 'storefront-child'),
+            'id'            => 'sf-child-product-delivery-widget',
+            'description'   => __('Widgets added here will render inside the single product summary page slot.', 'storefront-child'),
+            'before_widget' => '<div id="%1$s" class="widget %2$s sf-custom-product-delivery-details">',
+            'after_widget'  => '</div>',
+            'before_title'  => '<p class="title">',
+            'after_title'   => '</p>',
+        ));
     }
 
     /**
