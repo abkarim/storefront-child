@@ -1,5 +1,6 @@
 import { updateRootVariable } from "./util/styles";
 import "./productQuickActions";
+import "./categoriesScroller";
 
 const wpadminbar = document.getElementById("wpadminbar");
 

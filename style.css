@@ -249,7 +249,8 @@ ul.products li:not(.product-category).product .sf-archive-action-buttons-group .
 ul.products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn:hover .sf-icon {
   color: var(--theme-link-hover) !important;
 }
-ul.products li:not(.product-category).product .add_to_cart_button {
+ul.products li:not(.product-category).product .add_to_cart_button,
+ul.products li:not(.product-category).product .button {
   margin-top: auto;
   margin-bottom: 0 !important;
   width: 100% !important;
@@ -587,6 +588,62 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
 }
 .sf-compare-page-content .table-container table#sf-compare-table tbody td img {
   max-width: 5em;
+}
+
+.storefront-sorting {
+  margin-block: 1.5em;
+}
+.storefront-sorting .orderby {
+  padding: 0.25em;
+  background-color: var(--theme-bg-accent) !important;
+  border-color: var(--theme-border);
+}
+.storefront-sorting ul.page-numbers li .page-numbers {
+  background-color: var(--theme-bg-accent) !important;
+  color: var(--theme-text) !important;
+}
+.storefront-sorting ul.page-numbers li .page-numbers.current {
+  background-color: var(--theme-bg) !important;
+  border: 2px solid var(--theme-bg-accent) !important;
+}
+
+.wp-block-woocommerce-product-categories {
+  margin-top: 0 !important;
+  overflow: clip;
+}
+.wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  gap: 1em;
+  margin: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+.wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 li {
+  margin: 0 !important;
+  background-color: var(--theme-bg-accent) !important;
+  padding: 0.5em;
+  border: 1px solid var(--theme-border);
+  border-radius: var(--border-radius);
+  text-align: center;
+}
+.wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 li > a {
+  display: block;
+  text-decoration: none;
+}
+.wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 li > a .wc-block-product-categories-list-item__image {
+  display: block !important;
+  width: 7em;
+  max-width: 10em;
+  margin: 0;
 }
 
 @media (min-width: 768px) {

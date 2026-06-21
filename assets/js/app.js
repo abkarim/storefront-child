@@ -99,6 +99,52 @@
     });
   });
 
+  // assets/ts/categoriesScroller.ts
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(
+      ".wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0"
+    );
+    if (!container) return;
+    let scrollInterval = null;
+    const scrollSpeed = 2;
+    const intervalTime = 30;
+    const lastTarget = container.scrollWidth - container.clientWidth;
+    function startAutoScroll() {
+      container.scrollLeft += scrollSpeed;
+      if (lastTarget !== container.scrollLeft) {
+        scrollInterval = setTimeout(startAutoScroll, intervalTime);
+      } else {
+        container.scrollLeft = 0;
+        scrollInterval = setTimeout(startAutoScroll, 1e3);
+      }
+    }
+    function stopAutoScroll() {
+      if (scrollInterval) {
+        clearTimeout(scrollInterval);
+        scrollInterval = null;
+      }
+    }
+    container.addEventListener("mouseenter", stopAutoScroll);
+    container.addEventListener("mouseleave", startAutoScroll);
+    const observerOptions = {
+      root: null,
+      threshold: 0.05
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startAutoScroll();
+          } else {
+            stopAutoScroll();
+          }
+        });
+      },
+      observerOptions
+    );
+    observer.observe(container);
+  });
+
   // assets/ts/app.ts
   var wpadminbar = document.getElementById("wpadminbar");
   if (wpadminbar) {
