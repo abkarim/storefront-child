@@ -6,6 +6,9 @@ class Layout
 {
     public function __construct()
     {
+
+        add_filter('woocommerce_get_country_locale', [$this, 'sf_blocks_checkout_hide_fields']);
+
         add_action('wp', [$this, "reposition_storefront_page_title"]);
 
         add_action("wp_head", [$this, "apply_styles"]);
@@ -43,6 +46,30 @@ class Layout
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
     }
 
+    public function sf_blocks_checkout_hide_fields($locale)
+    {
+        // Apply globally to all active countries on your site
+        foreach ($locale as $country_code => $fields) {
+
+            // Hide Company
+            $locale[$country_code]['company']['hidden']   = true;
+            $locale[$country_code]['company']['required'] = false;
+
+            // Hide Postcode/ZIP
+            $locale[$country_code]['postcode']['hidden']   = true;
+            $locale[$country_code]['postcode']['required'] = false;
+
+            // Hide City
+            $locale[$country_code]['city']['hidden']   = true;
+            $locale[$country_code]['city']['required'] = false;
+
+            // Hide Apartment/Suite (Address Line 2)
+            $locale[$country_code]['address_2']['hidden']   = true;
+            $locale[$country_code]['address_2']['required'] = false;
+        }
+
+        return $locale;
+    }
 
     public function add_checkout_button()
     {

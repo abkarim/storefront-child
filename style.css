@@ -722,6 +722,16 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
   padding: 1em;
   border: 1px solid var(--theme-border);
 }
+.woocommerce .woocommerce-order .woocommerce-order-overview,
+.woocommerce .woocommerce-order .woocommerce-order-details {
+  background-color: var(--theme-bg-accent) !important;
+  border: 1px solid var(--theme-border) !important;
+  padding: 1em;
+}
+
+form.wc-block-checkout__form .wc-block-components-address-form__country {
+  display: none;
+}
 
 @media (min-width: 768px) {
   .col-full {
