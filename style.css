@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.1.5
+Version: 1.1.6
 Text Domain: storefront-child
 */
 :root {
@@ -53,6 +53,11 @@ button,
 .button {
   color: var(--theme-button-text) !important;
   background-color: var(--theme-button-bg) !important;
+}
+button.sf-buy-now-button,
+.wp-element-button.sf-buy-now-button,
+.button.sf-buy-now-button {
+  margin-left: 1em;
 }
 button.wc-forward,
 .wp-element-button.wc-forward,

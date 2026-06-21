@@ -28,7 +28,8 @@ class Layout
         add_action('woocommerce_after_single_product_summary', [$this, 'sf_child_close_custom_product_wrapper'], 5);
 
 
-
+        add_action('woocommerce_single_product_summary', [$this, 'add_custom_delivery_details'], 38);
+        add_action('woocommerce_after_add_to_cart_button', [$this, 'add_checkout_button']);
 
         // disable storefront's default header elements since we're replacing them with a custom template part
         remove_action('storefront_header', 'storefront_site_branding', 20);
@@ -40,6 +41,44 @@ class Layout
         add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
 
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
+    }
+
+
+    public function add_checkout_button()
+    {
+        global $product;
+
+        // Direct checkout is only straightforward for simple products via URL parameters
+        if (! $product || ! $product->is_type('simple') || ! $product->is_purchasable() || ! $product->is_in_stock()) {
+            return;
+        }
+
+        // Get the clean checkout page link address dynamically
+        $checkout_url = wc_get_checkout_url();
+
+        // Append the direct add-to-cart parameter array mapping
+        $buy_now_url = add_query_arg('add-to-cart', $product->get_id(), $checkout_url);
+
+        // Output a semantic HTML anchor button block
+        echo sprintf(
+            '<a href="%s" class="button alt sf-buy-now-button">%s</a>',
+            esc_url($buy_now_url),
+            esc_html__('Buy Now', 'storefront-child')
+        );
+    }
+
+    public function add_custom_delivery_details()
+    {
+        global $product;
+
+        // Optional Guard: Drop out early if the product object isn't available
+        if (! $product) {
+            return;
+        }
+
+        if (is_active_sidebar('sf-child-product-delivery-widget')) {
+            dynamic_sidebar('sf-child-product-delivery-widget');
+        }
     }
 
     public function sf_child_remove_handheld_footer_bar()
