@@ -44,6 +44,54 @@ class Layout
         add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
 
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
+
+        add_action('woocommerce_before_shop_loop', [$this, 'display_category_hero_header'], 2);
+    }
+
+    public function display_category_hero_header()
+    {
+        // Drop out immediately if this is a general shop page or search page, instead of a category grid
+        if (! is_product_category()) {
+            return;
+        }
+
+        $current_category = get_queried_object();
+        if (! $current_category) {
+            return;
+        }
+
+        // Get the category image
+        $thumbnail_id = get_term_meta($current_category->term_id, 'thumbnail_id', true);
+        $image_html   = '';
+
+        if ($thumbnail_id) {
+            // Output an optimized, accessible HTML image element component
+            $image_html = wp_get_attachment_image($thumbnail_id, 'thumbnail', false, array(
+                'class' => 'sf-cat-header-img',
+                'alt'   => esc_attr($current_category->name),
+            ));
+        }
+
+?>
+        <div class="sf-clean-category-header-block">
+
+            <?php if (! empty($image_html)) : ?>
+                <div class="sf-cat-header-image-wrapper">
+                    <?php echo $image_html; ?>
+                </div>
+            <?php endif; ?>
+
+            <div class="sf-cat-header-text-content">
+                <h1 class="sf-cat-header-title"><?php single_term_title(); ?></h1>
+                <?php if (! empty($current_category->description)) : ?>
+                    <div class="sf-cat-header-desc">
+                        <?php echo wp_kses_post(wpautop($current_category->description)); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+
+        </div>
+    <?php
     }
 
     public function sf_blocks_checkout_hide_fields($locale)
@@ -129,7 +177,7 @@ class Layout
 
         // Capture layout output safely
         ob_start();
-?>
+    ?>
         <div class="sf-compare-page-content">
             <div id="sf-compare-empty" class="sf-compare-status-notice">
                 <p><?php esc_html_e('Your product comparison canvas is currently empty.', 'storefront-child'); ?></p>
