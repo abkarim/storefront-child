@@ -42,10 +42,135 @@ class Layout
          * Register the [woocommerce_sf_child_compare_products] Shortcode
          */
         add_shortcode('woocommerce_sf_child_compare_products', [$this, 'sf_child_render_compare_page_content']);
+        add_shortcode('track_order_via_phone_sf_child', [$this, 'track_order_via_phone']);
+        add_action('wp_ajax_sf_process_phone_only_order_tracking', [$this, 'track_order_via_phone_handler']);
+        add_action('wp_ajax_nopriv_sf_process_phone_only_order_tracking', [$this, 'track_order_via_phone_handler']);
 
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
 
         add_action('woocommerce_before_shop_loop', [$this, 'display_category_hero_header'], 2);
+    }
+
+    public function track_order_via_phone_handler()
+    {
+        // Nonce verification check
+        if (! isset($_POST['security']) || ! wp_verify_nonce($_POST['security'], 'sf_phone_only_track_nonce_action')) {
+            echo '<p class="sf-track-error">Security check failed. Please refresh the page.</p>';
+            wp_die();
+        }
+
+        // Clean up incoming phone input format
+        $input_phone = isset($_POST['billing_phone']) ? preg_replace('/\D/', '', $_POST['billing_phone']) : '';
+
+        if (empty($input_phone)) {
+            echo '<p class="sf-track-error">Please enter a valid phone number.</p>';
+            wp_die();
+        }
+
+        // High performance WooCommerce Query to locate orders matching this billing phone key
+        $order_query = new \WC_Order_Query(array(
+            'limit'         => 10, // Adjust to pull more or fewer records per scan cycle
+            'orderby'       => 'date',
+            'order'         => 'DESC',
+            'billing_phone' => $input_phone,
+        ));
+
+        $orders = $order_query->get_orders();
+
+        if (empty($orders)) {
+            echo '<p class="sf-track-error">No order history found associated with that phone number.</p>';
+            wp_die();
+        }
+
+        echo sprintf('<p class="sf-tracker-count">Found <strong>%d</strong> order(s) matching your records:</p>', count($orders));
+
+        // Loop through discovered order histories and print details
+        foreach ($orders as $order) :
+            $order_id     = $order->get_id();
+            $status_label = wc_get_order_status_name($order->get_status());
+            $date_created = wc_format_datetime($order->get_date_created());
+            $order_total  = $order->get_formatted_order_total();
+?>
+            <div class="sf-track-order-card">
+
+                <div class="sf-track-card-meta info">
+                    <p><strong>Date:</strong> <?php echo esc_html($date_created); ?></p>
+                    <p><strong>Status - </strong><span class="sf-card-status status-<?php echo esc_attr($order->get_status()); ?>"><?php echo esc_html($status_label); ?></span></p>
+                </div>
+
+                <div class="sf-track-card-header info">
+                    <p><strong>Order #</strong><?php echo esc_html($order_id); ?></p>
+                    <p><strong>Total Amount:</strong> <?php echo wp_kses_post($order_total); ?></p>
+                </div>
+
+                <table class="sf-track-items-table">
+                    <thead>
+                        <tr>
+                            <th>Product Items</th>
+                            <th style="width: 50px; text-align: center;">Qty</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($order->get_items() as $item_id => $item) : ?>
+                            <tr>
+                                <td><?php echo esc_html($item->get_name()); ?></td>
+                                <td style="text-align: center;"><?php echo esc_html($item->get_quantity()); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php
+        endforeach;
+
+        wp_die();
+    }
+
+    public function track_order_via_phone()
+    {
+        wp_enqueue_script('jquery');
+
+        ob_start();
+        ?>
+        <div class="sf-order-tracker-container">
+            <form id="sf-phone-tracker-form" method="post">
+                <div class="sf-tracker-input-group">
+                    <input type="tel" id="tracker_phone" name="billing_phone" placeholder="01XXXXXXXXX" required />
+                </div>
+
+                <?php wp_nonce_field('sf_phone_only_track_nonce_action', 'sf_phone_only_track_nonce'); ?>
+                <button type="submit" class="button alt" id="sf-tracker-submit-btn"><?php esc_html_e('Find My Orders', 'storefront-child'); ?></button>
+            </form>
+
+            <div id="sf-tracker-results" class="sf-tracker-results-box" style="display:none;"></div>
+        </div>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('#sf-phone-tracker-form').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var resultBox = $('#sf-tracker-results');
+                    var submitBtn = $('#sf-tracker-submit-btn');
+
+                    submitBtn.prop('disabled', true).text('Searching...');
+                    resultBox.hide().html('');
+
+                    var formData = {
+                        action: 'sf_process_phone_only_order_tracking',
+                        billing_phone: $('#tracker_phone').val(),
+                        security: $('#sf_phone_only_track_nonce').val()
+                    };
+
+                    $.post('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', formData, function(response) {
+                        submitBtn.prop('disabled', false).text('Find My Orders');
+                        resultBox.html(response).fadeIn(300);
+                    });
+                });
+            });
+        </script>
+    <?php
+        return ob_get_clean();
     }
 
     public function display_category_hero_header()
@@ -72,7 +197,7 @@ class Layout
             ));
         }
 
-?>
+    ?>
         <div class="sf-clean-category-header-block">
 
             <?php if (! empty($image_html)) : ?>

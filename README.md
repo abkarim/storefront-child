@@ -19,12 +19,20 @@ Next steps:
 - Describe which features you'd like (shortcodes, widgets, template overrides) and I'll implement them.
 
 ## Features 
+
+### Order Tracking 
+Track order via phone number 
+
+#### Create a page name `Track Order`
+
+#### Add shortcode [track_order_via_phone_sf_child]
+
 ### Product
 - added option to show discount percentage instead of on sale (accessible from theme customize )
 - layout editor (accessible from theme customize )
 <img width="1358" height="631" alt="image" src="https://github.com/user-attachments/assets/9a09717f-c5d1-438f-b7e8-4cfb290af0a9" />
 
-- Hided view cart button after adding to cart in button
+- Disabled view cart button after adding to cart via button
 
 ### Compare page
 <img width="1357" height="676" alt="image" src="https://github.com/user-attachments/assets/9d1fe7bc-24f0-4f92-8378-3da641ba04a6" />

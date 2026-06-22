@@ -907,6 +907,45 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
   }
 }
 
+.sf-order-tracker-container form#sf-phone-tracker-form {
+  background-color: var(--theme-bg-accent);
+  padding: 1em;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.sf-order-tracker-container form#sf-phone-tracker-form .sf-tracker-input-group {
+  width: 100%;
+}
+.sf-order-tracker-container form#sf-phone-tracker-form .sf-tracker-input-group input {
+  border: none;
+  outline: none;
+  border-radius: var(--border-radius);
+  width: 100%;
+}
+.sf-order-tracker-container form#sf-phone-tracker-form button {
+  white-space: nowrap;
+  border-radius: var(--border-radius);
+}
+.sf-order-tracker-container #sf-tracker-results .sf-tracker-count,
+.sf-order-tracker-container #sf-tracker-results .sf-track-order-card {
+  padding: 1em;
+  border-radius: var(--border-radius);
+  background-color: var(--theme-bg-accent);
+  margin: 0;
+  margin-bottom: 1em;
+}
+.sf-order-tracker-container #sf-tracker-results .sf-tracker-count .info,
+.sf-order-tracker-container #sf-tracker-results .sf-track-order-card .info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.sf-order-tracker-container #sf-tracker-results table {
+  border: 1px solid var(--theme-border);
+}
+
 @media (min-width: 768px) {
   .col-full {
     max-width: 85em;

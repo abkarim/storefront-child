@@ -25,9 +25,8 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
 
         <div class="utility-icon-link items-track-order">
             <?php
-            // Generates fallback to your account dashboard page if a custom track page isn't assigned yet
-            $track_order_url = class_exists('WooCommerce') ? wc_get_endpoint_url('orders', '', get_permalink(get_option('woocommerce_myaccount_page_id'))) : '#';
-
+            $track_order = get_page_by_path('track-orders');
+            $track_order_url  = $track_order ? get_permalink($track_order->ID) : '#';
             ?>
             <a href="<?php echo esc_url($track_order_url); ?>" title="<?php esc_attr_e('Track Your Order', 'storefront-child'); ?>">
                 <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">

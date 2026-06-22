@@ -971,6 +971,53 @@ form.wc-block-checkout__form {
     }
 }
 
+.sf-order-tracker-container {
+    form#sf-phone-tracker-form {
+        background-color: var(--theme-bg-accent);
+        padding: 1em;
+        border-radius: var(--border-radius);
+        display: flex;
+        align-items: center;
+        gap: 1em;
+
+        .sf-tracker-input-group {
+            width: 100%;
+            input {
+                border: none;
+                outline: none;
+                border-radius: var(--border-radius);
+                width: 100%;
+            }
+        }
+
+        button {
+            white-space: nowrap;
+            border-radius: var(--border-radius);
+        }
+    }
+
+    #sf-tracker-results {
+        .sf-tracker-count,
+        .sf-track-order-card {
+            padding: 1em;
+            border-radius: var(--border-radius);
+            background-color: var(--theme-bg-accent);
+            margin: 0;
+            margin-bottom: 1em;
+
+            .info {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+        }
+
+        table {
+            border: 1px solid var(--theme-border);
+        }
+    }
+}
+
 @media (min-width: 768px) {
     .col-full {
         max-width: 85em;
