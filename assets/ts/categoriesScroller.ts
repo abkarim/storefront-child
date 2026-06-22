@@ -52,18 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    function handlePointerMove(event: PointerEvent): void {
-        if (!moving || !container) return;
-
-        // Calculate the distance the pointer has moved since the last frame
-        const currentX = event.clientX;
-        const walkX = currentX - startX;
-
-        // Update the scroll position relative to the initial touch point
-        // Multiplying walkX changes the tracking speed (e.g., 1.5 makes it more responsive)
-        container.scrollLeft = startScrollLeft - walkX;
-    }
-
     container.addEventListener("pointerdown", (e: PointerEvent) => {
         // Only drag with primary mouse button click or touch input
         if (e.button !== 0) return;
@@ -76,8 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         startX = e.clientX;
         currentX = e.clientX;
         startScrollLeft = container.scrollLeft;
-
-        container.setPointerCapture(e.pointerId);
     });
     container.addEventListener("pointermove", (e) => {
         stopAutoScroll();
@@ -100,12 +86,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const handlePointerRelease = (event: PointerEvent): void => {
         if (!moving) return;
         moving = false;
-
-        try {
-            container.releasePointerCapture(event.pointerId);
-        } catch (e) {
-            // Fallback catch if the element was detached mid-drag instance
-        }
 
         // Cooldown timer sequence before auto-scroller regains system control
         scrollInterval = setTimeout(() => {

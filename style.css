@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.1.7
+Version: 1.1.8
 Text Domain: storefront-child
 */
 :root {
@@ -130,6 +130,10 @@ img {
   font-weight: bold !important;
 }
 
+.star-rating span::before {
+  color: var(--theme-link-hover) !important;
+}
+
 .storefront-sticky-add-to-cart {
   background-color: var(--theme-bg-accent) !important;
   color: var(--theme-text) !important;
@@ -198,6 +202,9 @@ ul.products li:not(.product-category).product {
   display: flex;
   flex-direction: column;
   box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+}
+ul.products li:not(.product-category).product .star-rating {
+  margin: 0 !important;
 }
 @media (max-width: 1024px) {
   ul.products li:not(.product-category).product {

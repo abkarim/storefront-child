@@ -141,12 +141,6 @@
         scrollInterval = null;
       }
     }
-    function handlePointerMove(event) {
-      if (!moving || !container) return;
-      const currentX2 = event.clientX;
-      const walkX = currentX2 - startX;
-      container.scrollLeft = startScrollLeft - walkX;
-    }
     container.addEventListener("pointerdown", (e) => {
       if (e.button !== 0) return;
       stopAutoScroll();
@@ -155,7 +149,6 @@
       startX = e.clientX;
       currentX = e.clientX;
       startScrollLeft = container.scrollLeft;
-      container.setPointerCapture(e.pointerId);
     });
     container.addEventListener("pointermove", (e) => {
       stopAutoScroll();
@@ -174,10 +167,6 @@
     const handlePointerRelease = (event) => {
       if (!moving) return;
       moving = false;
-      try {
-        container.releasePointerCapture(event.pointerId);
-      } catch (e) {
-      }
       scrollInterval = setTimeout(() => {
         startAutoScroll();
       }, delayAfterActivityInMS);
