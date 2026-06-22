@@ -23,7 +23,7 @@ Next steps:
 ### Order Tracking 
 Track order via phone number 
 
-#### Create a page name `Track Order`
+#### Create a page name `Track Orders`
 <img width="1294" height="540" alt="image" src="https://github.com/user-attachments/assets/f369a557-8c7d-4304-a8ba-4a17e888e370" />
 
 #### Add shortcode [track_order_via_phone_sf_child]
