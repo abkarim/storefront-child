@@ -102,7 +102,7 @@
   // assets/ts/categoriesScroller.ts
   document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector(
-      ".wp-block-woocommerce-product-categories ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0"
+      ".wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0"
     );
     if (!container) return;
     let moving = false;

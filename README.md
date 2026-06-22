@@ -33,6 +33,9 @@ Next steps:
 
 #### Add shortcode [woocommerce_sf_child_compare_products]
 
+### Categories 
+add product categories list via wp block editor in page. Add `slide` class to animate it
+
 ### File type 
 - added svg upload
 
