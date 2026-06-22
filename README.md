@@ -37,6 +37,10 @@ Next steps:
 add product categories list via wp block editor in page. Add `slide` class to animate it
 <img width="1317" height="262" alt="image" src="https://github.com/user-attachments/assets/3a20549b-48bc-463e-8eee-cb15775d4e7a" />
 
+### Category archive 
+shows category info on browse product by category page
+<img width="1318" height="544" alt="image" src="https://github.com/user-attachments/assets/fb1cc3dd-edec-4d74-988c-5984f1a8149b" />
+
 
 ### File type 
 - added svg upload
