@@ -454,6 +454,29 @@ ul.wp-block-woocommerce-product-template {
                         font-size: 2rem;
                     }
                 }
+
+                form {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    gap: 1em;
+
+                    &::before,
+                    &::after {
+                        display: none;
+                    }
+
+                    & > * {
+                        margin: 0 !important;
+
+                        @media (max-width: 400px) {
+                            &:not(.quantity),
+                            input {
+                                padding: 0.5em;
+                            }
+                        }
+                    }
+                }
             }
 
             span.onsale {
@@ -869,5 +892,11 @@ form.wc-block-checkout__form {
 @media (min-width: 768px) {
     .col-full {
         max-width: 85em;
+    }
+}
+
+@media (max-width: 767px) {
+    .col-full {
+        margin-inline: 1em !important;
     }
 }
