@@ -17,6 +17,116 @@ class Customization
         add_filter('woocommerce_sale_badge_text', [$this, 'custom_sale_badge_text'], 10, 2);
 
         add_action('widgets_init', [$this, 'sf_register_product_delivery_widget_zone']);
+
+        // Add header image section in category for woocommerce
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_scripts']);
+        add_action('product_cat_add_form_fields', [$this, 'add_category_header_image_field'], 20, 2);
+        add_action('product_cat_edit_form_fields', [$this, 'edit_category_header_image_field'], 20, 2);
+        add_action('created_product_cat', [$this, 'save_product_cat_header_image']);
+        add_action('edited_product_cat', [$this, 'save_product_cat_header_image']);
+    }
+
+    function save_product_cat_header_image($term_id)
+    {
+        if (isset($_POST['header-image'])) {
+            update_term_meta($term_id, 'header-image', sanitize_text_field($_POST['header-image']));
+        }
+    }
+
+    public function add_category_header_image_field()
+    {
+?>
+        <div class="form-field term-header-image-wrap">
+            <label for="header-image-id"><?php _e('Header Image', 'storefront-child'); ?></label>
+            <input type="hidden" id="header-image-id" name="header-image" value="">
+            <div id="header-image-wrapper" style="margin-bottom: 10px;">
+                <img id="header-image-preview" src="" style="max-width: 150px; display: none;" />
+            </div>
+            <p>
+                <button type="button" class="button upload-header-image-button"><?php _e('Header Image', 'storefront-child'); ?></button>
+                <button type="button" class="button remove-header-image-button" style="display:none;"><?php _e('Remove Image', 'storefront-child'); ?></button>
+            </p>
+        </div>
+    <?php
+    }
+
+    public function edit_category_header_image_field($term)
+    {
+        $image_id = get_term_meta($term->term_id, 'header-image', true);
+        $image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+    ?>
+        <tr class="form-field term-header-image-wrap">
+            <th scope="row"><label for="header-image-id"><?php _e('Header Image', 'storefront-child'); ?></label></th>
+            <td>
+                <input type="hidden" id="header-image-id" name="header-image" value="<?php echo esc_attr($image_id); ?>">
+                <div id="header-image-wrapper" style="margin-bottom: 10px;">
+                    <img id="header-image-preview" src="<?php echo esc_url($image_url); ?>" style="max-width: 150px; display: <?php echo $image_url ? 'block' : 'none'; ?>;" />
+                </div>
+                <p>
+                    <button type="button" class="button upload-header-image-button"><?php _e('Header Image', 'storefront-child'); ?></button>
+                    <button type="button" class="button remove-header-image-button" style="<?php echo $image_url ? '' : 'display:none;'; ?>"><?php _e('Remove Image', 'storefront-child'); ?></button>
+                </p>
+            </td>
+        </tr>
+        <?php
+    }
+
+    public function enqueue_admin_scripts($hook)
+    {
+        if ('edit-tags.php' === $hook || 'term.php' === $hook) {
+            $screen = get_current_screen();
+            if ($screen && 'product_cat' === $screen->taxonomy) {
+                // Force-load native WordPress Media Library assets
+                wp_enqueue_media();
+
+                // Inject script directly into footer so jQuery and wp.media are fully loaded
+                add_action('admin_footer', function () {
+        ?>
+                    <script type="text/javascript">
+                        jQuery(document).ready(function($) {
+                            var frame;
+
+                            $(document).on('click', '.upload-header-image-button', function(e) {
+                                e.preventDefault();
+
+                                // Re-use frame if already created
+                                if (frame) {
+                                    frame.open();
+                                    return;
+                                }
+
+                                // Create the media frame
+                                frame = wp.media({
+                                    title: 'Select or Upload Header Image',
+                                    button: {
+                                        text: 'Use this image'
+                                    },
+                                    multiple: false
+                                });
+
+                                // When an image is selected, run callback
+                                frame.on('select', function() {
+                                    var attachment = frame.state().get('selection').first().toJSON();
+                                    $('#header-image-id').val(attachment.id);
+                                    $('#header-image-preview').attr('src', attachment.url).show();
+                                    $('.remove-header-image-button').show();
+                                });
+
+                                frame.open();
+                            });
+
+                            $(document).on('click', '.remove-header-image-button', function(e) {
+                                e.preventDefault();
+                                $('#header-image-id').val('');
+                                $('#header-image-preview').attr('src', '').hide();
+                                $(this).hide();
+                            });
+                        });
+                    </script>
+        <?php
+                });
+            }
+        }
     }
 
     public function sf_register_product_delivery_widget_zone()
@@ -130,7 +240,7 @@ class Customization
         $button_hover_bg = get_theme_mod('sf_child_logo_button_hover_bg_color', '#0f0f0f');
 
         $palette_json = [$text, $text_accent, $link, $link_hover, $bg, $bg_accent, $border, $button_text, $button_bg, $button_hover_text, $button_hover_bg];
-?>
+        ?>
         <script type="text/javascript" id="sf-child-global-iris-override">
             jQuery(document).ready(function($) {
                 $('.wp-picker-container').iris({
