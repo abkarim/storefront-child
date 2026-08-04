@@ -181,17 +181,17 @@ class Layout
         }
 
         $current_category = get_queried_object();
-        if (! $current_category) {
+        if (! $current_category || !isset($current_category->term_id)) {
             return;
         }
 
         // Get the category image
-        $thumbnail_id = get_term_meta($current_category->term_id, 'thumbnail_id', true);
+        $image_id = get_term_meta($current_category->term_id, 'header-image', true);
         $image_html   = '';
 
-        if ($thumbnail_id) {
+        if ($image_id) {
             // Output an optimized, accessible HTML image element component
-            $image_html = wp_get_attachment_image($thumbnail_id, 'thumbnail', false, array(
+            $image_html = wp_get_attachment_image($image_id, 'full', false, array(
                 'class' => 'sf-cat-header-img',
                 'alt'   => esc_attr($current_category->name),
             ));
