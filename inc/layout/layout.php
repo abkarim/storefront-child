@@ -199,22 +199,11 @@ class Layout
 
     ?>
         <div class="sf-clean-category-header-block">
-
             <?php if (! empty($image_html)) : ?>
                 <div class="sf-cat-header-image-wrapper">
                     <?php echo $image_html; ?>
                 </div>
             <?php endif; ?>
-
-            <div class="sf-cat-header-text-content">
-                <h1 class="sf-cat-header-title"><?php single_term_title(); ?></h1>
-                <?php if (! empty($current_category->description)) : ?>
-                    <div class="sf-cat-header-desc">
-                        <?php echo wp_kses_post(wpautop($current_category->description)); ?>
-                    </div>
-                <?php endif; ?>
-            </div>
-
         </div>
     <?php
     }
