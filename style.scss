@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.1.10
+Version: 1.2.0
 Text Domain: storefront-child
 */
 
@@ -929,46 +929,12 @@ form.wc-block-checkout__form {
 }
 
 .sf-clean-category-header-block {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 1em;
-    background-color: var(--theme-bg-accent);
-    padding: 1em;
-    border-radius: var(--border-radius);
-
-    @media (max-width: 500px) {
-        flex-direction: column;
-    }
-
     .sf-cat-header-image-wrapper {
-        width: 20%;
-
-        @media (max-width: 1024px) {
-            width: 30%;
-        }
-        @media (max-width: 767px) {
-            width: 50%;
-        }
-
-        @media (max-width: 500px) {
-            width: 100%;
-            max-width: 15em;
-        }
+        width: 100%;
+        height: 100%;
+        aspect-ratio: 250 / 37;
     }
-
-    .sf-cat-header-text-content {
-        width: 80%;
-        @media (max-width: 1024px) {
-            width: 70%;
-        }
-        @media (max-width: 767px) {
-            width: 50%;
-        }
-        @media (max-width: 500px) {
-            width: 100%;
-        }
-    }
+    overflow: hidden;
 }
 
 .sf-order-tracker-container {
