@@ -159,6 +159,10 @@ img {
   display: none !important;
 }
 
+.woocommerce-no-products-found {
+  margin-top: 1em;
+}
+
 ul.wc-block-grid__products {
   gap: 0.5em !important;
 }

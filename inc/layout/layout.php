@@ -48,7 +48,7 @@ class Layout
 
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
 
-        add_action('woocommerce_before_shop_loop', [$this, 'display_category_hero_header'], 2);
+        add_action('woocommerce_before_main_content', [$this, 'display_category_hero_header'], 2);
     }
 
     public function track_order_via_phone_handler()
