@@ -450,6 +450,12 @@ ul.wp-block-woocommerce-product-template {
   margin: 0 !important;
 }
 
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .sf-custom-product-delivery-details {
+  margin: 0 !important;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .sf-custom-product-delivery-details figure {
+  border-bottom: 0 !important;
+}
 .single .product .sf-custom-product-gallery-summary-layout-wrapper {
   margin-bottom: 2em;
   display: flex;
@@ -466,6 +472,17 @@ ul.wp-block-woocommerce-product-template {
   float: none !important;
   width: 100% !important;
   margin: 0 !important;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .woocommerce-product-gallery {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row-reverse;
+  gap: 2%;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .woocommerce-product-gallery .flex-viewport {
+  width: 88% !important;
+  border-bottom: 2px solid var(--theme-border) !important;
+  border-left: 2px solid var(--theme-border) !important;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary p.price {
   display: none;
@@ -503,18 +520,21 @@ ul.wp-block-woocommerce-product-template {
   display: none;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs {
+  width: 10% !important;
   display: flex;
-  gap: 0.5em;
+  flex-direction: column;
+  gap: 1em;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li {
   margin: 0 !important;
+  width: 100% !important;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li img {
   opacity: 1 !important;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper ol.flex-control-thumbs > li img.flex-active {
   opacity: 0.9 !important;
-  border: 2px solid var(--theme-border) !important;
+  outline: 4px solid var(--theme-border) !important;
 }
 .single .product .woocommerce-tabs.wc-tabs-wrapper {
   display: flex;
