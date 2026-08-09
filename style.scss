@@ -243,7 +243,7 @@ ul.wc-block-grid__products {
 
             h2 {
                 margin-top: 0.5em;
-                font-size: 1.2rem;
+                font-size: clamp(1rem, 1rem + 1vw, 1.2rem);
             }
 
             &:hover {
@@ -372,7 +372,7 @@ ul.wc-block-grid__products {
     .wp-block-woocommerce-product-price {
         text-align: left !important;
         margin-block: 0.5em !important;
-        font-size: 1.5rem !important;
+        font-size: clamp(1.1rem, 1rem + 1vw, 1.5rem) !important;
         position: relative;
         width: fit-content;
 
@@ -459,6 +459,10 @@ ul.wp-block-woocommerce-product-template {
                 flex-direction: row-reverse;
                 gap: 2%;
 
+                .woocommerce-product-gallery__wrapper {
+                    width: 100%;
+                }
+
                 .flex-viewport {
                     width: 88% !important;
                     border-bottom: 2px solid var(--theme-border) !important;
@@ -483,7 +487,7 @@ ul.wp-block-woocommerce-product-template {
                     }
 
                     ins {
-                        font-size: 2rem;
+                        font-size: clamp(1.5rem, 1rem + 2vw, 2rem);
                     }
                 }
 
