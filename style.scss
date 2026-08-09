@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.1
+Version: 1.2.2
 Text Domain: storefront-child
 */
 
@@ -826,7 +826,7 @@ header.site-header {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 1em;
         margin: 0;
         overflow-x: auto;
