@@ -265,6 +265,10 @@ ul.wc-block-grid__products {
                 flex-direction: column;
                 gap: 0.5em;
 
+                @media (max-width: 767px) {
+                    right: 10px !important;
+                }
+
                 .sf-archive-btn {
                     text-decoration: none;
                     background-color: var(--theme-bg-accent);
