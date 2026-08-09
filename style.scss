@@ -14,6 +14,7 @@ Text Domain: storefront-child
     --danger-button-hover-bg: #d11f31;
     --danger-button-color: #ffffff;
     --danger-button-hover-color: #ffffff;
+    --desktop-breakpoint: 1024px;
 }
 
 body {
@@ -790,8 +791,9 @@ header.site-header {
 
     ul.wc-block-product-categories-list {
         display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
         gap: 1em;
         margin: 0;
         overflow-x: auto;
@@ -799,12 +801,23 @@ header.site-header {
         scroll-behavior: smooth;
 
         li {
+            width: calc(25% - 1em);
             margin: 0 !important;
             background-color: var(--theme-bg-accent) !important;
             padding: 0.5em;
             border-radius: var(--border-radius);
             text-align: center;
             box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.1);
+
+            @media (max-width: 1024px) {
+                width: calc(33.3% - 1em) !important;
+            }
+            @media (max-width: 767px) {
+                width: calc(50% - 1em) !important;
+            }
+            @media (max-width: 480px) {
+                width: calc(100%) !important;
+            }
 
             &:hover {
                 & > a > .wc-block-product-categories-list-item__image img {
@@ -818,7 +831,6 @@ header.site-header {
                 user-drag: none;
 
                 color: var(--wp--preset--color--theme-link);
-                display: flex;
                 gap: 1em;
 
                 .wc-block-product-categories-list-item__image {
@@ -826,26 +838,12 @@ header.site-header {
                     pointer-events: none;
                     display: block !important;
                     width: 100%;
-                    max-width: 10em;
+                    max-width: 100%;
                     margin: 0 !important;
                     margin-inline: auto;
 
                     img {
                         transition: transform 0.5s;
-                    }
-                }
-            }
-
-            ul {
-                flex-direction: row;
-                padding: 1em;
-                margin-block: 1em;
-                background-color: var(--theme-bg);
-                border-radius: var(--border-radius);
-
-                li {
-                    & > a {
-                        display: block !important;
                     }
                 }
             }
