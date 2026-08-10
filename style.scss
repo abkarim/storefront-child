@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.2
+Version: 1.2.3
 Text Domain: storefront-child
 */
 
@@ -226,7 +226,7 @@ ul.wc-block-grid__products {
             @media (max-width: 767px) {
                 max-width: calc(50% - 1em) !important;
             }
-            @media (max-width: 480px) {
+            @media (max-width: 337px) {
                 max-width: calc(100%) !important;
             }
 
@@ -267,6 +267,15 @@ ul.wc-block-grid__products {
 
                 @media (max-width: 767px) {
                     right: 10px !important;
+                }
+
+                @media (max-width: 767px) {
+                    top: 50px !important;
+                }
+
+                @media (max-width: 400px) {
+                    gap: 0.2em !important;
+                    top: 40px !important;
                 }
 
                 .sf-archive-btn {
@@ -770,20 +779,43 @@ header.site-header {
 .storefront-sorting {
     margin-block: 1.5em;
 
+    &:last-of-type {
+        .woocommerce-ordering {
+            display: none !important;
+        }
+    }
+
+    &:first-of-type {
+        .woocommerce-result-count {
+            display: none !important;
+        }
+
+        .woocommerce-pagination {
+            display: none !important;
+        }
+    }
+
     .orderby {
-        padding: 0.25em;
         background-color: var(--theme-bg-accent) !important;
         border-color: var(--theme-border);
+        border-radius: var(--border-radius);
+        padding: 0.5em;
     }
 
     ul.page-numbers li {
         .page-numbers {
             background-color: var(--theme-bg-accent) !important;
             color: var(--theme-text) !important;
+            border-radius: var(--border-radius);
 
             &.current {
                 background-color: var(--theme-bg) !important;
                 border: 2px solid var(--theme-bg-accent) !important;
+            }
+
+            &.prev,
+            &.next {
+                color: var(--theme-link) !important;
             }
         }
     }
