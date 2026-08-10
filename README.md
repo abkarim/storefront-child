@@ -47,8 +47,15 @@ add product categories list via wp block editor in page. Add `slide` class to an
 <img width="1317" height="262" alt="image" src="https://github.com/user-attachments/assets/3a20549b-48bc-463e-8eee-cb15775d4e7a" />
 
 ### Category archive 
-shows category info on browse product by category page
-<img width="1318" height="544" alt="image" src="https://github.com/user-attachments/assets/fb1cc3dd-edec-4d74-988c-5984f1a8149b" />
+###### Shows category header image category page 
+
+<img width="1300" height="475" alt="image" src="https://github.com/user-attachments/assets/5fdf6b3f-77f2-419a-9e72-2c604e240a38" />
+
+###### Upload image to category image section \n
+
+<img width="619" height="559" alt="image" src="https://github.com/user-attachments/assets/441c75b1-fa3e-49cf-b8e3-1f84de259adb" />
+
+
 
 
 ### File type 
