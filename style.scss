@@ -954,6 +954,10 @@ header.site-header {
         }
     }
 
+    .wc-block-components-product-metadata {
+        display: none !important;
+    }
+
     .wc-block-components-product-name {
         color: var(--theme-text);
     }
@@ -968,6 +972,10 @@ header.site-header {
         color: var(--danger-button-color) !important;
         border-radius: var(--border-radius) !important;
     }
+
+    .wc-block-cart__submit-button {
+        border-radius: var(--border-radius) !important;
+    }
 }
 
 .wc-block-checkout {
@@ -976,6 +984,14 @@ header.site-header {
         background-color: var(--theme-bg-accent);
         padding: 1em;
         border: 1px solid var(--theme-border);
+    }
+
+    .wc-block-components-product-metadata {
+        display: none !important;
+    }
+
+    button {
+        border-radius: var(--border-radius) !important;
     }
 }
 
