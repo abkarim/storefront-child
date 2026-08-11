@@ -25,6 +25,10 @@ body {
     }
 }
 
+.hidden {
+    display: none !important;
+}
+
 h1,
 h2,
 h3,
@@ -1093,6 +1097,32 @@ form.wc-block-checkout__form {
         table {
             border: 1px solid var(--theme-border);
         }
+    }
+}
+
+#sf-child-quick-view {
+    position: fixed;
+    inset: 0em;
+    z-index: 99999;
+    padding: 2em;
+
+    header {
+        width: 100%;
+        .close {
+            margin-left: auto;
+            padding: 0.2em;
+            display: inline-block;
+            cursor: pointer;
+            color: var(--danger-button-bg);
+        }
+    }
+
+    & > section {
+        height: 100%;
+        width: 100%;
+        background-color: var(--theme-bg-accent);
+        border-radius: var(--border-radius);
+        border: var(--border-size) solid var(--theme-border);
     }
 }
 

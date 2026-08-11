@@ -53,6 +53,18 @@
 					do_action('storefront_before_content');
 					?>
 
+		<section id="sf-child-quick-view" class="hidden">
+			<section class="content">
+				<header>
+					<span class="close">
+						&#10006;
+					</span>
+				</header>
+				<div></div>
+			</section>
+		</section>
+
+
 		<div id="content" class="site-content" tabindex="-1">
 			<div class="col-full">
 

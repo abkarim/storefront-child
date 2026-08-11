@@ -44,6 +44,8 @@
   // assets/ts/productQuickActions.ts
   var compareButtonSelector = ".sf-compare-btn";
   var quickViewButtonSelector = ".sf-quickview-btn";
+  var quickViewContainerSelector = "#sf-child-quick-view";
+  var quickViewContainer = document.querySelector(quickViewContainerSelector);
   function renderCompareCount() {
     const compareCountBadge = document.querySelector(
       "header .header-col-utilities .items-compare-summary .product-compare-count"
@@ -57,17 +59,17 @@
   renderCompareCount();
   var products = document.querySelectorAll("ul.products li.product");
   products.forEach((product) => {
-    const quickViewContainer = product.querySelector(
+    const quickViewContainer2 = product.querySelector(
       ".sf-archive-action-buttons-group"
     );
-    if (!quickViewContainer) return;
-    const productId = quickViewContainer.getAttribute("data-product-id");
+    if (!quickViewContainer2) return;
+    const productId = quickViewContainer2.getAttribute("data-product-id");
     product.addEventListener(
       "mouseenter",
       () => {
         const isInCompare = isCompareProductExists(productId);
         if (isInCompare) {
-          const element = quickViewContainer.querySelector(
+          const element = quickViewContainer2.querySelector(
             compareButtonSelector
           );
           if (element) {
@@ -77,7 +79,7 @@
       },
       { once: true }
     );
-    quickViewContainer.addEventListener("click", (event) => {
+    quickViewContainer2.addEventListener("click", (event) => {
       const target = event.target;
       const compareBtn = target.closest(compareButtonSelector);
       const quickViewBtn = target.closest(quickViewButtonSelector);
@@ -95,9 +97,35 @@
       if (quickViewBtn) {
         event.preventDefault();
         console.log(`Quick view product ID: ${productId}`);
+        openQuickView();
       }
     });
   });
+  function stopBodyScroll() {
+    document.body.style.overflow = "hidden";
+  }
+  function allowBodyScroll() {
+    document.body.style.overflow = "";
+  }
+  quickViewContainer?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.classList.contains("close") || target === quickViewContainer) {
+      event.preventDefault();
+      closeQuickView();
+    }
+  });
+  function closeQuickView() {
+    if (quickViewContainer) {
+      quickViewContainer.classList.add("hidden");
+    }
+    allowBodyScroll();
+  }
+  function openQuickView() {
+    if (!quickViewContainer) return;
+    quickViewContainer.classList.remove("hidden");
+    console.log("Quick view opened");
+    stopBodyScroll();
+  }
 
   // assets/ts/categoriesScroller.ts
   document.addEventListener("DOMContentLoaded", () => {

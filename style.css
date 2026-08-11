@@ -24,6 +24,10 @@ body #page {
   overflow: clip !important;
 }
 
+.hidden {
+  display: none !important;
+}
+
 h1,
 h2,
 h3,
@@ -1008,6 +1012,30 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
 }
 .sf-order-tracker-container #sf-tracker-results table {
   border: 1px solid var(--theme-border);
+}
+
+#sf-child-quick-view {
+  position: fixed;
+  inset: 0em;
+  z-index: 99999;
+  padding: 2em;
+}
+#sf-child-quick-view header {
+  width: 100%;
+}
+#sf-child-quick-view header .close {
+  margin-left: auto;
+  padding: 0.2em;
+  display: inline-block;
+  cursor: pointer;
+  color: var(--danger-button-bg);
+}
+#sf-child-quick-view > section {
+  height: 100%;
+  width: 100%;
+  background-color: var(--theme-bg-accent);
+  border-radius: var(--border-radius);
+  border: var(--border-size) solid var(--theme-border);
 }
 
 @media (min-width: 768px) {

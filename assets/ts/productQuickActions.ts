@@ -7,6 +7,9 @@ import {
 
 const compareButtonSelector = ".sf-compare-btn";
 const quickViewButtonSelector = ".sf-quickview-btn";
+const quickViewContainerSelector = "#sf-child-quick-view";
+
+const quickViewContainer = document.querySelector(quickViewContainerSelector);
 
 /**
  * Render compare count badge on the compare button in the header
@@ -69,6 +72,45 @@ products.forEach((product) => {
             event.preventDefault();
             console.log(`Quick view product ID: ${productId}`);
             // Implement quick view functionality here
+            openQuickView();
         }
     });
 });
+
+function stopBodyScroll() {
+    document.body.style.overflow = "hidden";
+}
+
+function allowBodyScroll() {
+    document.body.style.overflow = "";
+}
+
+quickViewContainer?.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+
+    /**
+     * Close quick view
+     * if clicked on .close button
+     * or click happened outside the content area of the quick view container
+     */
+    if (target.classList.contains("close") || target === quickViewContainer) {
+        event.preventDefault();
+        closeQuickView();
+    }
+});
+
+function closeQuickView() {
+    if (quickViewContainer) {
+        quickViewContainer.classList.add("hidden");
+    }
+    allowBodyScroll();
+}
+
+function openQuickView() {
+    if (!quickViewContainer) return;
+
+    quickViewContainer.classList.remove("hidden");
+    console.log("Quick view opened");
+
+    stopBodyScroll();
+}
