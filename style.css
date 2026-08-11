@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.3
+Version: 1.2.4
 Text Domain: storefront-child
 */
 :root {
@@ -14,7 +14,6 @@ Text Domain: storefront-child
   --danger-button-hover-bg: #d11f31;
   --danger-button-color: #ffffff;
   --danger-button-hover-color: #ffffff;
-  --desktop-breakpoint: 1024px;
 }
 
 body {
@@ -151,8 +150,6 @@ img {
   margin-bottom: -1em;
 }
 .entry-header .entry-title {
-  text-align: left !important;
-  margin: 0 !important;
   display: none;
 }
 
@@ -183,7 +180,7 @@ ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-ons
   position: absolute;
   top: 10px;
   right: 10px;
-  border: none !important;
+  border: 1px solid var(--theme-border) !important;
 }
 
 ul.products,
@@ -264,7 +261,7 @@ ul.products li:not(.product-category).product h2, ul.products li.wc-block-grid__
 ul.wc-block-grid__products li:not(.product-category).product h2,
 ul.wc-block-grid__products li.wc-block-grid__product h2 {
   margin-top: 0.5em;
-  font-size: clamp(1rem, 1rem + 1vw, 1.2rem);
+  font-size: 1.05rem;
 }
 ul.products li:not(.product-category).product:hover img, ul.products li.wc-block-grid__product:hover img,
 ul.wc-block-grid__products li:not(.product-category).product:hover img,
@@ -287,18 +284,12 @@ ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-
   flex-direction: column;
   gap: 0.5em;
 }
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   ul.products li:not(.product-category).product .sf-archive-action-buttons-group, ul.products li.wc-block-grid__product .sf-archive-action-buttons-group,
   ul.wc-block-grid__products li:not(.product-category).product .sf-archive-action-buttons-group,
   ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-group {
     right: 10px !important;
-  }
-}
-@media (max-width: 767px) {
-  ul.products li:not(.product-category).product .sf-archive-action-buttons-group, ul.products li.wc-block-grid__product .sf-archive-action-buttons-group,
-  ul.wc-block-grid__products li:not(.product-category).product .sf-archive-action-buttons-group,
-  ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-group {
-    top: 50px !important;
+    top: 60px !important;
   }
 }
 @media (max-width: 400px) {
@@ -306,7 +297,6 @@ ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-
   ul.wc-block-grid__products li:not(.product-category).product .sf-archive-action-buttons-group,
   ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-group {
     gap: 0.2em !important;
-    top: 40px !important;
   }
 }
 ul.products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn, ul.products li.wc-block-grid__product .sf-archive-action-buttons-group .sf-archive-btn,
@@ -322,6 +312,14 @@ ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-
   justify-content: center;
   width: 2.5em;
   height: 2.5em;
+}
+@media (max-width: 768px) {
+  ul.products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn, ul.products li.wc-block-grid__product .sf-archive-action-buttons-group .sf-archive-btn,
+  ul.wc-block-grid__products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn,
+  ul.wc-block-grid__products li.wc-block-grid__product .sf-archive-action-buttons-group .sf-archive-btn {
+    width: 2em !important;
+    height: 2em !important;
+  }
 }
 ul.products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn[added=true], ul.products li.wc-block-grid__product .sf-archive-action-buttons-group .sf-archive-btn[added=true],
 ul.wc-block-grid__products li:not(.product-category).product .sf-archive-action-buttons-group .sf-archive-btn[added=true],
@@ -373,7 +371,7 @@ ul.wc-block-grid__products li.wc-block-grid__product .wc-block-grid__product-ons
   position: absolute;
   top: 10px;
   right: 10px;
-  border: none !important;
+  border: 1px solid var(--theme-border) !important;
 }
 ul.products li:not(.product-category).product .price, ul.products li.wc-block-grid__product .price,
 ul.wc-block-grid__products li:not(.product-category).product .price,
@@ -422,7 +420,7 @@ ul.wc-block-grid__products li.wc-block-grid__product .price del {
 .wc-block-product.product .wp-block-woocommerce-product-price {
   text-align: left !important;
   margin-block: 0.5em !important;
-  font-size: clamp(1.1rem, 1rem + 1vw, 1.5rem) !important;
+  font-size: 1.1rem !important;
   position: relative;
   width: fit-content;
 }
@@ -439,12 +437,24 @@ ul.wc-block-grid__products li.wc-block-grid__product .price del {
 .product .add_to_cart_button {
   width: 100% !important;
 }
+@media (max-width: 767px) {
+  .product .add_to_cart_button {
+    padding-block: 0.3em !important;
+    padding-inline: 0.5em !important;
+  }
+}
+.product .woocommerce-loop-product__title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 .wp-block-woocommerce-product-sale-badge .wc-block-components-product-sale-badge {
   position: absolute;
   top: 10px;
   right: 10px;
-  border: none !important;
+  border: 1px solid var(--theme-border) !important;
 }
 
 ul li.wc-block-product.product {
@@ -509,6 +519,9 @@ ul.wp-block-woocommerce-product-template {
   border-bottom: 2px solid var(--theme-border) !important;
   border-left: 2px solid var(--theme-border) !important;
 }
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .product_title {
+  font-size: clamp(1.5rem, 1rem + 2vw, 2rem);
+}
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary p.price {
   display: none;
 }
@@ -521,13 +534,17 @@ ul.wp-block-woocommerce-product-template {
   padding: 0.5em;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary div.price ins {
-  font-size: clamp(1.5rem, 1rem + 2vw, 2rem);
+  font-size: clamp(1rem, 1rem + 2vw, 1.25rem);
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form .button,
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form input {
+  border-radius: var(--border-radius) !important;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form::before, .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form::after {
   display: none;
@@ -785,6 +802,9 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
   color: var(--theme-link) !important;
 }
 
+.wp-block-woocommerce-product-categories .wc-block-product-categories-list-item .wc-block-product-categories-list-item__name {
+  font-size: 1.05rem;
+}
 .wp-block-woocommerce-product-categories.slide {
   margin-top: 0 !important;
   overflow: clip;
