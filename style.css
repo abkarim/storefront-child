@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.6
+Version: 1.2.7
 Text Domain: storefront-child
 */
 :root {
@@ -653,8 +653,12 @@ header.site-header .store-front-child-header-wrapper {
 @media (max-width: 1024px) {
   header.site-header .store-front-child-header-wrapper {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
+    grid-template-rows: repeat(1, 1fr);
   }
+}
+header.site-header .store-front-child-header-wrapper > div {
+  display: flex;
+  align-items: center;
 }
 header.site-header .store-front-child-header-wrapper .header-col-brand {
   order: 0;
@@ -664,12 +668,11 @@ header.site-header .store-front-child-header-wrapper .header-col-search {
 }
 @media (max-width: 1024px) {
   header.site-header .store-front-child-header-wrapper .header-col-search {
-    grid-column: span 2/span 2;
-    grid-column-start: 1;
-    grid-row-start: 2;
+    display: none;
   }
 }
 header.site-header .store-front-child-header-wrapper .header-col-search form {
+  width: 100%;
   margin: 0 !important;
   display: flex;
   align-items: stretch;
@@ -702,6 +705,7 @@ header.site-header .store-front-child-header-wrapper .search-submit-btn svg {
   margin-bottom: -5px;
 }
 header.site-header .store-front-child-header-wrapper .header-col-utilities {
+  text-align: center;
   order: 2;
   display: flex;
   align-items: center;
@@ -714,12 +718,28 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities {
     grid-row-start: 1;
   }
 }
+header.site-header .store-front-child-header-wrapper .header-col-utilities .items-search {
+  display: none;
+}
+@media (max-width: 1024px) {
+  header.site-header .store-front-child-header-wrapper .header-col-utilities .items-search {
+    display: block;
+  }
+}
+header.site-header .store-front-child-header-wrapper .header-col-utilities > div.active > a {
+  color: var(--theme-link-hover) !important;
+}
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a {
   position: relative;
   display: inline-block;
 }
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a:hover {
   color: var(--theme-link-hover) !important;
+}
+header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .title {
+  margin: 0 !important;
+  line-height: 0.1rem;
+  font-size: 0.8rem;
 }
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .utility-counter-badge {
   position: absolute;

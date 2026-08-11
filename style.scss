@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.6
+Version: 1.2.7
 Text Domain: storefront-child
 */
 
@@ -651,7 +651,12 @@ header.site-header {
 
         @media (max-width: 1024px) {
             grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
+            grid-template-rows: repeat(1, 1fr);
+        }
+
+        & > div {
+            display: flex;
+            align-items: center;
         }
 
         .header-col-brand {
@@ -662,12 +667,14 @@ header.site-header {
             order: 1;
 
             @media (max-width: 1024px) {
-                grid-column: span 2 / span 2;
-                grid-column-start: 1;
-                grid-row-start: 2;
+                // grid-column: span 2 / span 2;
+                // grid-column-start: 1;
+                // grid-row-start: 2;
+                display: none;
             }
 
             form {
+                width: 100%;
                 margin: 0 !important;
                 display: flex;
                 align-items: stretch;
@@ -701,6 +708,7 @@ header.site-header {
             }
         }
         .header-col-utilities {
+            text-align: center;
             order: 2;
             display: flex;
             align-items: center;
@@ -712,13 +720,34 @@ header.site-header {
                 grid-row-start: 1;
             }
 
+            .items-search {
+                display: none;
+
+                @media (max-width: 1024px) {
+                    display: block;
+                }
+            }
+
             & > div {
+                &.active {
+                    & > a {
+                        color: var(--theme-link-hover) !important;
+                    }
+                }
+
                 & > a {
                     position: relative;
                     display: inline-block;
                     &:hover {
                         color: var(--theme-link-hover) !important;
                     }
+
+                    .title {
+                        margin: 0 !important;
+                        line-height: 0.1rem;
+                        font-size: 0.8rem;
+                    }
+
                     .utility-counter-badge {
                         position: absolute;
                         top: -15%;
