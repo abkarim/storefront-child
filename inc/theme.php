@@ -93,6 +93,10 @@ class Theme
                 true
             );
         }
+
+        wp_add_inline_script('theme-js', 'var sf_qv_params = ' . wp_json_encode(array(
+            'ajax_url' => admin_url('admin-ajax.php')
+        )) . ';', 'before');
     }
 
     /**

@@ -10,6 +10,11 @@ const quickViewButtonSelector = ".sf-quickview-btn";
 const quickViewContainerSelector = "#sf-child-quick-view";
 
 const quickViewContainer = document.querySelector(quickViewContainerSelector);
+const quickViewContentArea = quickViewContainer?.querySelector(
+    ".dynamic-content",
+) as HTMLElement | null;
+
+declare const sf_qv_params: { ajax_url: string };
 
 /**
  * Render compare count badge on the compare button in the header
@@ -70,9 +75,8 @@ products.forEach((product) => {
 
         if (quickViewBtn) {
             event.preventDefault();
-            console.log(`Quick view product ID: ${productId}`);
             // Implement quick view functionality here
-            openQuickView();
+            openQuickView(productId as string);
         }
     });
 });
@@ -103,14 +107,47 @@ function closeQuickView() {
     if (quickViewContainer) {
         quickViewContainer.classList.add("hidden");
     }
+
+    if (quickViewContentArea) {
+        quickViewContentArea.innerHTML = "";
+    }
+
     allowBodyScroll();
 }
 
-function openQuickView() {
-    if (!quickViewContainer) return;
+async function openQuickView(productId: string) {
+    if (!quickViewContainer || !quickViewContentArea) return;
 
     quickViewContainer.classList.remove("hidden");
-    console.log("Quick view opened");
-
+    quickViewContentArea.innerHTML =
+        '<div class="sf-qv-loading">Loading...</div>';
     stopBodyScroll();
+
+    // Fetch product content via WordPress AJAX
+    try {
+        const response = await fetch(
+            `${sf_qv_params.ajax_url}?action=sf_child_quick_view&product_id=${productId}`,
+        );
+        const result = await response.json();
+
+        if (result.success) {
+            quickViewContentArea.innerHTML = result.data;
+
+            // Re-initialize variation scripts for variable products using native CustomEvent
+            const variationForm =
+                quickViewContentArea.querySelector(".variations_form");
+            if (variationForm) {
+                variationForm.dispatchEvent(
+                    new CustomEvent("wc_variation_form", { bubbles: true }),
+                );
+            }
+        } else {
+            quickViewContentArea.innerHTML =
+                '<p class="sf-qv-error">Failed to load product details.</p>';
+        }
+    } catch (error) {
+        console.error("Quick view fetch error:", error);
+        quickViewContentArea.innerHTML =
+            '<p class="sf-qv-error">An error occurred. Please try again.</p>';
+    }
 }

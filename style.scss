@@ -1101,16 +1101,26 @@ form.wc-block-checkout__form {
 }
 
 #sf-child-quick-view {
+    width: 100vw;
+    height: 100vh;
     position: fixed;
     inset: 0em;
     z-index: 99999;
-    padding: 2em;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     header {
         width: 100%;
+        position: relative;
+
         .close {
+            position: absolute;
+            top: 0;
+            right: 0;
             margin-left: auto;
-            padding: 0.2em;
+            padding: 0.5em;
             display: inline-block;
             cursor: pointer;
             color: var(--danger-button-bg);
@@ -1118,11 +1128,48 @@ form.wc-block-checkout__form {
     }
 
     & > section {
+        padding: 1em !important;
         height: 100%;
         width: 100%;
+        max-width: 90vw;
+        max-height: 90vh;
         background-color: var(--theme-bg-accent);
         border-radius: var(--border-radius);
         border: var(--border-size) solid var(--theme-border);
+
+        .dynamic-content {
+            height: 100%;
+            width: 100%;
+            overflow-y: auto;
+
+            .sf-qv-wrapper {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                align-items: center;
+                gap: 1.5em;
+
+                @media (max-width: 768px) {
+                    grid-template-columns: 1fr;
+                }
+
+                form {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
+                    gap: 1em;
+
+                    input,
+                    .button {
+                        border-radius: var(--border-radius);
+                    }
+
+                    .sf-buy-now-button {
+                        margin: 0 !important;
+                    }
+                }
+            }
+        }
     }
 }
 

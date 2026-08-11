@@ -49,6 +49,47 @@ class Layout
         add_action('init', [$this, 'sf_child_remove_handheld_footer_bar']);
 
         add_action('woocommerce_before_main_content', [$this, 'display_category_hero_header'], 2);
+        add_action('wp_ajax_sf_child_quick_view', [$this, 'sf_child_quick_view_handler']);
+        add_action('wp_ajax_nopriv_sf_child_quick_view', [$this, 'sf_child_quick_view_handler']);
+    }
+
+    function sf_child_quick_view_handler()
+    {
+        if (!isset($_GET['product_id'])) {
+            wp_send_json_error('Missing Product ID');
+        }
+
+        $product_id = intval($_GET['product_id']);
+        global $post, $product;
+
+        $post = get_post($product_id);
+        if (!$post || 'product' !== $post->post_type) {
+            wp_send_json_error('Invalid Product');
+        }
+
+        setup_postdata($post);
+        $product = wc_get_product($product_id);
+
+        ob_start();
+?>
+        <div class="sf-qv-wrapper product">
+            <div class="sf-qv-image">
+                <?php echo $product->get_image('large'); ?>
+            </div>
+            <div class="sf-qv-details summary entry-summary">
+                <h2 class="product_title entry-title"><?php echo $product->get_title(); ?></h2>
+                <p class="price"><?php echo $product->get_price_html(); ?></p>
+                <div class="woocommerce-product-details__short-description">
+                    <?php echo apply_filters('woocommerce_short_description', $product->get_short_description()); ?>
+                </div>
+                <?php woocommerce_template_single_add_to_cart(); ?>
+            </div>
+        </div>
+        <?php
+        wp_reset_postdata();
+        $html = ob_get_clean();
+
+        wp_send_json_success($html);
     }
 
     public function track_order_via_phone_handler()
@@ -90,7 +131,7 @@ class Layout
             $status_label = wc_get_order_status_name($order->get_status());
             $date_created = wc_format_datetime($order->get_date_created());
             $order_total  = $order->get_formatted_order_total();
-?>
+        ?>
             <div class="sf-track-order-card">
 
                 <div class="sf-track-card-meta info">

@@ -1015,27 +1015,69 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
 }
 
 #sf-child-quick-view {
+  width: 100vw;
+  height: 100vh;
   position: fixed;
   inset: 0em;
   z-index: 99999;
-  padding: 2em;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #sf-child-quick-view header {
   width: 100%;
+  position: relative;
 }
 #sf-child-quick-view header .close {
+  position: absolute;
+  top: 0;
+  right: 0;
   margin-left: auto;
-  padding: 0.2em;
+  padding: 0.5em;
   display: inline-block;
   cursor: pointer;
   color: var(--danger-button-bg);
 }
 #sf-child-quick-view > section {
+  padding: 1em !important;
   height: 100%;
   width: 100%;
+  max-width: 90vw;
+  max-height: 90vh;
   background-color: var(--theme-bg-accent);
   border-radius: var(--border-radius);
   border: var(--border-size) solid var(--theme-border);
+}
+#sf-child-quick-view > section .dynamic-content {
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 1.5em;
+}
+@media (max-width: 768px) {
+  #sf-child-quick-view > section .dynamic-content .sf-qv-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form input,
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form .button {
+  border-radius: var(--border-radius);
+}
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form .sf-buy-now-button {
+  margin: 0 !important;
 }
 
 @media (min-width: 768px) {

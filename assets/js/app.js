@@ -46,6 +46,9 @@
   var quickViewButtonSelector = ".sf-quickview-btn";
   var quickViewContainerSelector = "#sf-child-quick-view";
   var quickViewContainer = document.querySelector(quickViewContainerSelector);
+  var quickViewContentArea = quickViewContainer?.querySelector(
+    ".dynamic-content"
+  );
   function renderCompareCount() {
     const compareCountBadge = document.querySelector(
       "header .header-col-utilities .items-compare-summary .product-compare-count"
@@ -96,8 +99,7 @@
       }
       if (quickViewBtn) {
         event.preventDefault();
-        console.log(`Quick view product ID: ${productId}`);
-        openQuickView();
+        openQuickView(productId);
       }
     });
   });
@@ -118,13 +120,36 @@
     if (quickViewContainer) {
       quickViewContainer.classList.add("hidden");
     }
+    if (quickViewContentArea) {
+      quickViewContentArea.innerHTML = "";
+    }
     allowBodyScroll();
   }
-  function openQuickView() {
-    if (!quickViewContainer) return;
+  async function openQuickView(productId) {
+    if (!quickViewContainer || !quickViewContentArea) return;
     quickViewContainer.classList.remove("hidden");
-    console.log("Quick view opened");
+    quickViewContentArea.innerHTML = '<div class="sf-qv-loading">Loading...</div>';
     stopBodyScroll();
+    try {
+      const response = await fetch(
+        `${sf_qv_params.ajax_url}?action=sf_child_quick_view&product_id=${productId}`
+      );
+      const result = await response.json();
+      if (result.success) {
+        quickViewContentArea.innerHTML = result.data;
+        const variationForm = quickViewContentArea.querySelector(".variations_form");
+        if (variationForm) {
+          variationForm.dispatchEvent(
+            new CustomEvent("wc_variation_form", { bubbles: true })
+          );
+        }
+      } else {
+        quickViewContentArea.innerHTML = '<p class="sf-qv-error">Failed to load product details.</p>';
+      }
+    } catch (error) {
+      console.error("Quick view fetch error:", error);
+      quickViewContentArea.innerHTML = '<p class="sf-qv-error">An error occurred. Please try again.</p>';
+    }
   }
 
   // assets/ts/categoriesScroller.ts

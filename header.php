@@ -54,13 +54,13 @@
 					?>
 
 		<section id="sf-child-quick-view" class="hidden">
-			<section class="content">
+			<section class="content col-full">
 				<header>
 					<span class="close">
 						&#10006;
 					</span>
 				</header>
-				<div></div>
+				<div class="dynamic-content"></div>
 			</section>
 		</section>
 
