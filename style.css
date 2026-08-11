@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.5
+Version: 1.2.6
 Text Domain: storefront-child
 */
 :root {
@@ -956,6 +956,7 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
 }
 .sf-clean-category-header-block {
   overflow: hidden;
+  margin-bottom: 0.5em;
 }
 
 .sf-order-tracker-container form#sf-phone-tracker-form {

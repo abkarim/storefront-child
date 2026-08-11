@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.5
+Version: 1.2.6
 Text Domain: storefront-child
 */
 
@@ -1030,6 +1030,7 @@ form.wc-block-checkout__form {
         aspect-ratio: 250 / 37;
     }
     overflow: hidden;
+    margin-bottom: 0.5em;
 }
 
 .sf-order-tracker-container {
