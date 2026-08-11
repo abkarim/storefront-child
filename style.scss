@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.4
+Version: 1.2.5
 Text Domain: storefront-child
 */
 
@@ -804,6 +804,8 @@ header.site-header {
     }
 
     &:first-of-type {
+        margin-top: 0 !important;
+
         .woocommerce-result-count {
             display: none !important;
         }
