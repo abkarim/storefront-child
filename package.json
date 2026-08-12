@@ -1,6 +1,6 @@
 {
     "name": "storefront-child-theme",
-    "version": "1.2.7",
+    "version": "1.2.8",
     "private": true,
     "devDependencies": {
         "@types/node": "^25.9.2",

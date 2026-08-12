@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.2.7
+Version: 1.2.8
 Text Domain: storefront-child
 */
 :root {
@@ -890,6 +890,9 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
 }
 .wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0::-webkit-scrollbar {
   display: none; /* Chrome, Safari and Opera */
+}
+.wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 li {
+  width: 100% !important;
 }
 .wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0 li > a {
   display: block !important;
