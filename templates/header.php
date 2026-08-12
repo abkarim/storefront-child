@@ -3,8 +3,19 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
 ?>
 
 <div class="store-front-child-header-wrapper">
+
     <div class="header-col-brand">
         <?php has_custom_logo() ? the_custom_logo() : printf('<a href="%s" class="site-title-fallback">%s</a>', esc_url(home_url('/')), esc_html(get_bloginfo('name'))); ?>
+    </div>
+
+    <div class="menu-button">
+        <a href="javascript:void(0)" id="sf-header-menu-toggle" class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </a>
     </div>
 
     <div class="header-col-search">
@@ -20,9 +31,9 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
         </form>
     </div>
 
-    <div class="header-col-utilities">
+    <div class="header-col-utilities mobile-menu-hidden">
         <div class="utility-icon-link items-search">
-            <a class="search-products-button" href="#" title="<?php esc_attr_e('Search', 'storefront-child'); ?>">
+            <a class="search-products-button" href="javascript:void(0)" title="<?php esc_attr_e('Search', 'storefront-child'); ?>">
                 <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -116,3 +127,16 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
 
     </div>
 </div>
+
+<section class="hidden" id="sf-child-search">
+    <form role="search" method="get" class="woocommerce-product-search-split" action="<?php echo esc_url(home_url('/')); ?>">
+        <input type="search" class="search-field-input" placeholder="<?php echo esc_attr($search_placeholder); ?>" value="<?php echo esc_attr(get_search_query()); ?>" name="s" />
+        <button type="submit" class="search-submit-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </button>
+        <input type="hidden" name="post_type" value="product" />
+    </form>
+</section>
