@@ -811,7 +811,7 @@ header.site-header {
                     .title {
                         margin: 0 !important;
                         line-height: 0.1rem;
-                        font-size: 0.8rem;
+                        font-size: 0.7rem;
                     }
 
                     .utility-counter-badge {
@@ -831,6 +831,12 @@ header.site-header {
                         &:empty {
                             display: none;
                         }
+                    }
+                }
+
+                &:last-child {
+                    .utility-counter-badge {
+                        right: -30% !important;
                     }
                 }
             }

@@ -820,7 +820,7 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .title {
   margin: 0 !important;
   line-height: 0.1rem;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 @media (max-width: 767px) {
   header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .utility-counter-badge {
@@ -839,6 +839,9 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
 }
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .utility-counter-badge:empty {
   display: none;
+}
+header.site-header .store-front-child-header-wrapper .header-col-utilities > div:last-child .utility-counter-badge {
+  right: -30% !important;
 }
 
 .sf-compare-page-content .button {
