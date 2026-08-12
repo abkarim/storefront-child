@@ -663,7 +663,7 @@ footer.site-footer {
 }
 
 header.site-header {
-    margin-bottom: 0.5em !important;
+    margin-bottom: 0 !important;
     position: sticky;
     z-index: 99998;
     top: 0;
@@ -1329,6 +1329,14 @@ form.wc-block-checkout__form {
             border-bottom-left-radius: 0;
         }
     }
+}
+
+.breakout-col {
+    width: 100vw !important;
+    position: relative !important;
+    left: 50% !important;
+    right: 50% !important;
+    margin-inline: -50vw !important;
 }
 
 @media (min-width: 768px) {
