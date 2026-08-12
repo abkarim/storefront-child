@@ -782,10 +782,15 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
   line-height: 0.1rem;
   font-size: 0.8rem;
 }
+@media (max-width: 767px) {
+  header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .utility-counter-badge {
+    display: none;
+  }
+}
 header.site-header .store-front-child-header-wrapper .header-col-utilities > div > a .utility-counter-badge {
   position: absolute;
   top: -15%;
-  right: -45%;
+  right: 0%;
   border-radius: 0.5em;
   width: 1.5em;
   height: 1.5em;
