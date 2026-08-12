@@ -1129,6 +1129,9 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
   align-items: center;
   gap: 1.5em;
 }
+#sf-child-quick-view > section .dynamic-content .sf-qv-wrapper .product_title {
+  font-size: clamp(1.5rem, 1rem + 2vw, 2rem);
+}
 @media (max-width: 768px) {
   #sf-child-quick-view > section .dynamic-content .sf-qv-wrapper {
     grid-template-columns: 1fr;
@@ -1140,6 +1143,11 @@ form.wc-block-checkout__form .wc-block-components-address-form__country {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 1em;
+}
+@media (max-width: 400px) {
+  #sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form {
+    gap: 0.2em;
+  }
 }
 #sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form input,
 #sf-child-quick-view > section .dynamic-content .sf-qv-wrapper form .button {

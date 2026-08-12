@@ -1222,6 +1222,10 @@ form.wc-block-checkout__form {
                 align-items: center;
                 gap: 1.5em;
 
+                .product_title {
+                    font-size: clamp(1.5rem, 1rem + 2vw, 2rem);
+                }
+
                 @media (max-width: 768px) {
                     grid-template-columns: 1fr;
                 }
@@ -1232,6 +1236,10 @@ form.wc-block-checkout__form {
                     justify-content: flex-start;
                     flex-wrap: wrap;
                     gap: 1em;
+
+                    @media (max-width: 400px) {
+                        gap: 0.2em;
+                    }
 
                     input,
                     .button {
