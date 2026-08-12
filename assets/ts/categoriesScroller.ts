@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let scrollInterval: ReturnType<typeof setTimeout> | null = null;
     const scrollSpeed: number = 2; // Pixels to move per tick
     const intervalTime: number = 20; // Lower numbers = faster, smoother scrolling (ms)
-    const delayAfterActivityInMS: number = 1000;
+    const delayAfterActivityInMS: number = 5000;
     const lastTarget = container.scrollWidth - container.clientWidth;
     let currentX = 0;
     let isTicking = false; // Performance throttle gate
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
             scrollInterval = setTimeout(startAutoScroll, intervalTime);
         } else {
             container.scrollLeft = 0;
-            scrollInterval = setTimeout(startAutoScroll, 1000);
+            scrollInterval = setTimeout(startAutoScroll, 2000);
         }
     }
 

@@ -164,7 +164,7 @@
     let scrollInterval = null;
     const scrollSpeed = 2;
     const intervalTime = 20;
-    const delayAfterActivityInMS = 1e3;
+    const delayAfterActivityInMS = 5e3;
     const lastTarget = container.scrollWidth - container.clientWidth;
     let currentX = 0;
     let isTicking = false;
@@ -185,7 +185,7 @@
         scrollInterval = setTimeout(startAutoScroll, intervalTime);
       } else {
         container.scrollLeft = 0;
-        scrollInterval = setTimeout(startAutoScroll, 1e3);
+        scrollInterval = setTimeout(startAutoScroll, 2e3);
       }
     }
     function stopAutoScroll() {
