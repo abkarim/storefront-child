@@ -63,6 +63,7 @@ add product categories list via wp block editor in page. Add `slide` class to an
 
 ### Styles
 - added branding colors in site identity editor section, also this is used in color pallette to pick options from 
+- `breakout-col` add this class to make element full width
 
 ## Header 
 - Custom header 
