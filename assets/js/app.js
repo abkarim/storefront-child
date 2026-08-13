@@ -1,1 +1,296 @@
-(()=>{function L(e,t){document.documentElement.style.setProperty(e,t)}function E(e,t){localStorage.setItem(e,t)}function f(e){return localStorage.getItem(e)}var a="compareList";function w(e){let t=f(a),r=t?JSON.parse(t):[];r.includes(e)||(r.push(e),E(a,JSON.stringify(r)))}function q(e){let t=f(a);if(t){let r=JSON.parse(t);r=r.filter(n=>n!==e),E(a,JSON.stringify(r))}}function C(){let e=f(a);return e?JSON.parse(e):[]}function y(e){let t=f(a);return t?JSON.parse(t).includes(e):!1}var k=".sf-compare-btn",O=".sf-quickview-btn",V="#sf-child-quick-view",c=document.querySelector(V),s=c?.querySelector(".dynamic-content");function T(){let e=document.querySelector("header .header-col-utilities .items-compare-summary .product-compare-count"),t=C();if(e){let r=t.length;e.textContent=r>0?r.toString():""}}T();var R=document.querySelectorAll("ul.products li.product");R.forEach(e=>{let t=e.querySelector(".sf-archive-action-buttons-group");if(!t)return;let r=t.getAttribute("data-product-id");e.addEventListener("mouseenter",()=>{if(y(r)){let o=t.querySelector(k);o&&o.setAttribute("added","true")}},{once:!0}),t.addEventListener("click",n=>{let o=n.target,u=o.closest(k),g=o.closest(O);u&&(n.preventDefault(),y(r)?(u.setAttribute("added","false"),q(r)):(u.setAttribute("added","true"),w(r)),T()),g&&(n.preventDefault(),X(r))})});function D(){document.body.style.overflow="hidden"}function J(){document.body.style.overflow=""}c?.addEventListener("click",e=>{let t=e.target;(t.classList.contains("close")||t===c)&&(e.preventDefault(),N())});function N(){c&&c.classList.add("hidden"),s&&(s.innerHTML=""),J()}async function X(e){if(!(!c||!s)){c.classList.remove("hidden"),s.innerHTML='<div class="sf-qv-loading">Loading...</div>',D();try{let r=await(await fetch(`${sf_qv_params.ajax_url}?action=sf_child_quick_view&product_id=${e}`)).json();if(r.success){s.innerHTML=r.data;let n=s.querySelector(".variations_form");n&&n.dispatchEvent(new CustomEvent("wc_variation_form",{bubbles:!0}))}else s.innerHTML='<p class="sf-qv-error">Failed to load product details.</p>'}catch(t){console.error("Quick view fetch error:",t),s.innerHTML='<p class="sf-qv-error">An error occurred. Please try again.</p>'}}}document.addEventListener("DOMContentLoaded",()=>{let e=document.querySelector(".wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0");if(!e)return;let t=!1,r=0,n=0,o=null,u=2,g=20,S=5e3,x=e.scrollWidth-e.clientWidth,v=0,m=!1,H=2;function M(){if(!e||!t){m=!1;return}let i=(v-r)*H;e.scrollLeft=n-i,m=!1}function d(){t||(e.scrollLeft+=u,x!==e.scrollLeft?o=setTimeout(d,g):(e.scrollLeft=0,o=setTimeout(d,2e3)))}function h(){o&&(clearTimeout(o),o=null)}e.addEventListener("pointerdown",i=>{i.button===0&&(h(),o&&clearTimeout(o),t=!0,r=i.clientX,v=i.clientX,n=e.scrollLeft)}),e.addEventListener("pointermove",i=>{h(),v=i.clientX,m||(requestAnimationFrame(M),m=!0),t||(o=setTimeout(d,S))});let b=i=>{t&&(t=!1,o=setTimeout(()=>{d()},S))};e.addEventListener("pointerup",b),e.addEventListener("pointercancel",b);let _={root:null,threshold:.05};new IntersectionObserver(i=>{i.forEach(B=>{B.isIntersecting?d():h()})},_).observe(e)});var I=document.getElementById("wpadminbar");if(I){let e=I.offsetHeight;L("--admin-bar-height",`${e}px`)}var A=document.querySelector("header.site-header");if(A){let e=A.getBoundingClientRect().height;L("--theme-header-height",`${e}px`)}var l=document.querySelector("#sf-child-search"),$=[...document.querySelectorAll(".search-products-button")];function j(){l&&l.classList.remove("hidden")}function F(){l&&l.classList.add("hidden")}l?.addEventListener("click",e=>{e.target===l&&F()});$.forEach(e=>{e.addEventListener("click",j)});var Q=document.getElementById("sf-header-menu-toggle"),p=document.querySelector("header.site-header .header-col-utilities");Q?.addEventListener("click",P);p?.addEventListener("click",e=>{e.target===p&&P()});function P(){p&&p.classList.toggle("mobile-menu-hidden")}})();
+(() => {
+  // assets/ts/util/styles.ts
+  function updateRootVariable(name, value) {
+    document.documentElement.style.setProperty(name, value);
+  }
+
+  // assets/ts/util/storage.ts
+  function setStorageItem(key, value) {
+    localStorage.setItem(key, value);
+  }
+  function getStorageItem(key) {
+    return localStorage.getItem(key);
+  }
+  var compareListKey = "compareList";
+  function addCompareProduct(productId) {
+    const compareList = getStorageItem(compareListKey);
+    let compareArray = compareList ? JSON.parse(compareList) : [];
+    if (!compareArray.includes(productId)) {
+      compareArray.push(productId);
+      setStorageItem(compareListKey, JSON.stringify(compareArray));
+    }
+  }
+  function removeCompareProduct(productId) {
+    const compareList = getStorageItem(compareListKey);
+    if (compareList) {
+      let compareArray = JSON.parse(compareList);
+      compareArray = compareArray.filter((id) => id !== productId);
+      setStorageItem(compareListKey, JSON.stringify(compareArray));
+    }
+  }
+  function getCompareProducts() {
+    const compareList = getStorageItem(compareListKey);
+    return compareList ? JSON.parse(compareList) : [];
+  }
+  function isCompareProductExists(productId) {
+    const compareList = getStorageItem(compareListKey);
+    if (compareList) {
+      const compareArray = JSON.parse(compareList);
+      return compareArray.includes(productId);
+    }
+    return false;
+  }
+
+  // assets/ts/productQuickActions.ts
+  var compareButtonSelector = ".sf-compare-btn";
+  var quickViewButtonSelector = ".sf-quickview-btn";
+  var quickViewContainerSelector = "#sf-child-quick-view";
+  var quickViewContainer = document.querySelector(quickViewContainerSelector);
+  var quickViewContentArea = quickViewContainer?.querySelector(
+    ".dynamic-content"
+  );
+  function renderCompareCount() {
+    const compareCountBadge = document.querySelector(
+      "header .header-col-utilities .items-compare-summary .product-compare-count"
+    );
+    const compareProducts = getCompareProducts();
+    if (compareCountBadge) {
+      const length = compareProducts.length;
+      compareCountBadge.textContent = length > 0 ? length.toString() : "";
+    }
+  }
+  renderCompareCount();
+  var products = document.querySelectorAll("ul.products li.product");
+  products.forEach((product) => {
+    const quickViewContainer2 = product.querySelector(
+      ".sf-archive-action-buttons-group"
+    );
+    if (!quickViewContainer2) return;
+    const productId = quickViewContainer2.getAttribute("data-product-id");
+    product.addEventListener(
+      "mouseenter",
+      () => {
+        const isInCompare = isCompareProductExists(productId);
+        if (isInCompare) {
+          const element = quickViewContainer2.querySelector(
+            compareButtonSelector
+          );
+          if (element) {
+            element.setAttribute("added", "true");
+          }
+        }
+      },
+      { once: true }
+    );
+    quickViewContainer2.addEventListener("click", (event) => {
+      const target = event.target;
+      const compareBtn = target.closest(compareButtonSelector);
+      const quickViewBtn = target.closest(quickViewButtonSelector);
+      if (compareBtn) {
+        event.preventDefault();
+        if (!isCompareProductExists(productId)) {
+          compareBtn.setAttribute("added", "true");
+          addCompareProduct(productId);
+        } else {
+          compareBtn.setAttribute("added", "false");
+          removeCompareProduct(productId);
+        }
+        renderCompareCount();
+      }
+      if (quickViewBtn) {
+        event.preventDefault();
+        openQuickView(productId);
+      }
+    });
+  });
+  function stopBodyScroll() {
+    document.body.style.overflow = "hidden";
+  }
+  function allowBodyScroll() {
+    document.body.style.overflow = "";
+  }
+  quickViewContainer?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target.classList.contains("close") || target === quickViewContainer) {
+      event.preventDefault();
+      closeQuickView();
+    }
+  });
+  function closeQuickView() {
+    if (quickViewContainer) {
+      quickViewContainer.classList.add("hidden");
+    }
+    if (quickViewContentArea) {
+      quickViewContentArea.innerHTML = "";
+    }
+    allowBodyScroll();
+  }
+  async function openQuickView(productId) {
+    if (!quickViewContainer || !quickViewContentArea) return;
+    quickViewContainer.classList.remove("hidden");
+    quickViewContentArea.innerHTML = '<div class="sf-qv-loading">Loading...</div>';
+    stopBodyScroll();
+    try {
+      const response = await fetch(
+        `${sf_qv_params.ajax_url}?action=sf_child_quick_view&product_id=${productId}`
+      );
+      const result = await response.json();
+      if (result.success) {
+        quickViewContentArea.innerHTML = result.data;
+        const variationForm = quickViewContentArea.querySelector(".variations_form");
+        if (variationForm) {
+          variationForm.dispatchEvent(
+            new CustomEvent("wc_variation_form", { bubbles: true })
+          );
+        }
+      } else {
+        quickViewContentArea.innerHTML = '<p class="sf-qv-error">Failed to load product details.</p>';
+      }
+    } catch (error) {
+      console.error("Quick view fetch error:", error);
+      quickViewContentArea.innerHTML = '<p class="sf-qv-error">An error occurred. Please try again.</p>';
+    }
+  }
+
+  // assets/ts/categoriesScroller.ts
+  document.addEventListener("DOMContentLoaded", () => {
+    const container = document.querySelector(
+      ".wp-block-woocommerce-product-categories.slide ul.wc-block-product-categories-list.wc-block-product-categories-list--has-images.wc-block-product-categories-list--depth-0"
+    );
+    if (!container) return;
+    let moving = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+    let scrollInterval = null;
+    const scrollSpeed = 2;
+    const intervalTime = 20;
+    const delayAfterActivityInMS = 5e3;
+    const lastTarget = container.scrollWidth - container.clientWidth;
+    let currentX = 0;
+    let isTicking = false;
+    const DRAG_SPEED_MULTIPLIER = 2;
+    function updateScrollPosition() {
+      if (!container || !moving) {
+        isTicking = false;
+        return;
+      }
+      const walkX = (currentX - startX) * DRAG_SPEED_MULTIPLIER;
+      container.scrollLeft = startScrollLeft - walkX;
+      isTicking = false;
+    }
+    function startAutoScroll() {
+      if (moving) return;
+      container.scrollLeft += scrollSpeed;
+      if (lastTarget !== container.scrollLeft) {
+        scrollInterval = setTimeout(startAutoScroll, intervalTime);
+      } else {
+        container.scrollLeft = 0;
+        scrollInterval = setTimeout(startAutoScroll, 2e3);
+      }
+    }
+    function stopAutoScroll() {
+      if (scrollInterval) {
+        clearTimeout(scrollInterval);
+        scrollInterval = null;
+      }
+    }
+    container.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0) return;
+      stopAutoScroll();
+      if (scrollInterval) clearTimeout(scrollInterval);
+      moving = true;
+      startX = e.clientX;
+      currentX = e.clientX;
+      startScrollLeft = container.scrollLeft;
+    });
+    container.addEventListener("pointermove", (e) => {
+      stopAutoScroll();
+      currentX = e.clientX;
+      if (!isTicking) {
+        requestAnimationFrame(updateScrollPosition);
+        isTicking = true;
+      }
+      if (!moving) {
+        scrollInterval = setTimeout(
+          startAutoScroll,
+          delayAfterActivityInMS
+        );
+      }
+    });
+    const handlePointerRelease = (event) => {
+      if (!moving) return;
+      moving = false;
+      scrollInterval = setTimeout(() => {
+        startAutoScroll();
+      }, delayAfterActivityInMS);
+    };
+    container.addEventListener("pointerup", handlePointerRelease);
+    container.addEventListener("pointercancel", handlePointerRelease);
+    const observerOptions = {
+      root: null,
+      threshold: 0.05
+    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            startAutoScroll();
+          } else {
+            stopAutoScroll();
+          }
+        });
+      },
+      observerOptions
+    );
+    observer.observe(container);
+  });
+
+  // assets/ts/app.ts
+  var wpadminbar = document.getElementById("wpadminbar");
+  if (wpadminbar) {
+    const adminBarHeight = wpadminbar.offsetHeight;
+    updateRootVariable("--admin-bar-height", `${adminBarHeight}px`);
+  }
+  var themeHeader = document.querySelector("header.site-header");
+  if (themeHeader) {
+    const themeHeaderHeight = themeHeader.getBoundingClientRect().height;
+    updateRootVariable("--theme-header-height", `${themeHeaderHeight}px`);
+  }
+  var searchContainer = document.querySelector("#sf-child-search");
+  var searchButton = [...document.querySelectorAll(".search-products-button")];
+  function showSearchContainer() {
+    if (searchContainer) {
+      searchContainer.classList.remove("hidden");
+    }
+  }
+  function hideSearchContainer() {
+    if (searchContainer) {
+      searchContainer.classList.add("hidden");
+    }
+  }
+  searchContainer?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target === searchContainer) {
+      hideSearchContainer();
+    }
+  });
+  searchButton.forEach((button) => {
+    button.addEventListener("click", showSearchContainer);
+  });
+  var menuToggleButton = document.getElementById("sf-header-menu-toggle");
+  var menuContainer = document.querySelector(
+    "header.site-header .header-col-utilities"
+  );
+  menuToggleButton?.addEventListener("click", toggleMobileMenu);
+  menuContainer?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target === menuContainer) {
+      toggleMobileMenu();
+    }
+  });
+  function toggleMobileMenu() {
+    if (menuContainer) {
+      menuContainer.classList.toggle("mobile-menu-hidden");
+    }
+  }
+})();
