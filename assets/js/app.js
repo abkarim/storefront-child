@@ -293,4 +293,42 @@
       menuContainer.classList.toggle("mobile-menu-hidden");
     }
   }
+  var checkoutFormSelector = ".wp-block-woocommerce-checkout.wc-block-checkout";
+  var checkoutFormContainer = document.querySelector(checkoutFormSelector);
+  function observerCheckoutContainerChanges() {
+    if (!checkoutFormContainer) return;
+    const emailElement = checkoutFormContainer.querySelector("#email");
+    if (emailElement) {
+      setReactInputValue(emailElement, "guestBuyer@example.xyz");
+    }
+    const cityElement = checkoutFormContainer.querySelector("#billing-city");
+    if (cityElement) {
+      setReactInputValue(cityElement, "NA");
+    }
+  }
+  if (checkoutFormContainer) {
+    const checkoutObserver = new MutationObserver(
+      observerCheckoutContainerChanges
+    );
+    checkoutObserver.observe(checkoutFormContainer, {
+      childList: true,
+      attributes: false,
+      subtree: true
+    });
+  }
+  function setReactInputValue(inputElement, value) {
+    if (!inputElement) return;
+    const descriptor = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    );
+    const nativeInputValueSetter = descriptor?.set;
+    if (nativeInputValueSetter) {
+      nativeInputValueSetter.call(inputElement, value);
+    } else {
+      inputElement.value = value;
+    }
+    const event = new Event("input", { bubbles: true });
+    inputElement.dispatchEvent(event);
+  }
 })();

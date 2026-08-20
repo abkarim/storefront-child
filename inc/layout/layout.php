@@ -6,7 +6,6 @@ class Layout
 {
     public function __construct()
     {
-
         add_filter('woocommerce_get_country_locale', [$this, 'sf_blocks_checkout_hide_fields']);
 
         add_action('wp', [$this, "reposition_storefront_page_title"]);
@@ -249,26 +248,18 @@ class Layout
     <?php
     }
 
+
     public function sf_blocks_checkout_hide_fields($locale)
     {
-        // Apply globally to all active countries on your site
+
+        $fields_to_hide = ['company', 'postcode', 'city', 'address_2'];
+
         foreach ($locale as $country_code => $fields) {
 
-            // Hide Company
-            $locale[$country_code]['company']['hidden']   = true;
-            $locale[$country_code]['company']['required'] = false;
-
-            // Hide Postcode/ZIP
-            $locale[$country_code]['postcode']['hidden']   = true;
-            $locale[$country_code]['postcode']['required'] = false;
-
-            // Hide City
-            $locale[$country_code]['city']['hidden']   = true;
-            $locale[$country_code]['city']['required'] = false;
-
-            // Hide Apartment/Suite (Address Line 2)
-            $locale[$country_code]['address_2']['hidden']   = true;
-            $locale[$country_code]['address_2']['required'] = false;
+            foreach ($fields_to_hide as $field_key) {
+                $locale[$country_code][$field_key]['hidden']   = true;
+                $locale[$country_code][$field_key]['required'] = false;
+            }
         }
 
         return $locale;
