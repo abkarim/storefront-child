@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.3.6
+Version: 1.3.7
 Text Domain: storefront-child
 */
 :root {
@@ -211,7 +211,7 @@ ul.products li:not(.product-category).product, ul.products li.wc-block-grid__pro
 ul.wc-block-grid__products li:not(.product-category).product,
 ul.wc-block-grid__products li.wc-block-grid__product {
   width: 100% !important;
-  max-width: calc(25% - 1em) !important;
+  max-width: calc(16.6% - 1em) !important;
   text-align: left !important;
   margin: 0 !important;
   padding: 0.5em !important;
@@ -226,6 +226,13 @@ ul.products li:not(.product-category).product .star-rating, ul.products li.wc-bl
 ul.wc-block-grid__products li:not(.product-category).product .star-rating,
 ul.wc-block-grid__products li.wc-block-grid__product .star-rating {
   margin: 0 !important;
+}
+@media (max-width: 1200px) {
+  ul.products li:not(.product-category).product, ul.products li.wc-block-grid__product,
+  ul.wc-block-grid__products li:not(.product-category).product,
+  ul.wc-block-grid__products li.wc-block-grid__product {
+    max-width: calc(25% - 1em) !important;
+  }
 }
 @media (max-width: 1024px) {
   ul.products li:not(.product-category).product, ul.products li.wc-block-grid__product,
