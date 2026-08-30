@@ -5,7 +5,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.3.8
+Version: 1.4.0
 Text Domain: storefront-child
 */
 
@@ -660,6 +660,41 @@ ul.wp-block-woocommerce-product-template {
             .woocommerce-Tabs-panel {
                 width: 100% !important;
                 padding-inline: 0.5em;
+            }
+
+            .product-specifications-wrapper {
+                .spec-group-title {
+                    font-size: 1.1rem;
+                    font-weight: bold;
+                    padding: 0.8em;
+                    background-color: var(--theme-bg);
+                    margin: 0;
+                    border-radius: var(--border-radius);
+                }
+
+                table,
+                th,
+                td {
+                    border-bottom: 1px solid var(--theme-border);
+                    background-color: transparent;
+                    font-size: 1rem;
+                }
+
+                .product-specifications-table {
+                    border-collapse: collapse !important;
+                    tbody {
+                        tr {
+                            th {
+                                white-space: nowrap;
+                                width: 10em;
+                                padding: 0.8em;
+                            }
+                            td {
+                                padding: 0.8em;
+                            }
+                        }
+                    }
+                }
             }
         }
     }

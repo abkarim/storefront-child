@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.3.8
+Version: 1.4.0
 Text Domain: storefront-child
 */
 :root {
@@ -680,6 +680,32 @@ ul.wp-block-woocommerce-product-template {
 .single .product .woocommerce-tabs.wc-tabs-wrapper .woocommerce-Tabs-panel {
   width: 100% !important;
   padding-inline: 0.5em;
+}
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper .spec-group-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.8em;
+  background-color: var(--theme-bg);
+  margin: 0;
+  border-radius: var(--border-radius);
+}
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper table,
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper th,
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper td {
+  border-bottom: 1px solid var(--theme-border);
+  background-color: transparent;
+  font-size: 1rem;
+}
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper .product-specifications-table {
+  border-collapse: collapse !important;
+}
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper .product-specifications-table tbody tr th {
+  white-space: nowrap;
+  width: 10em;
+  padding: 0.8em;
+}
+.single .product .woocommerce-tabs.wc-tabs-wrapper .product-specifications-wrapper .product-specifications-table tbody tr td {
+  padding: 0.8em;
 }
 
 footer.site-footer {

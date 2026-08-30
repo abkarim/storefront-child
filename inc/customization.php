@@ -24,6 +24,163 @@ class Customization
         add_action('product_cat_edit_form_fields', [$this, 'edit_category_header_image_field'], 20, 2);
         add_action('created_product_cat', [$this, 'save_product_cat_header_image']);
         add_action('edited_product_cat', [$this, 'save_product_cat_header_image']);
+
+        add_action('woocommerce_product_options_advanced', [$this, "add_specification_table_inserter"]);
+        add_action('woocommerce_process_product_meta', [$this, 'save_specification_table_data']);
+        add_filter('woocommerce_product_tabs', [$this, 'add_product_specifications_tab']);
+    }
+
+    function add_product_specifications_tab($tabs)
+    {
+        global $post;
+
+        $specs = get_post_meta($post->ID, '_product_specifications', true);
+
+        if (!empty($specs) && is_array($specs)) {
+            $tabs['product_specifications'] = array(
+                'title'    => __('Specifications', 'storefront-child'),
+                'priority' => 5,
+                'callback' => [$this, 'render_product_specifications_tab_content']
+            );
+        }
+
+        return $tabs;
+    }
+
+    function render_product_specifications_tab_content()
+    {
+        global $post;
+        $specs = get_post_meta($post->ID, '_product_specifications', true);
+
+        if (!empty($specs) && is_array($specs)) :
+            // Group specifications by title/group name
+            $grouped_specs = array();
+            foreach ($specs as $spec) {
+                $group = !empty($spec['group']) ? $spec['group'] : __('General Specifications', 'storefront-child');
+                $grouped_specs[$group][] = $spec;
+            }
+?>
+
+            <div class="product-specifications-wrapper">
+                <?php foreach ($grouped_specs as $group_title => $items) : ?>
+                    <h4 class="spec-group-title"><?php echo esc_html($group_title); ?></h3>
+                        <table class="shop_attributes product-specifications-table">
+                            <tbody>
+                                <?php foreach ($items as $spec) : ?>
+                                    <tr>
+                                        <th><?php echo esc_html($spec['key']); ?></th>
+                                        <td>
+                                            <p><?php echo esc_html($spec['value']); ?></p>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php endforeach; ?>
+            </div>
+        <?php endif;
+    }
+
+    function save_specification_table_data($post_id)
+    {
+        if (!isset($_POST['spec_keys']) || !isset($_POST['spec_values'])) {
+            delete_post_meta($post_id, '_product_specifications');
+            return;
+        }
+
+        $groups = isset($_POST['spec_groups']) ? array_map('sanitize_text_field', $_POST['spec_groups']) : array();
+        $keys   = array_map('sanitize_text_field', $_POST['spec_keys']);
+        $values = array_map('sanitize_text_field', $_POST['spec_values']);
+
+        $specs = array();
+
+        foreach ($keys as $index => $key) {
+            $trimmed_group = isset($groups[$index]) ? trim($groups[$index]) : '';
+            $trimmed_key   = trim($key);
+            $trimmed_value = isset($values[$index]) ? trim($values[$index]) : '';
+
+            if ($trimmed_key !== '' || $trimmed_value !== '') {
+                $specs[] = array(
+                    'group' => $trimmed_group,
+                    'key'   => $trimmed_key,
+                    'value' => $trimmed_value,
+                );
+            }
+        }
+
+        if (!empty($specs)) {
+            update_post_meta($post_id, '_product_specifications', $specs);
+        } else {
+            delete_post_meta($post_id, '_product_specifications');
+        }
+    }
+
+    public function add_specification_table_inserter()
+    {
+        global $post;
+        $specs = get_post_meta($post->ID, '_product_specifications', true);
+        if (!is_array($specs)) {
+            $specs = array();
+        }
+        ?>
+        <div class="options_group">
+            <p class="form-field">
+                <label><?php _e('Product Specifications', 'storefront-child'); ?></label>
+            <div id="product-specs-container" style="padding: 0 12px 12px;">
+                <table class="widefat" id="product-specs-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%;"><?php _e('Section / Group Title', 'storefront-child'); ?></th>
+                            <th style="width: 30%;"><?php _e('Specification Label', 'storefront-child'); ?></th>
+                            <th style="width: 35%;"><?php _e('Value', 'storefront-child'); ?></th>
+                            <th style="width: 5%; text-align: center;"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-specs-body">
+                        <?php if (!empty($specs)) : ?>
+                            <?php foreach ($specs as $index => $spec) : ?>
+                                <tr>
+                                    <td><input type="text" name="spec_groups[]" value="<?php echo esc_attr(isset($spec['group']) ? $spec['group'] : ''); ?>" placeholder="e.g. Wired Features" style="width:100%;" /></td>
+                                    <td><input type="text" name="spec_keys[]" value="<?php echo esc_attr($spec['key']); ?>" placeholder="e.g. Cable Length" style="width:100%;" /></td>
+                                    <td><input type="text" name="spec_values[]" value="<?php echo esc_attr($spec['value']); ?>" placeholder="e.g. 1.8 meters" style="width:100%;" /></td>
+                                    <td style="text-align: center;"><button type="button" class="button remove-spec-row">&times;</button></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px;">
+                    <button type="button" class="button button-secondary" id="add-spec-row"><?php _e('+ Add Specification Row', 'storefront-child'); ?></button>
+                </p>
+            </div>
+            </p>
+        </div>
+
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $('#add-spec-row').on('click', function(e) {
+                    e.preventDefault();
+
+                    // Get the group value from the last row, or empty string if none exists
+                    var lastGroupVal = $('#product-specs-body tr:last').find('input[name="spec_groups[]"]').val() || '';
+
+                    var rowHtml = '<tr>' +
+                        '<td><input type="text" name="spec_groups[]" value="' + $('<div>').text(lastGroupVal).html() + '" placeholder="e.g. Wireless Features" style="width:100%;" /></td>' +
+                        '<td><input type="text" name="spec_keys[]" placeholder="e.g. Bluetooth Version" style="width:100%;" /></td>' +
+                        '<td><input type="text" name="spec_values[]" placeholder="e.g. 5.2" style="width:100%;" /></td>' +
+                        '<td style="text-align: center;"><button type="button" class="button remove-spec-row">&times;</button></td>' +
+                        '</tr>';
+
+                    $('#product-specs-body').append(rowHtml);
+                });
+
+                $(document).on('click', '.remove-spec-row', function(e) {
+                    e.preventDefault();
+                    $(this).closest('tr').remove();
+                });
+            });
+        </script>
+    <?php
     }
 
     function save_product_cat_header_image($term_id)
@@ -35,7 +192,7 @@ class Customization
 
     public function add_category_header_image_field()
     {
-?>
+    ?>
         <div class="form-field term-header-image-wrap">
             <label for="header-image-id"><?php _e('Header Image', 'storefront-child'); ?></label>
             <input type="hidden" id="header-image-id" name="header-image" value="">
