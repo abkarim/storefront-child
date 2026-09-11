@@ -627,6 +627,39 @@ ul.wp-block-woocommerce-product-template {
     padding: 0.5em;
   }
 }
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form {
+  margin-top: 0;
+  padding-top: 0;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations {
+  margin: 0;
+  padding: 0;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .custom-variation-radios {
+  margin-top: 0.5em;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .custom-variation-radios input[type=radio] {
+  display: none;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .custom-variation-radios .variation-radio-label.active span,
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .custom-variation-radios input[type=radio]:checked + span {
+  background-color: var(--theme-button-bg);
+  color: var(--theme-button-text);
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .custom-variation-radios span {
+  cursor: pointer;
+  padding: 0.5em;
+  border: var(--border-size) solid var(--theme-border);
+  border-radius: var(--border-radius);
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .reset_variations {
+  margin: 0;
+  margin-top: 0.5em;
+  color: var(--theme-text-accent);
+}
 .single .product .sf-custom-product-gallery-summary-layout-wrapper span.onsale {
   display: none;
 }

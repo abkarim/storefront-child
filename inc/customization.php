@@ -28,6 +28,105 @@ class Customization
         add_action('woocommerce_product_options_advanced', [$this, "add_specification_table_inserter"]);
         add_action('woocommerce_process_product_meta', [$this, 'save_specification_table_data']);
         add_filter('woocommerce_product_tabs', [$this, 'add_product_specifications_tab']);
+
+        add_filter('woocommerce_dropdown_variation_attribute_options_html', [$this, 'custom_woocommerce_variation_radio_buttons'], 10, 2);
+        add_action('wp_footer', [$this, 'custom_variation_radio_js']);
+    }
+
+    function custom_variation_radio_js()
+    {
+        if (! is_product()) return;
+?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                // Handle Radio Click
+                $(document).on('change', '.custom-variation-radios input[type="radio"]', function() {
+                    var $radio = $(this);
+                    var selectedVal = $radio.val();
+                    var $container = $radio.closest('tr, .single-variation-wrap, .variations');
+
+                    // Find parent form & matching hidden select element
+                    var $form = $radio.closest('form.variations_form');
+                    var attributeName = $radio.closest('.custom-variation-radios').data('attribute_name');
+                    var $select = $form.find('select[name="' + attributeName + '"]');
+
+                    if ($select.length) {
+                        // Sync value to hidden select
+                        $select.val(selectedVal).trigger('change');
+
+                        // Update active radio border styling
+                        $radio.closest('.custom-variation-radios').find('.variation-radio-label').removeClass('active');
+                        $radio.closest('.variation-radio-label').addClass('active');
+
+                        // Re-evaluate WooCommerce form state to unlock Add to Cart
+                        $form.trigger('woocommerce_variation_select_change');
+                        $form.trigger('check_variations');
+                    }
+                });
+
+                // Reset radio styling when variation is reset
+                $(document).on('click', '.reset_variations', function() {
+                    $('.custom-variation-radios input[type="radio"]').prop('checked', false);
+                    $('.custom-variation-radios .variation-radio-label').removeClass('active');
+                });
+            });
+        </script>
+        <?php
+    }
+
+    function custom_woocommerce_variation_radio_buttons($html, $args)
+    {
+        $options   = $args['options'];
+        $product   = $args['product'];
+        $attribute = $args['attribute'];
+        $name      = $args['name'] ? $args['name'] : 'attribute_' . sanitize_title($attribute);
+        $id        = $args['id'] ? $args['id'] : sanitize_title($attribute);
+        $selected  = $args['selected'];
+
+        if (empty($options) && ! empty($product) && ! empty($attribute)) {
+            $attributes = $product->get_variation_attributes();
+            $options    = $attributes[$attribute];
+        }
+
+        if (empty($options)) {
+            return $html;
+        }
+
+        // Hide original select dropdown via style while keeping it functional for WooCommerce JS
+        $hidden_select = str_replace('<select', '<select style="display:none !important;"', $html);
+
+        $radio_html = '<div class="custom-variation-radios" data-attribute_name="attribute_' . esc_attr(sanitize_title($attribute)) . '">';
+
+        foreach ($options as $option) {
+            // Resolve term name if taxonomy-based attribute
+            if (taxonomy_exists($attribute)) {
+                $term = get_term_by('slug', $option, $attribute);
+                $option_text = $term ? $term->name : $option;
+            } else {
+                $option_text = $option;
+            }
+
+            $checked  = checked($selected, $option, false);
+            $input_id = esc_attr($id . '_' . sanitize_title($option));
+
+            $radio_html .= sprintf(
+                '<label class="variation-radio-label %s">
+                <input type="radio" id="%s" name="radio_%s" value="%s" %s>
+                <span>%s</span>
+            </label>',
+                $checked ? 'active' : '',
+                $input_id,
+                esc_attr($name),
+                esc_attr($option),
+                $checked,
+                esc_html($option_text)
+            );
+        }
+
+        $radio_html .= '</div>';
+
+        // Output hidden original select alongside custom radios
+        return $hidden_select . $radio_html;
     }
 
     function add_product_specifications_tab($tabs)
@@ -59,7 +158,7 @@ class Customization
                 $group = !empty($spec['group']) ? $spec['group'] : __('General Specifications', 'storefront-child');
                 $grouped_specs[$group][] = $spec;
             }
-?>
+        ?>
 
             <div class="product-specifications-wrapper">
                 <?php foreach ($grouped_specs as $group_title => $items) : ?>
