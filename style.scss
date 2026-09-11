@@ -631,6 +631,7 @@ ul.wp-block-woocommerce-product-template {
                                             border: var(--border-size) solid
                                                 var(--theme-border);
                                             border-radius: var(--border-radius);
+                                            user-select: none;
                                         }
                                     }
 

@@ -654,6 +654,7 @@ ul.wp-block-woocommerce-product-template {
   padding: 0.5em;
   border: var(--border-size) solid var(--theme-border);
   border-radius: var(--border-radius);
+  user-select: none;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .reset_variations {
   margin: 0;
