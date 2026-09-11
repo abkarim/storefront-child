@@ -9,6 +9,12 @@ $search_placeholder = get_theme_mod('sf_child_header_search_placeholder', __('Se
     </div>
 
     <div class="menu-button">
+        <a class="search-products-button" href="javascript:void(0)" title="<?php esc_attr_e('Search', 'storefront-child'); ?>">
+            <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="header-utility-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+        </a>
         <a href="javascript:void(0)" id="sf-header-menu-toggle" class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
             <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
                 <line x1="3" y1="12" x2="21" y2="12"></line>

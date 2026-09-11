@@ -758,6 +758,7 @@ header.site-header .store-front-child-header-wrapper > div {
   }
 }
 header.site-header .store-front-child-header-wrapper .menu-button {
+  gap: 0.5em;
   margin-left: auto;
   text-align: center;
 }
