@@ -97,6 +97,25 @@ class Theme
         wp_add_inline_script('theme-js', 'var sf_qv_params = ' . wp_json_encode(array(
             'ajax_url' => admin_url('admin-ajax.php')
         )) . ';', 'before');
+
+        // Sync product quantity selection with Buy Now button
+        wp_add_inline_script('theme-js', '
+            document.addEventListener("click", function(e) {
+                var btn = e.target.closest(".sf-buy-now-button");
+                if (!btn) return;
+                var form = btn.closest("form.cart");
+                if (form) {
+                    var qty = form.querySelector("input[name=\'quantity\']");
+                    if (qty && qty.value) {
+                        try {
+                            var url = new URL(btn.href, window.location.href);
+                            url.searchParams.set("quantity", qty.value);
+                            btn.href = url.toString();
+                        } catch (err) {}
+                    }
+                }
+            });
+        ');
     }
 
     /**

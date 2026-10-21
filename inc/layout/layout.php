@@ -33,6 +33,12 @@ class Layout
         add_action('woocommerce_single_product_summary', [$this, 'add_custom_delivery_details'], 38);
         add_action('woocommerce_after_add_to_cart_button', [$this, 'add_checkout_button']);
 
+        // Option 2: Buy Now - isolate single item checkout and preserve cart session
+        add_filter('woocommerce_add_to_cart_validation', [$this, 'sf_child_handle_buy_now_cart_isolation'], 10, 2);
+        add_filter('woocommerce_add_to_cart_redirect', [$this, 'sf_child_buy_now_redirect']);
+        add_action('template_redirect', [$this, 'sf_child_maybe_restore_saved_cart_on_abandon']);
+        add_action('woocommerce_thankyou', [$this, 'sf_child_restore_saved_cart_after_purchase'], 10, 1);
+
         // disable storefront's default header elements since we're replacing them with a custom template part
         remove_action('storefront_header', 'storefront_site_branding', 20);
         remove_action('storefront_header', 'storefront_product_search', 40);
@@ -277,8 +283,11 @@ class Layout
         // Get the clean checkout page link address dynamically
         $checkout_url = wc_get_checkout_url();
 
-        // Append the direct add-to-cart parameter array mapping
-        $buy_now_url = add_query_arg('add-to-cart', $product->get_id(), $checkout_url);
+        // Append the direct add-to-cart and buy_now parameter mappings
+        $buy_now_url = add_query_arg([
+            'add-to-cart' => $product->get_id(),
+            'buy_now'     => 1,
+        ], $checkout_url);
 
         // Output a semantic HTML anchor button block
         echo sprintf(
@@ -286,6 +295,161 @@ class Layout
             esc_url($buy_now_url),
             esc_html__('Buy Now', 'storefront-child')
         );
+    }
+
+    /**
+     * Option 2: Isolate the Buy Now product by backing up the existing cart to session
+     * and emptying the active cart before the Buy Now product is added.
+     *
+     * @param bool $passed_validation
+     * @param int  $product_id
+     * @return bool
+     */
+    public function sf_child_handle_buy_now_cart_isolation($passed_validation, $product_id)
+    {
+        if (! isset($_REQUEST['buy_now']) || ! $passed_validation) {
+            return $passed_validation;
+        }
+
+        if (! function_exists('WC') || ! WC()->session || ! WC()->cart) {
+            return $passed_validation;
+        }
+
+        // Ensure customer session cookie is established
+        if (! WC()->session->has_session()) {
+            WC()->session->set_customer_session_cookie(true);
+        }
+
+        // Save existing cart items if not already backed up
+        $existing_saved = WC()->session->get('sf_child_saved_cart');
+        if (empty($existing_saved) && ! WC()->cart->is_empty()) {
+            $saved_cart = [];
+            foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+                $saved_cart[] = [
+                    'product_id'     => $cart_item['product_id'],
+                    'quantity'       => $cart_item['quantity'],
+                    'variation_id'   => isset($cart_item['variation_id']) ? $cart_item['variation_id'] : 0,
+                    'variation'      => isset($cart_item['variation']) ? $cart_item['variation'] : [],
+                    'cart_item_data' => array_diff_key(
+                        $cart_item,
+                        array_flip([
+                            'key',
+                            'product_id',
+                            'variation_id',
+                            'variation',
+                            'quantity',
+                            'data',
+                            'data_hash',
+                            'line_tax_data',
+                            'line_subtotal',
+                            'line_subtotal_tax',
+                            'line_total',
+                            'line_tax',
+                        ])
+                    ),
+                ];
+            }
+            WC()->session->set('sf_child_saved_cart', $saved_cart);
+        }
+
+        WC()->session->set('sf_child_is_buy_now', true);
+
+        // Empty current cart so only the Buy Now item is added
+        WC()->cart->empty_cart();
+
+        return $passed_validation;
+    }
+
+    /**
+     * Ensure Buy Now always redirects directly to checkout.
+     *
+     * @param string $url
+     * @return string
+     */
+    public function sf_child_buy_now_redirect($url)
+    {
+        if (isset($_REQUEST['buy_now'])) {
+            return wc_get_checkout_url();
+        }
+        return $url;
+    }
+
+    /**
+     * Restore previous cart if the customer navigates away from checkout without purchasing.
+     */
+    public function sf_child_maybe_restore_saved_cart_on_abandon()
+    {
+        if (! function_exists('WC') || ! WC()->session || ! WC()->cart) {
+            return;
+        }
+
+        // Do not process in admin, AJAX requests, or REST API calls (such as WooCommerce store block API)
+        if (is_admin() || wp_doing_ajax() || (defined('REST_REQUEST') && REST_REQUEST)) {
+            return;
+        }
+
+        $saved_cart = WC()->session->get('sf_child_saved_cart');
+        if (empty($saved_cart) || ! is_array($saved_cart)) {
+            return;
+        }
+
+        // If currently processing a buy_now action, do not restore yet
+        if (isset($_REQUEST['buy_now'])) {
+            return;
+        }
+
+        // If on the checkout page (and not order-received), user is still completing checkout
+        if (is_checkout() && ! is_order_received_page()) {
+            return;
+        }
+
+        // On thank-you page, sf_child_restore_saved_cart_after_purchase handles restoration
+        if (is_order_received_page()) {
+            return;
+        }
+
+        // Customer abandoned checkout; clear temporary item and restore original cart
+        WC()->cart->empty_cart();
+        foreach ($saved_cart as $item) {
+            WC()->cart->add_to_cart(
+                $item['product_id'],
+                $item['quantity'],
+                $item['variation_id'],
+                $item['variation'],
+                $item['cart_item_data'] ?? []
+            );
+        }
+
+        WC()->session->__unset('sf_child_saved_cart');
+        WC()->session->__unset('sf_child_is_buy_now');
+    }
+
+    /**
+     * Restore previous cart after the Buy Now order has been successfully placed.
+     *
+     * @param int $order_id
+     */
+    public function sf_child_restore_saved_cart_after_purchase($order_id)
+    {
+        if (! function_exists('WC') || ! WC()->session || ! WC()->cart) {
+            return;
+        }
+
+        $saved_cart = WC()->session->get('sf_child_saved_cart');
+        if (! empty($saved_cart) && is_array($saved_cart)) {
+            foreach ($saved_cart as $item) {
+                WC()->cart->add_to_cart(
+                    $item['product_id'],
+                    $item['quantity'],
+                    $item['variation_id'],
+                    $item['variation'],
+                    $item['cart_item_data'] ?? []
+                );
+            }
+        }
+
+        WC()->session->__unset('sf_child_saved_cart');
+        WC()->session->__unset('sf_child_is_buy_now');
     }
 
     public function add_custom_delivery_details()
