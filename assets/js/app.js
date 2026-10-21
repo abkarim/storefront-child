@@ -305,6 +305,115 @@
     if (cityElement) {
       setReactInputValue(cityElement, "NA");
     }
+    const firstNameLabels = checkoutFormContainer.querySelectorAll(
+      'label[for="billing-first_name"], label[for="shipping-first_name"]'
+    );
+    firstNameLabels.forEach((label) => {
+      if (label.firstChild && label.firstChild.nodeType === Node.TEXT_NODE) {
+        if (label.firstChild.textContent?.includes("First name")) {
+          label.firstChild.textContent = label.firstChild.textContent.replace("First name", "Full Name");
+        }
+      }
+    });
+    const firstNameInputs = checkoutFormContainer.querySelectorAll(
+      "#billing-first_name, #shipping-first_name"
+    );
+    firstNameInputs.forEach((input) => {
+      if (input.placeholder && input.placeholder.includes("First name")) {
+        input.placeholder = input.placeholder.replace("First name", "Full Name");
+      }
+    });
+    const firstNameWrapper = checkoutFormContainer.querySelector(
+      ".wc-block-components-address-form__first-name"
+    );
+    const phoneWrapper = checkoutFormContainer.querySelector(
+      ".wc-block-components-address-form__phone"
+    );
+    if (firstNameWrapper && phoneWrapper && firstNameWrapper.parentElement && firstNameWrapper.nextElementSibling !== phoneWrapper) {
+      firstNameWrapper.parentElement.insertBefore(
+        phoneWrapper,
+        firstNameWrapper.nextElementSibling
+      );
+    }
+    const stateInput = checkoutFormContainer.querySelector("#billing-state, #shipping-state");
+    const stateWrapper = stateInput?.closest(
+      ".wc-block-components-address-form__state, .wc-block-components-combobox, .wc-block-components-text-input"
+    ) || checkoutFormContainer.querySelector(".wc-block-components-address-form__state");
+    const addressInput = checkoutFormContainer.querySelector("#billing-address_1, #shipping-address_1");
+    const addressWrapper = addressInput?.closest(
+      ".wc-block-components-address-form__address_1, .wc-block-components-text-input"
+    ) || checkoutFormContainer.querySelector(".wc-block-components-address-form__address_1");
+    if (phoneWrapper && stateWrapper && phoneWrapper.parentElement && phoneWrapper.nextElementSibling !== stateWrapper) {
+      phoneWrapper.parentElement.insertBefore(
+        stateWrapper,
+        phoneWrapper.nextElementSibling
+      );
+    }
+    if (stateWrapper && addressWrapper && stateWrapper.parentElement && stateWrapper.nextElementSibling !== addressWrapper) {
+      stateWrapper.parentElement.insertBefore(
+        addressWrapper,
+        stateWrapper.nextElementSibling
+      );
+    }
+    const stateLabels = checkoutFormContainer.querySelectorAll(
+      'label[for="billing-state"], label[for="shipping-state"]'
+    );
+    stateLabels.forEach((label) => {
+      if (label.firstChild && label.firstChild.nodeType === Node.TEXT_NODE) {
+        if (label.firstChild.textContent && !label.firstChild.textContent.includes("District")) {
+          label.firstChild.textContent = label.firstChild.textContent.replace(/State(\s*\/\s*County)?/i, "District");
+        }
+      }
+    });
+    const orderNotes = checkoutFormContainer.querySelectorAll(
+      ".wp-block-woocommerce-checkout-order-notes-block, .wc-block-checkout__add-note, .wc-block-components-checkout-order-notes"
+    );
+    orderNotes.forEach((el) => {
+      if (el.style.display !== "none") {
+        el.style.display = "none";
+      }
+    });
+    const termsElements = checkoutFormContainer.querySelectorAll(
+      ".wc-block-checkout__terms, .wc-block-components-checkout-step--terms, .wc-block-components-terms-and-conditions, .wc-block-components-checkout-terms, .wc-block-checkout__actions .wc-block-components-checkbox-terms"
+    );
+    termsElements.forEach((el) => {
+      if (el.style.display !== "none") {
+        el.style.display = "none";
+      }
+    });
+    let paymentStep = checkoutFormContainer.querySelector(
+      "#payment-method, .wc-block-components-checkout-step--payment, .wc-block-components-checkout-step--payment-method, .wp-block-woocommerce-checkout-payment-methods-block, .wc-block-checkout__payment-methods"
+    );
+    if (!paymentStep) {
+      const stepTitles = checkoutFormContainer.querySelectorAll(
+        ".wc-block-components-checkout-step__title, .wc-block-components-title, h2, h3"
+      );
+      stepTitles.forEach((title) => {
+        if (title.textContent?.trim().toLowerCase().includes("payment")) {
+          paymentStep = title.closest(".wc-block-components-checkout-step, section, fieldset") || paymentStep;
+        }
+      });
+    }
+    if (paymentStep) {
+      const radioInputs = paymentStep.querySelectorAll('input[type="radio"]');
+      const textContent = paymentStep.textContent?.toLowerCase() || "";
+      const hasOtherGateway = textContent.includes("bkash") || textContent.includes("nagad") || textContent.includes("rocket") || textContent.includes("stripe") || textContent.includes("paypal") || textContent.includes("card");
+      const isOnlyCod = document.body.classList.contains("sf-cod-only-payment") || radioInputs.length === 1 && radioInputs[0].value.toLowerCase().includes("cod") || radioInputs.length <= 1 && !hasOtherGateway;
+      if (isOnlyCod) {
+        document.body.classList.add("sf-cod-only-payment");
+        if (paymentStep.style.display !== "none") {
+          paymentStep.style.display = "none";
+        }
+        if (radioInputs.length === 1 && !radioInputs[0].checked) {
+          radioInputs[0].click();
+        }
+      } else if (radioInputs.length > 1 || hasOtherGateway) {
+        document.body.classList.remove("sf-cod-only-payment");
+        if (paymentStep.style.display === "none") {
+          paymentStep.style.display = "";
+        }
+      }
+    }
   }
   if (checkoutFormContainer) {
     const checkoutObserver = new MutationObserver(

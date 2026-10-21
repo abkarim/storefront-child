@@ -7,6 +7,16 @@ class Layout
     public function __construct()
     {
         add_filter('woocommerce_get_country_locale', [$this, 'sf_blocks_checkout_hide_fields']);
+        add_filter('woocommerce_default_address_fields', [$this, 'sf_custom_default_address_fields'], 9999);
+        add_filter('woocommerce_checkout_fields', [$this, 'sf_custom_checkout_fields'], 9999);
+        add_filter('woocommerce_enable_order_notes_field', '__return_false', 9999);
+        add_filter('woocommerce_checkout_show_terms', '__return_false', 9999);
+        add_filter('woocommerce_terms_page_id', '__return_zero', 9999);
+        add_filter('woocommerce_get_terms_and_conditions_checkbox_text', '__return_empty_string', 9999);
+        add_filter('woocommerce_get_privacy_policy_text', '__return_empty_string', 9999);
+        add_filter('woocommerce_checkout_posted_data', [$this, 'sf_filter_checkout_posted_data']);
+        add_action('woocommerce_checkout_create_order', [$this, 'sf_split_fullname_into_order_names'], 10, 2);
+        add_filter('body_class', [$this, 'sf_child_check_cod_only_body_class']);
 
         add_action('wp', [$this, "reposition_storefront_page_title"]);
 
@@ -257,18 +267,243 @@ class Layout
 
     public function sf_blocks_checkout_hide_fields($locale)
     {
-
-        $fields_to_hide = ['company', 'postcode', 'city', 'address_2'];
+        $fields_to_hide = ['last_name', 'company', 'postcode', 'city', 'address_2'];
 
         foreach ($locale as $country_code => $fields) {
-
             foreach ($fields_to_hide as $field_key) {
                 $locale[$country_code][$field_key]['hidden']   = true;
                 $locale[$country_code][$field_key]['required'] = false;
             }
+
+            $locale[$country_code]['first_name']['label']       = esc_html__('Full Name', 'storefront-child');
+            $locale[$country_code]['first_name']['placeholder'] = esc_html__('Full Name', 'storefront-child');
+            $locale[$country_code]['first_name']['priority']    = 10;
+
+            if (isset($locale[$country_code]['phone'])) {
+                $locale[$country_code]['phone']['priority'] = 20;
+            }
+
+            $locale[$country_code]['state']['label']       = esc_html__('District', 'storefront-child');
+            $locale[$country_code]['state']['placeholder'] = esc_html__('District', 'storefront-child');
+            $locale[$country_code]['state']['priority']    = 30;
+            $locale[$country_code]['state']['hidden']      = false;
+            $locale[$country_code]['state']['required']    = true;
+
+            $locale[$country_code]['address_1']['label']       = esc_html__('Address', 'storefront-child');
+            $locale[$country_code]['address_1']['placeholder'] = esc_html__('Address', 'storefront-child');
+            $locale[$country_code]['address_1']['priority']    = 35;
         }
 
         return $locale;
+    }
+
+    public function sf_custom_default_address_fields($fields)
+    {
+        if (isset($fields['first_name'])) {
+            $fields['first_name']['label']       = esc_html__('Full Name', 'storefront-child');
+            $fields['first_name']['placeholder'] = esc_html__('Full Name', 'storefront-child');
+            $fields['first_name']['class']       = ['form-row-wide'];
+            $fields['first_name']['priority']    = 10;
+        }
+
+        if (isset($fields['last_name'])) {
+            $fields['last_name']['label']    = '';
+            $fields['last_name']['required'] = false;
+            $fields['last_name']['hidden']   = true;
+            $fields['last_name']['class']    = ['hidden'];
+        }
+
+        if (isset($fields['phone'])) {
+            $fields['phone']['priority'] = 20;
+            $fields['phone']['class']    = ['form-row-wide'];
+        }
+
+        if (isset($fields['state'])) {
+            $fields['state']['label']       = esc_html__('District', 'storefront-child');
+            $fields['state']['placeholder'] = esc_html__('Select District', 'storefront-child');
+            $fields['state']['priority']    = 30;
+            $fields['state']['class']       = ['form-row-first'];
+            $fields['state']['hidden']      = false;
+            $fields['state']['required']    = true;
+        }
+
+        if (isset($fields['address_1'])) {
+            $fields['address_1']['label']       = esc_html__('Address', 'storefront-child');
+            $fields['address_1']['placeholder'] = esc_html__('Address (Area, Road, House)', 'storefront-child');
+            $fields['address_1']['priority']    = 35;
+            $fields['address_1']['class']       = ['form-row-last'];
+        }
+
+        foreach (['company', 'postcode', 'city', 'address_2'] as $key) {
+            if (isset($fields[$key])) {
+                $fields[$key]['required'] = false;
+                $fields[$key]['hidden']   = true;
+                $fields[$key]['class']    = ['hidden'];
+            }
+        }
+
+        return $fields;
+    }
+
+    public function sf_custom_checkout_fields($fields)
+    {
+        // Billing fields
+        if (isset($fields['billing']['billing_first_name'])) {
+            $fields['billing']['billing_first_name']['label']       = esc_html__('Full Name', 'storefront-child');
+            $fields['billing']['billing_first_name']['placeholder'] = esc_html__('Full Name', 'storefront-child');
+            $fields['billing']['billing_first_name']['class']       = ['form-row-wide'];
+            $fields['billing']['billing_first_name']['priority']    = 10;
+        }
+
+        if (isset($fields['billing']['billing_last_name'])) {
+            $fields['billing']['billing_last_name']['required'] = false;
+            $fields['billing']['billing_last_name']['hidden']   = true;
+            $fields['billing']['billing_last_name']['class']    = ['hidden'];
+            unset($fields['billing']['billing_last_name']);
+        }
+
+        if (isset($fields['billing']['billing_phone'])) {
+            $fields['billing']['billing_phone']['priority'] = 20;
+            $fields['billing']['billing_phone']['class']    = ['form-row-wide'];
+        }
+
+        if (isset($fields['billing']['billing_state'])) {
+            $fields['billing']['billing_state']['label']       = esc_html__('District', 'storefront-child');
+            $fields['billing']['billing_state']['placeholder'] = esc_html__('Select District', 'storefront-child');
+            $fields['billing']['billing_state']['priority']    = 30;
+            $fields['billing']['billing_state']['class']       = ['form-row-first'];
+            $fields['billing']['billing_state']['hidden']      = false;
+            $fields['billing']['billing_state']['required']    = true;
+        }
+
+        if (isset($fields['billing']['billing_address_1'])) {
+            $fields['billing']['billing_address_1']['label']       = esc_html__('Address', 'storefront-child');
+            $fields['billing']['billing_address_1']['placeholder'] = esc_html__('Address (Area, Road, House)', 'storefront-child');
+            $fields['billing']['billing_address_1']['priority']    = 35;
+            $fields['billing']['billing_address_1']['class']       = ['form-row-last'];
+        }
+
+        // Shipping fields
+        if (isset($fields['shipping']['shipping_first_name'])) {
+            $fields['shipping']['shipping_first_name']['label']       = esc_html__('Full Name', 'storefront-child');
+            $fields['shipping']['shipping_first_name']['placeholder'] = esc_html__('Full Name', 'storefront-child');
+            $fields['shipping']['shipping_first_name']['class']       = ['form-row-wide'];
+            $fields['shipping']['shipping_first_name']['priority']    = 10;
+        }
+
+        if (isset($fields['shipping']['shipping_last_name'])) {
+            $fields['shipping']['shipping_last_name']['required'] = false;
+            $fields['shipping']['shipping_last_name']['hidden']   = true;
+            $fields['shipping']['shipping_last_name']['class']    = ['hidden'];
+            unset($fields['shipping']['shipping_last_name']);
+        }
+
+        if (isset($fields['shipping']['shipping_phone'])) {
+            $fields['shipping']['shipping_phone']['priority'] = 20;
+            $fields['shipping']['shipping_phone']['class']    = ['form-row-wide'];
+        }
+
+        if (isset($fields['shipping']['shipping_state'])) {
+            $fields['shipping']['shipping_state']['label']       = esc_html__('District', 'storefront-child');
+            $fields['shipping']['shipping_state']['placeholder'] = esc_html__('Select District', 'storefront-child');
+            $fields['shipping']['shipping_state']['priority']    = 30;
+            $fields['shipping']['shipping_state']['class']       = ['form-row-first'];
+            $fields['shipping']['shipping_state']['hidden']      = false;
+            $fields['shipping']['shipping_state']['required']    = true;
+        }
+
+        if (isset($fields['shipping']['shipping_address_1'])) {
+            $fields['shipping']['shipping_address_1']['label']       = esc_html__('Address', 'storefront-child');
+            $fields['shipping']['shipping_address_1']['placeholder'] = esc_html__('Address (Area, Road, House)', 'storefront-child');
+            $fields['shipping']['shipping_address_1']['priority']    = 35;
+            $fields['shipping']['shipping_address_1']['class']       = ['form-row-last'];
+        }
+
+        // Remove order notes
+        if (isset($fields['order']['order_comments'])) {
+            unset($fields['order']['order_comments']);
+        }
+
+        return $fields;
+    }
+
+    public function sf_filter_checkout_posted_data($data)
+    {
+        if (! empty($data['billing_first_name']) && empty($data['billing_last_name'])) {
+            $parts = explode(' ', trim($data['billing_first_name']), 2);
+            $data['billing_first_name'] = $parts[0];
+            $data['billing_last_name']  = isset($parts[1]) ? $parts[1] : '';
+        }
+        if (! empty($data['shipping_first_name']) && empty($data['shipping_last_name'])) {
+            $parts = explode(' ', trim($data['shipping_first_name']), 2);
+            $data['shipping_first_name'] = $parts[0];
+            $data['shipping_last_name']  = isset($parts[1]) ? $parts[1] : '';
+        }
+        return $data;
+    }
+
+    public function sf_split_fullname_into_order_names($order, $data)
+    {
+        $billing_first = $order->get_billing_first_name();
+        $billing_last  = $order->get_billing_last_name();
+        if (! empty($billing_first) && empty($billing_last)) {
+            $parts = explode(' ', trim($billing_first), 2);
+            $order->set_billing_first_name($parts[0]);
+            $order->set_billing_last_name(isset($parts[1]) ? $parts[1] : '');
+        }
+
+        $shipping_first = $order->get_shipping_first_name();
+        $shipping_last  = $order->get_shipping_last_name();
+        if (! empty($shipping_first) && empty($shipping_last)) {
+            $parts = explode(' ', trim($shipping_first), 2);
+            $order->set_shipping_first_name($parts[0]);
+            $order->set_shipping_last_name(isset($parts[1]) ? $parts[1] : '');
+        }
+    }
+
+    /**
+     * Check if Cash on Delivery is the only available/enabled payment gateway.
+     *
+     * @return bool
+     */
+    public function is_cod_only_payment()
+    {
+        if (! function_exists('WC') || ! WC()->payment_gateways()) {
+            return false;
+        }
+
+        // Check currently available gateways
+        $available = WC()->payment_gateways()->get_available_payment_gateways();
+        if (! empty($available)) {
+            return (count($available) === 1 && isset($available['cod']));
+        }
+
+        // Fallback: check all gateways enabled in settings
+        $enabled = [];
+        $all_gateways = WC()->payment_gateways()->payment_gateways();
+        if (is_array($all_gateways)) {
+            foreach ($all_gateways as $gateway) {
+                if (isset($gateway->enabled) && 'yes' === $gateway->enabled) {
+                    $enabled[$gateway->id] = $gateway;
+                }
+            }
+        }
+
+        return (count($enabled) === 1 && isset($enabled['cod']));
+    }
+
+    /**
+     * Add a body class if Cash on Delivery is the only available payment gateway.
+     *
+     * @param array $classes
+     * @return array
+     */
+    public function sf_child_check_cod_only_body_class($classes)
+    {
+        if (is_checkout() && ! is_order_received_page() && $this->is_cod_only_payment()) {
+            $classes[] = 'sf-cod-only-payment';
+        }
+        return $classes;
     }
 
     public function add_checkout_button()
@@ -696,6 +931,35 @@ class Layout
         $this->site_identity_styling();
         $this->product_archive_dynamic_card_styling();
         $this->header_layout_styling();
+        $this->checkout_cod_only_styling();
+    }
+
+    /**
+     * Inject inline CSS on checkout if COD is the only payment method.
+     */
+    public function checkout_cod_only_styling()
+    {
+        if (is_checkout() && ! is_order_received_page() && $this->is_cod_only_payment()) {
+            ?>
+            <style type="text/css" id="sf-child-cod-only-payment-css">
+                #payment-method,
+                .wc-block-components-checkout-step--payment,
+                .wc-block-components-checkout-step--payment-method,
+                .wp-block-woocommerce-checkout-payment-methods-block,
+                .wc-block-checkout__payment-methods,
+                .wc-block-components-checkout-step:has(#payment-method),
+                .woocommerce-checkout #payment ul.payment_methods,
+                .woocommerce-checkout #payment .wc_payment_methods {
+                    display: none !important;
+                }
+                .woocommerce-checkout #payment {
+                    background: transparent !important;
+                    padding: 0 !important;
+                    border: none !important;
+                }
+            </style>
+            <?php
+        }
     }
 
     /**

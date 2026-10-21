@@ -1289,6 +1289,134 @@ form.wc-block-checkout__form {
     .wc-block-components-address-form__country {
         display: none;
     }
+
+    /* Merge first name & second name into one Full Name */
+    .wc-block-components-address-form__first-name {
+        order: 1 !important;
+        width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+
+    .wc-block-components-address-form__last-name,
+    #billing-last_name-wrapper,
+    #shipping-last_name-wrapper {
+        display: none !important;
+    }
+
+    /* Move phone field below Full Name */
+    .wc-block-components-address-form__phone,
+    .wc-block-components-text-input:has(#phone),
+    .wc-block-components-text-input:has(#billing-phone),
+    .wc-block-components-text-input:has(#shipping-phone) {
+        order: 2 !important;
+        width: 100% !important;
+        flex: 1 1 100% !important;
+    }
+
+    /* District selector on left and Address on right in a single row */
+    .wc-block-components-address-form__state,
+    .wc-block-components-combobox:has(#billing-state),
+    .wc-block-components-combobox:has(#shipping-state),
+    .wc-block-components-text-input:has(#billing-state),
+    .wc-block-components-text-input:has(#shipping-state) {
+        order: 3 !important;
+        width: calc(50% - 8px) !important;
+        max-width: calc(50% - 8px) !important;
+        min-width: 0 !important;
+        flex: 1 1 calc(50% - 8px) !important;
+        box-sizing: border-box !important;
+        clear: left !important;
+    }
+
+    .wc-block-components-address-form__address_1,
+    .wc-block-components-text-input:has(#billing-address_1),
+    .wc-block-components-text-input:has(#shipping-address_1) {
+        order: 4 !important;
+        width: calc(50% - 8px) !important;
+        max-width: calc(50% - 8px) !important;
+        min-width: 0 !important;
+        flex: 1 1 calc(50% - 8px) !important;
+        box-sizing: border-box !important;
+        clear: none !important;
+    }
+}
+
+/* Remove add note to your order section */
+.wp-block-woocommerce-checkout-order-notes-block,
+.wc-block-checkout__add-note,
+.wc-block-components-checkout-order-notes,
+.woocommerce-additional-fields,
+#order_comments_field {
+    display: none !important;
+}
+
+/* Remove terms from above place order button */
+.wc-block-checkout__terms,
+.wc-block-components-checkout-step--terms,
+.wc-block-components-terms-and-conditions,
+.wc-block-components-checkout-terms,
+.wc-block-checkout__actions .wc-block-components-checkbox-terms,
+.woocommerce-terms-and-conditions-wrapper,
+.woocommerce-privacy-policy-text {
+    display: none !important;
+}
+
+/* Classic Checkout Field Styles */
+.woocommerce-checkout {
+    #billing_first_name_field,
+    #shipping_first_name_field,
+    #billing_phone_field,
+    #shipping_phone_field {
+        width: 100% !important;
+        float: none !important;
+        clear: both !important;
+    }
+
+    #billing_last_name_field,
+    #shipping_last_name_field {
+        display: none !important;
+    }
+
+    #billing_state_field,
+    #shipping_state_field {
+        width: calc(50% - 8px) !important;
+        float: left !important;
+        clear: left !important;
+        margin-right: 16px !important;
+    }
+
+    #billing_address_1_field,
+    #shipping_address_1_field {
+        width: calc(50% - 8px) !important;
+        float: right !important;
+        clear: none !important;
+        margin-right: 0 !important;
+    }
+}
+
+/* Hide payment options if Cash on Delivery is the only available payment method */
+body.sf-cod-only-payment {
+    /* WooCommerce Blocks Checkout */
+    #payment-method,
+    .wp-block-woocommerce-checkout-payment-methods-block,
+    .wc-block-checkout__payment-methods,
+    .wc-block-components-checkout-step--payment,
+    .wc-block-components-checkout-step--payment-method,
+    .wc-block-components-checkout-step:has(#payment-method) {
+        display: none !important;
+    }
+
+    /* WooCommerce Classic Checkout */
+    .woocommerce-checkout #payment ul.payment_methods,
+    .woocommerce-checkout #payment .wc_payment_methods {
+        display: none !important;
+    }
+
+    .woocommerce-checkout #payment {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+    }
 }
 
 .sf-clean-category-header-block {

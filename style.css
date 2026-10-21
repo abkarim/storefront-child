@@ -1193,6 +1193,130 @@ header.site-header .store-front-child-header-wrapper .header-col-utilities > div
 form.wc-block-checkout__form .wc-block-components-address-form__country {
   display: none;
 }
+form.wc-block-checkout__form {
+  /* Merge first name & second name into one Full Name */
+}
+form.wc-block-checkout__form .wc-block-components-address-form__first-name {
+  order: 1 !important;
+  width: 100% !important;
+  flex: 1 1 100% !important;
+}
+form.wc-block-checkout__form .wc-block-components-address-form__last-name,
+form.wc-block-checkout__form #billing-last_name-wrapper,
+form.wc-block-checkout__form #shipping-last_name-wrapper {
+  display: none !important;
+}
+form.wc-block-checkout__form {
+  /* Move phone field below Full Name */
+}
+form.wc-block-checkout__form .wc-block-components-address-form__phone,
+form.wc-block-checkout__form .wc-block-components-text-input:has(#phone),
+form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-phone),
+form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-phone) {
+  order: 2 !important;
+  width: 100% !important;
+  flex: 1 1 100% !important;
+}
+form.wc-block-checkout__form {
+  /* District selector on left and Address on right in a single row */
+}
+form.wc-block-checkout__form .wc-block-components-address-form__state,
+form.wc-block-checkout__form .wc-block-components-combobox:has(#billing-state),
+form.wc-block-checkout__form .wc-block-components-combobox:has(#shipping-state),
+form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-state),
+form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-state) {
+  order: 3 !important;
+  width: calc(50% - 8px) !important;
+  max-width: calc(50% - 8px) !important;
+  min-width: 0 !important;
+  flex: 1 1 calc(50% - 8px) !important;
+  box-sizing: border-box !important;
+  clear: left !important;
+}
+form.wc-block-checkout__form .wc-block-components-address-form__address_1,
+form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-address_1),
+form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-address_1) {
+  order: 4 !important;
+  width: calc(50% - 8px) !important;
+  max-width: calc(50% - 8px) !important;
+  min-width: 0 !important;
+  flex: 1 1 calc(50% - 8px) !important;
+  box-sizing: border-box !important;
+  clear: none !important;
+}
+
+/* Remove add note to your order section */
+.wp-block-woocommerce-checkout-order-notes-block,
+.wc-block-checkout__add-note,
+.wc-block-components-checkout-order-notes,
+.woocommerce-additional-fields,
+#order_comments_field {
+  display: none !important;
+}
+
+/* Remove terms from above place order button */
+.wc-block-checkout__terms,
+.wc-block-components-checkout-step--terms,
+.wc-block-components-terms-and-conditions,
+.wc-block-components-checkout-terms,
+.wc-block-checkout__actions .wc-block-components-checkbox-terms,
+.woocommerce-terms-and-conditions-wrapper,
+.woocommerce-privacy-policy-text {
+  display: none !important;
+}
+
+/* Classic Checkout Field Styles */
+.woocommerce-checkout #billing_first_name_field,
+.woocommerce-checkout #shipping_first_name_field,
+.woocommerce-checkout #billing_phone_field,
+.woocommerce-checkout #shipping_phone_field {
+  width: 100% !important;
+  float: none !important;
+  clear: both !important;
+}
+.woocommerce-checkout #billing_last_name_field,
+.woocommerce-checkout #shipping_last_name_field {
+  display: none !important;
+}
+.woocommerce-checkout #billing_state_field,
+.woocommerce-checkout #shipping_state_field {
+  width: calc(50% - 8px) !important;
+  float: left !important;
+  clear: left !important;
+  margin-right: 16px !important;
+}
+.woocommerce-checkout #billing_address_1_field,
+.woocommerce-checkout #shipping_address_1_field {
+  width: calc(50% - 8px) !important;
+  float: right !important;
+  clear: none !important;
+  margin-right: 0 !important;
+}
+
+/* Hide payment options if Cash on Delivery is the only available payment method */
+body.sf-cod-only-payment {
+  /* WooCommerce Blocks Checkout */
+}
+body.sf-cod-only-payment #payment-method,
+body.sf-cod-only-payment .wp-block-woocommerce-checkout-payment-methods-block,
+body.sf-cod-only-payment .wc-block-checkout__payment-methods,
+body.sf-cod-only-payment .wc-block-components-checkout-step--payment,
+body.sf-cod-only-payment .wc-block-components-checkout-step--payment-method,
+body.sf-cod-only-payment .wc-block-components-checkout-step:has(#payment-method) {
+  display: none !important;
+}
+body.sf-cod-only-payment {
+  /* WooCommerce Classic Checkout */
+}
+body.sf-cod-only-payment .woocommerce-checkout #payment ul.payment_methods,
+body.sf-cod-only-payment .woocommerce-checkout #payment .wc_payment_methods {
+  display: none !important;
+}
+body.sf-cod-only-payment .woocommerce-checkout #payment {
+  background: transparent !important;
+  padding: 0 !important;
+  border: none !important;
+}
 
 .sf-clean-category-header-block .sf-cat-header-image-wrapper {
   width: 100%;
