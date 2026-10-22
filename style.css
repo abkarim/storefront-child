@@ -104,6 +104,13 @@ button:focus:not(:focus-visible),
   outline: none;
   box-shadow: none;
 }
+button.disabled,
+.wp-element-button.disabled,
+.button.disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
 
 textarea,
 input[type=number] {

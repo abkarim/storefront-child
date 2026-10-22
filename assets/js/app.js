@@ -137,9 +137,9 @@
       const result = await response.json();
       if (result.success) {
         quickViewContentArea.innerHTML = result.data;
-        const variationForm = quickViewContentArea.querySelector(".variations_form");
-        if (variationForm) {
-          variationForm.dispatchEvent(
+        const variationForm2 = quickViewContentArea.querySelector(".variations_form");
+        if (variationForm2) {
+          variationForm2.dispatchEvent(
             new CustomEvent("wc_variation_form", { bubbles: true })
           );
         }
@@ -244,6 +244,32 @@
     );
     observer.observe(container);
   });
+
+  // assets/ts/productPage.ts
+  var variationForm = document.querySelector("form.variations_form");
+  if (variationForm) {
+    const addToCartButton = variationForm.querySelector("button.single_add_to_cart_button");
+    const buyNowButton = variationForm.querySelector("button.sf-buy-now-button");
+    if (addToCartButton) {
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (!buyNowButton) return;
+          if (mutation.type === "attributes") {
+            if (mutation.attributeName === "class") {
+              if (addToCartButton.classList.contains("disabled")) {
+                buyNowButton.classList.add("disabled");
+              } else {
+                buyNowButton.classList.remove("disabled");
+              }
+            }
+          }
+        });
+      });
+      observer.observe(addToCartButton, {
+        attributes: true
+      });
+    }
+  }
 
   // assets/ts/app.ts
   var wpadminbar = document.getElementById("wpadminbar");
