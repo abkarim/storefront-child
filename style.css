@@ -701,9 +701,7 @@ ul.wp-block-woocommerce-product-template {
   user-select: none;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .reset_variations {
-  margin: 0;
-  margin-top: 0.5em;
-  color: var(--theme-text-accent);
+  display: none !important;
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper span.onsale {
   display: none;

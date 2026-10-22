@@ -717,9 +717,7 @@ ul.wp-block-woocommerce-product-template {
                                     }
 
                                     .reset_variations {
-                                        margin: 0;
-                                        margin-top: 0.5em;
-                                        color: var(--theme-text-accent);
+                                        display: none !important;
                                     }
                                 }
                             }
