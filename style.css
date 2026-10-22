@@ -1236,6 +1236,16 @@ form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-state
   box-sizing: border-box !important;
   clear: left !important;
 }
+@media (max-width: 767px) {
+  form.wc-block-checkout__form .wc-block-components-address-form__state,
+  form.wc-block-checkout__form .wc-block-components-combobox:has(#billing-state),
+  form.wc-block-checkout__form .wc-block-components-combobox:has(#shipping-state),
+  form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-state),
+  form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-state) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
 form.wc-block-checkout__form .wc-block-components-address-form__address_1,
 form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-address_1),
 form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-address_1) {
@@ -1246,6 +1256,14 @@ form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-addre
   flex: 1 1 calc(50% - 8px) !important;
   box-sizing: border-box !important;
   clear: none !important;
+}
+@media (max-width: 767px) {
+  form.wc-block-checkout__form .wc-block-components-address-form__address_1,
+  form.wc-block-checkout__form .wc-block-components-text-input:has(#billing-address_1),
+  form.wc-block-checkout__form .wc-block-components-text-input:has(#shipping-address_1) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
 }
 
 /* Remove add note to your order section */

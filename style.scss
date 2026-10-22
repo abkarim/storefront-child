@@ -1383,6 +1383,12 @@ form.wc-block-checkout__form {
         flex: 1 1 calc(50% - 8px) !important;
         box-sizing: border-box !important;
         clear: left !important;
+
+        @media (max-width: 767px) {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
     }
 
     .wc-block-components-address-form__address_1,
@@ -1395,6 +1401,12 @@ form.wc-block-checkout__form {
         flex: 1 1 calc(50% - 8px) !important;
         box-sizing: border-box !important;
         clear: none !important;
+
+        @media (max-width: 767px) {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+
     }
 }
 
