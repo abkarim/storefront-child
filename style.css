@@ -6,7 +6,7 @@ Description: Child theme for Storefront — add custom styles and features here.
 Author: Karim
 Author URI: https://github.com/abkarim
 Template: storefront
-Version: 1.4.3
+Version: 1.5.0
 Text Domain: storefront-child
 */
 :root {
@@ -653,6 +653,11 @@ ul.wp-block-woocommerce-product-template {
   justify-content: flex-start;
   gap: 1em;
 }
+@media (max-width: 1024px) {
+  .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form {
+    gap: 0.5em;
+  }
+}
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary form.variations_form {
   flex-direction: column;
   align-items: flex-start !important;
@@ -709,6 +714,18 @@ ul.wp-block-woocommerce-product-template {
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form table.variations tbody tr td .reset_variations {
   display: none !important;
+}
+.single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form .single_variation_wrap .woocommerce-variation-add-to-cart {
+  display: flex !important;
+}
+@media (max-width: 1024px) {
+  .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form .single_variation_wrap .woocommerce-variation-add-to-cart {
+    gap: 0.3em;
+  }
+  .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form .single_variation_wrap .woocommerce-variation-add-to-cart .quantity,
+  .single .product .sf-custom-product-gallery-summary-layout-wrapper .summary .variations_form .single_variation_wrap .woocommerce-variation-add-to-cart button {
+    margin: 0 !important;
+  }
 }
 .single .product .sf-custom-product-gallery-summary-layout-wrapper span.onsale {
   display: none;
