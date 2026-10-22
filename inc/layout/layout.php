@@ -510,8 +510,16 @@ class Layout
     {
         global $product;
 
-        // Direct checkout is only straightforward for simple products via URL parameters
-        if (! $product || ! $product->is_type('simple') || ! $product->is_purchasable() || ! $product->is_in_stock()) {
+        if (! $product || ! $product->is_purchasable() || ! $product->is_in_stock()) {
+            return;
+        }
+
+        if ($product->is_type('variable')) {
+            echo sprintf(
+                '<button type="submit" name="buy_now" value="%d" class="button alt sf-buy-now-button">%s</button>',
+                esc_attr($product->get_id()),
+                esc_html__('Buy Now', 'storefront-child')
+            );
             return;
         }
 
