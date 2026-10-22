@@ -63,6 +63,8 @@ button,
 .button {
     color: var(--theme-button-text) !important;
     background-color: var(--theme-button-bg) !important;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
 
     &.sf-buy-now-button {
         margin-left: 1em;
@@ -85,6 +87,10 @@ button,
     &:hover {
         color: var(--theme-button-hover-text) !important;
         background-color: var(--theme-button-hover-bg) !important;
+    }
+
+    &:active {
+        transform: scale(0.95) translateY(2px);
     }
 
     &:focus-visible {
